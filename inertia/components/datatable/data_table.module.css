@@ -1,0 +1,301 @@
+/* DataTable del admin: tabla server-side con cards en mobile */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Barra superior: búsqueda + filtros + export */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.buscador {
+  position: relative;
+  flex: 1 1 220px;
+  max-width: 340px;
+}
+
+.buscadorIcono {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.buscadorInput {
+  width: 100%;
+  padding: 9px 12px 9px 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  min-height: var(--tap-target);
+}
+.buscadorInput:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.toolbarDerecha {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.selectPerPage {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 10px;
+  min-height: var(--tap-target);
+}
+
+/* Barra de acciones al haber selección */
+.barraSeleccion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+}
+.barraSeleccionTexto {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Tabla desktop */
+.tablaWrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tabla thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
+  text-align: left;
+  font-weight: 600;
+  padding: 10px 12px;
+  white-space: nowrap;
+}
+
+.thOrdenable {
+  cursor: pointer;
+  user-select: none;
+}
+.thOrdenable:hover {
+  filter: brightness(1.08);
+}
+
+.thContenido {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tabla tbody td {
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.tabla tbody tr:hover td {
+  background: var(--surface-2);
+}
+.filaSeleccionada td {
+  background: color-mix(in srgb, var(--primary) 8%, transparent) !important;
+}
+
+.celdaCheckbox {
+  width: 36px;
+}
+.checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.celdaAcciones {
+  white-space: nowrap;
+  text-align: right;
+}
+.acciones {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.btnIcono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.btnIcono:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.btnIconoPeligro:hover {
+  color: var(--danger);
+}
+
+/* Targets táctiles >= 44px en mobile (los 36px quedan solo para desktop) */
+@media (max-width: 767px) {
+  .btnIcono {
+    width: var(--tap-target);
+    height: var(--tap-target);
+  }
+  .btnPagina {
+    min-width: var(--tap-target);
+    height: var(--tap-target);
+  }
+}
+
+/* Cards en mobile (<768px) */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.cardTitulo {
+  font-weight: 700;
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.cardCampos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+.cardCampo {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+.cardEtiqueta {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.cardValor {
+  text-align: right;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.cardAcciones {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-2);
+}
+
+/* Pie: contador + paginación */
+.pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  justify-content: space-between;
+}
+
+.contador {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.paginacion {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btnPagina {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btnPagina:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+.btnPagina:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btnPaginaActual {
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
+  border-color: transparent;
+  font-weight: 700;
+}
+.puntos {
+  color: var(--text-muted);
+  padding: 0 2px;
+}
+
+.exportLink {
+  text-decoration: none;
+}

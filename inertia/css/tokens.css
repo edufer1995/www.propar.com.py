@@ -1,0 +1,86 @@
+/*
+ * Design tokens — única fuente de verdad de la marca ABAS.
+ * Los componentes SOLO usan variables semánticas (--bg, --surface, --text...);
+ * nunca un hex suelto. Dark mode = redefinir las semánticas bajo [data-theme].
+ */
+
+:root {
+  /* Marca */
+  --brand-blue: #4d82c1;
+  --brand-blue-dark: #3a689e;
+  --brand-green: #99cd68;
+  --brand-green-dark: #7db34a;
+  --brand-sky: #dbe6f3;
+  --brand-gray: #717171;
+  --brand-teal-dark: #033537;
+
+  /* Degradados */
+  --grad-primary: linear-gradient(135deg, var(--primary), var(--brand-blue-dark));
+  --grad-accent: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
+  --grad-hero: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-green) 100%);
+  --grad-danger: linear-gradient(135deg, #dc2626, #f97316);
+
+  /* Semánticas (light) */
+  --bg: #ffffff;
+  --surface: #f7f9fc;
+  --surface-2: #eef2f8;
+  --text: #1f2733;
+  --text-muted: #64748b;
+  --border: #dde5ef;
+  /* AA 4.99:1 con blanco (el --brand-blue original quedaba en 3.98) */
+  --primary: #4271ae;
+  --primary-contrast: #ffffff;
+  --accent: var(--brand-green);
+  /* Texto sobre --accent / --grad-accent (7.5:1 sobre el extremo claro) */
+  --accent-contrast: #14330a;
+  --danger: #dc2626;
+  --success: #15803d;
+  --warning: #b45309;
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--brand-blue) 35%, transparent);
+
+  /* Tipografía */
+  --font-display: 'Montserrat', system-ui, sans-serif;
+  --font-body: 'Nunito Sans', system-ui, sans-serif;
+
+  /* Métricas */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 3px rgb(15 23 42 / 0.08);
+  --shadow-md: 0 4px 14px rgb(15 23 42 / 0.12);
+  --shadow-lg: 0 12px 32px rgb(15 23 42 / 0.18);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --tap-target: 44px;
+
+  /* Breakpoints de referencia (JS los replica en useMediaQuery):
+     mobile < 768px · tablet 768-1024px · desktop > 1024px */
+}
+
+[data-theme='dark'] {
+  --bg: #0e1420;
+  --surface: #17202e;
+  --surface-2: #1f2a3b;
+  --text: #e6ecf4;
+  --text-muted: #94a3b8;
+  --border: #2b3a50;
+  --primary: #6b9bd2;
+  --primary-contrast: #0e1420;
+  /* Ambos extremos claros: el texto oscuro (--primary-contrast) mantiene AA */
+  --grad-primary: linear-gradient(135deg, var(--primary), #8fb4de);
+  /* Estados más luminosos para AA sobre fondos oscuros */
+  --danger: #f87171;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 14px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.6);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, #6b9bd2 45%, transparent);
+}

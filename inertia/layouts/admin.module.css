@@ -1,0 +1,186 @@
+/* AdminLayout: sidebar + topbar. Mobile-first: drawer con overlay < 768px. */
+
+.shell {
+  min-height: 100dvh;
+  background: var(--bg);
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 264px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 900;
+  transform: translateX(-100%);
+  transition: transform 0.2s ease;
+}
+.sidebar.sidebarOpen { transform: translateX(0); }
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-4) var(--space-3);
+}
+
+.logoImg {
+  display: block;
+  height: 34px;
+  width: auto;
+}
+
+.nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 var(--space-3) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.group { display: flex; flex-direction: column; gap: 2px; }
+
+.groupTitle {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: var(--space-2) var(--space-3) var(--space-1);
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-size: 14.5px;
+  text-decoration: none;
+}
+.navLink:hover { background: var(--surface-2); text-decoration: none; }
+.navLink svg { flex: none; color: var(--text-muted); }
+
+.navLinkActive,
+.navLinkActive:hover {
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
+}
+.navLinkActive svg { color: currentColor; }
+
+.badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+.navLinkActive .badge {
+  color: var(--primary-contrast);
+  background: transparent;
+  border-color: color-mix(in srgb, var(--primary-contrast) 40%, transparent);
+}
+
+/* ===== Overlay (drawer mobile) ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(3 12 24 / 0.5);
+  z-index: 850;
+  animation: fadeIn 0.15s ease;
+  border: 0;
+  padding: 0;
+}
+@keyframes fadeIn { from { opacity: 0; } }
+
+/* ===== Contenido ===== */
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  transition: padding-left 0.2s ease;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 60px;
+  padding: 0 var(--space-4);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+}
+
+.iconBtn {
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+}
+.iconBtn:hover { background: var(--surface-2); color: var(--text); }
+
+.saludo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbarSpacer { flex: 1; }
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  flex: none;
+}
+
+.content {
+  flex: 1;
+  padding: var(--space-5) var(--space-4) var(--space-7);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 768px) {
+  .sidebar { transform: translateX(0); }
+  .sidebar.sidebarClosed { transform: translateX(-100%); }
+  .main { padding-left: 264px; }
+  .mainWide { padding-left: 0; }
+  .overlay { display: none; }
+  .content { padding: var(--space-6) var(--space-6) var(--space-8); }
+}

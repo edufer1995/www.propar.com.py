@@ -1,0 +1,1067 @@
+/* Componentes del sitio público (mobile-first). */
+
+/* ===== Secciones ===== */
+.seccion {
+  margin-top: var(--space-8);
+}
+.seccionHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+.seccionTitulo {
+  font-size: 24px;
+}
+.seccionSub {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: var(--space-1);
+}
+@media (min-width: 768px) {
+  .seccionTitulo {
+    font-size: 30px;
+  }
+}
+
+.flechas {
+  display: flex;
+  gap: var(--space-2);
+}
+.flecha {
+  width: var(--tap-target);
+  height: var(--tap-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+.flecha:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+.flecha:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===== Embla base ===== */
+.embla {
+  overflow: hidden;
+}
+.emblaContainer {
+  display: flex;
+}
+
+.puntos {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-top: var(--space-2);
+}
+/* Punto visual de 10px con área táctil de 44px (padding + background-clip) */
+.punto {
+  box-sizing: content-box;
+  width: 10px;
+  height: 10px;
+  padding: 17px;
+  background-clip: content-box;
+  border-radius: var(--radius-full);
+  background-color: var(--border);
+  transition:
+    background 0.2s ease,
+    width 0.2s ease;
+}
+.puntoActivo {
+  background-color: var(--primary);
+  width: 26px;
+}
+
+/* ===== Hero (carrusel de portada) ===== */
+.hero {
+  position: relative;
+  background: linear-gradient(150deg, var(--brand-teal-dark), #0a5a58 55%, var(--brand-blue-dark));
+  color: #fff;
+  overflow: hidden;
+}
+.heroSlide {
+  flex: 0 0 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 420px;
+}
+.heroTexto {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4) var(--space-7);
+  max-width: 620px;
+  margin: 0 auto;
+  width: 100%;
+}
+.heroTexto h2 {
+  color: #fff;
+  font-size: 26px;
+  line-height: 1.15;
+}
+.heroTexto h3 {
+  color: var(--brand-green);
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.heroTexto p {
+  color: #d4e2ef;
+  font-size: 15px;
+  max-width: 48ch;
+  /* Descripciones largas: se cortan con "…" para que el botón no baje
+     y todos los slides midan lo mismo. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+.heroImagen {
+  position: relative;
+  min-height: 220px;
+  order: -1;
+}
+.heroImagen img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.heroImagen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(3 53 55 / 0.55), transparent 55%);
+}
+.heroControles {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* El buscador solapa el hero -space-6: los controles quedan por encima. */
+  bottom: calc(var(--space-6) + var(--space-3));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.heroControles > * {
+  pointer-events: auto;
+}
+.heroControles .punto {
+  background-color: rgb(255 255 255 / 0.35);
+}
+.heroControles .puntoActivo {
+  background-color: var(--brand-green);
+}
+.heroControles .flecha {
+  background: rgb(255 255 255 / 0.12);
+  border-color: rgb(255 255 255 / 0.25);
+  color: #fff;
+}
+.heroControles .flecha:hover:not(:disabled) {
+  background: rgb(255 255 255 / 0.25);
+}
+
+@media (min-width: 900px) {
+  .heroSlide {
+    grid-template-columns: 1fr 1fr;
+    min-height: 480px;
+  }
+  .heroTexto {
+    padding: var(--space-7) var(--space-6);
+    margin: 0;
+    max-width: none;
+  }
+  .heroTexto h2 {
+    font-size: 38px;
+  }
+  .heroTexto p {
+    -webkit-line-clamp: 6;
+  }
+  .heroImagen {
+    order: 0;
+    min-height: 100%;
+  }
+  .heroImagen::after {
+    background: linear-gradient(to right, rgb(3 53 55 / 0.45), transparent 45%);
+  }
+}
+
+/* ===== Buscador ===== */
+.buscador {
+  position: relative;
+  z-index: 5;
+  margin-top: calc(-1 * var(--space-6));
+}
+.buscadorCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-5);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+@media (min-width: 900px) {
+  .buscadorCard {
+    grid-template-columns: 1.4fr 1fr 1fr auto;
+    align-items: end;
+  }
+}
+
+/* ===== Promociones (carrusel, como el resto del home) ===== */
+/* Slide más angosto que los demás: el afiche vertical full-bleed ocupa
+   toda la card, y con 4 por fila en desktop la altura total queda a la
+   par de las otras secciones. */
+.promoSlide {
+  flex: 0 0 70%;
+  min-width: 0;
+  padding-right: var(--space-4);
+}
+@media (min-width: 640px) {
+  .promoSlide {
+    flex-basis: 40%;
+  }
+}
+@media (min-width: 1024px) {
+  .promoSlide {
+    flex-basis: 25%;
+  }
+}
+
+.promo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.promo:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+}
+/* Zócalo compacto: una franja, no medio card. */
+.promoBody {
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.promoBadge {
+  align-self: flex-start;
+  background: rgb(255 255 255 / 0.2);
+  border-radius: var(--radius-full);
+  padding: 1px 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.promo h3 {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.25;
+}
+.promo p {
+  color: #e4edf7;
+  font-size: 14px;
+  /* La descripción no estira la card: el detalle vive en el lightbox/URL */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* Afiche full-bleed: área 4:5 (el formato del material real) que ocupa
+   todo el ancho de la card, sin marcos vacíos. Entero (contain, sin
+   recorte); un afiche que no sea 4:5 exacto deja un borde mínimo del
+   degradado. Click en el afiche (o el botón) = lightbox. */
+.promoAfiche {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  cursor: zoom-in;
+}
+.promoImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+/* Enlace "estirado": hace clickeable toda la card sin anidar anchors. */
+.promoStretch {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+/* Bases y condiciones (PDF): por encima del enlace estirado. */
+.promoBases {
+  position: relative;
+  z-index: 2;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  min-height: var(--tap-target);
+}
+.promoBases:hover {
+  color: #e4edf7;
+}
+
+/* ===== Cards de carrusel (lanzamientos / desarrollos) ===== */
+.cardSlide {
+  flex: 0 0 85%;
+  min-width: 0;
+  padding-right: var(--space-4);
+}
+@media (min-width: 640px) {
+  .cardSlide {
+    flex-basis: 48%;
+  }
+}
+@media (min-width: 1024px) {
+  .cardSlide {
+    flex-basis: 33.333%;
+  }
+}
+
+.propCard {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.propCardImagen {
+  position: relative;
+  height: 180px;
+  background: var(--surface-2);
+}
+.propCardImagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.propCardBadge {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  background: var(--grad-accent);
+  color: var(--accent-contrast);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+.propCardBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+.propCardUbicacion {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.propCardTitulo {
+  font-size: 17px;
+}
+.propCardPrecio {
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+.propCardPrecio small {
+  display: block;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.propCardPrecio strong {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--primary);
+}
+.propCardPrecio span {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.propCardFooter {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+/* ===== Lotes por distrito (slides del carrusel) ===== */
+/* El tile vive dentro de un .cardSlide: estira a la altura del slide más
+   alto de la fila (el contenedor de Embla es flex) y el min-height fija
+   el piso cuando todos son cortos. */
+.distritoTile {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  min-height: 220px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: linear-gradient(150deg, var(--brand-blue-dark), var(--brand-teal-dark));
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  text-decoration: none;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.distritoTile:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  text-decoration: none;
+}
+.distritoTile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(3 30 32 / 0.82), rgb(3 30 32 / 0.1) 60%);
+}
+.distritoInfo {
+  position: relative;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+.distritoInfo h3 {
+  color: #fff;
+  font-size: 20px;
+}
+.distritoStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.distritoStat {
+  background: rgb(255 255 255 / 0.16);
+  backdrop-filter: blur(4px);
+  border-radius: var(--radius-full);
+  padding: 3px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.distritoCuota {
+  color: var(--brand-green);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Imagen de la promoción dentro del modal de bienvenida. Contain, no
+   cover: los afiches verticales de marketing se muestran enteros. */
+.promoModalImg {
+  width: 100%;
+  max-height: 62dvh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-3);
+  background: var(--surface-2);
+}
+
+/* Bases y condiciones (PDF) dentro del modal de bienvenida. */
+.promoModalBases {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: var(--tap-target);
+}
+
+/* ===== Redes sociales ===== */
+/* Imagen de la card de red: área 4:3 (la proporción que pide el ABM) con
+   la imagen ENTERA (contain) sobre su propia copia difuminada — mismo
+   patrón que las promociones, para que nada se recorte. */
+.redImagenArea {
+  height: auto;
+  aspect-ratio: 4 / 3;
+}
+.redImagenFondo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(18px) brightness(0.85);
+  transform: scale(1.15);
+}
+/* Absoluta para que el alto del área lo fije el aspect-ratio y no el
+   alto natural de la imagen. */
+.propCardImagen .redImagen {
+  position: absolute;
+  inset: 0;
+  object-fit: contain;
+  cursor: zoom-in;
+}
+
+/* Card de red social: mismo molde que Últimos lanzamientos, con el logo
+   sobre el degradado de marca en lugar de la foto de la fracción. */
+.redMedia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
+}
+.redMediaIcono {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+/* Botón "ver en grande" sobre la imagen de la card de red. Redondo y
+   translúcido para no tapar la foto; el tamaño respeta el tap target. */
+.redAmpliar {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: rgb(23 30 41 / 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+/* Sobre el enlace estirado de la card de promo (z-index 1) */
+.promoAfiche .redAmpliar {
+  z-index: 2;
+}
+.redAmpliar:hover {
+  background: var(--primary);
+  color: var(--primary-contrast);
+}
+
+/* ===== Sucursales ===== */
+.sucursales {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .sucursales {
+    grid-template-columns: 340px 1fr;
+  }
+}
+.sucursalPanel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.sucursalInfo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: 14px;
+}
+.sucursalInfo div {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--text-muted);
+}
+.sucursalMapa {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  min-height: 320px;
+  background: var(--surface-2);
+}
+.sucursalMapa iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: 0;
+}
+
+/* ===== Página institucional (quiénes somos / parking) ===== */
+.portada {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(150deg, var(--brand-teal-dark), var(--brand-blue-dark));
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+  margin-top: var(--space-5);
+}
+.portada::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(3 30 32 / 0.55);
+}
+.portadaTexto {
+  position: relative;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.portadaTexto h1 {
+  color: #fff;
+  font-size: 30px;
+}
+.portadaTexto p {
+  color: #dfe9f2;
+  font-size: 15px;
+}
+@media (min-width: 768px) {
+  .portada {
+    min-height: 360px;
+  }
+  .portadaTexto h1 {
+    font-size: 40px;
+  }
+}
+
+.prosa {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.prosa p {
+  color: var(--text-muted);
+  font-size: 15.5px;
+  text-align: justify;
+}
+.prosa h2 {
+  font-size: 26px;
+  text-align: center;
+  margin-top: var(--space-6);
+}
+
+.imagenesGrid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .imagenesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.imagenesGrid img,
+.imagenSola {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+}
+
+.listaCheck {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.listaCheck li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: 15px;
+}
+.listaCheck svg {
+  color: var(--accent);
+  flex: none;
+  margin-top: 3px;
+}
+
+.valores {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 768px) {
+  .valores {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.valor {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+}
+.valor svg {
+  color: var(--accent);
+  flex: none;
+}
+
+/* ===== Alquileres ===== */
+.alquileres {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 700px) {
+  .alquileres {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1100px) {
+  .alquileres {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.galeria {
+  position: relative;
+  height: 210px;
+  background: var(--surface-2);
+}
+.galeria .embla,
+.galeriaViewport {
+  height: 100%;
+}
+.galeriaSlide {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 210px;
+}
+.galeriaSlide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.galeriaFlecha {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border-radius: var(--radius-full);
+  background: rgb(15 23 42 / 0.45);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.galeriaFlecha:hover {
+  background: rgb(15 23 42 / 0.65);
+}
+.galeriaFlechaIzq {
+  left: var(--space-2);
+}
+.galeriaFlechaDer {
+  right: var(--space-2);
+}
+.galeriaPuntos {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0;
+}
+.galeriaPuntos .punto {
+  width: 8px;
+  height: 8px;
+  padding: 18px;
+  background-color: rgb(255 255 255 / 0.5);
+}
+.galeriaPuntos .puntoActivo {
+  background-color: #fff;
+  width: 20px;
+}
+.galeriaVacia {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-2);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  font-size: 13px;
+  color: var(--text);
+}
+.chip svg {
+  color: var(--primary);
+}
+
+.alquilerPrecios {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.alquilerPrecios strong {
+  font-family: var(--font-display);
+  font-size: 21px;
+  color: var(--primary);
+}
+.alquilerPrecios small {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.alquilerAcciones {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+.btnWhatsApp,
+.btnTel {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target);
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+}
+.btnWhatsApp {
+  background: #25d366;
+}
+.btnWhatsApp:hover {
+  text-decoration: none;
+  filter: brightness(1.05);
+  color: #fff;
+}
+.btnTel {
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
+}
+.btnTel:hover {
+  text-decoration: none;
+  filter: brightness(1.05);
+  color: var(--primary-contrast);
+}
+
+.ubicacionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+.ubicacionLink:hover {
+  color: var(--primary);
+}
+
+/* ===== Barra de filtros fija (alquileres) ===== */
+.filtroBarra {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 240;
+  padding: 0 var(--space-4) var(--space-3);
+  pointer-events: none;
+}
+.filtroCard {
+  pointer-events: auto;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.filtroHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+.filtroHeader:hover {
+  background: var(--surface-2);
+}
+.filtroTitulo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.filtroContador {
+  background: var(--grad-accent);
+  color: var(--accent-contrast);
+  border-radius: var(--radius-full);
+  padding: 1px 10px;
+  font-size: 12px;
+}
+.filtroBody {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr 1fr;
+  padding: var(--space-4);
+  border-top: 1px solid var(--border);
+  max-height: 60dvh;
+  overflow-y: auto;
+}
+@media (min-width: 900px) {
+  .filtroBody {
+    grid-template-columns: repeat(5, 1fr) auto;
+    align-items: end;
+  }
+}
+
+/* ===== Contacto ===== */
+.contactoGrid {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: 1fr;
+  margin-top: var(--space-6);
+}
+@media (min-width: 900px) {
+  .contactoGrid {
+    grid-template-columns: 1.1fr 1fr;
+  }
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.formularioFila {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .formularioFila {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sucursalesGrid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .sucursalesGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.sucursalCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: 13.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sucursalCard strong {
+  font-family: var(--font-display);
+  font-size: 14.5px;
+}
+.sucursalCard span {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contactoSocial {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.contactoSocial a {
+  width: var(--tap-target);
+  height: var(--tap-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--surface-2);
+  color: var(--primary);
+}
+.contactoSocial a:hover {
+  background: color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+/* Página con barra inferior fija: aire para que no tape contenido. */
+.conBarraInferior {
+  padding-bottom: 96px;
+}

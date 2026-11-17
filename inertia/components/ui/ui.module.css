@@ -1,0 +1,309 @@
+/* ===== Button ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  transition: filter 0.15s ease, transform 0.05s ease;
+  white-space: nowrap;
+}
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+.btnPrimary { background: var(--grad-primary); color: var(--primary-contrast); }
+.btnAccent { background: var(--grad-accent); color: var(--accent-contrast); }
+.btnDanger { background: var(--grad-danger); color: #fff; }
+.btnSecondary {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btnGhost { background: transparent; color: var(--primary); }
+.btn:not(:disabled):hover { filter: brightness(1.06); }
+
+/* ===== Spinner ===== */
+.spinner {
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex: none;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== Field ===== */
+.field { display: flex; flex-direction: column; gap: var(--space-1); width: 100%; }
+.label { font-weight: 600; font-size: 14px; color: var(--text); }
+.required { color: var(--danger); }
+.hint { font-size: 13px; color: var(--text-muted); }
+.error { font-size: 13px; color: var(--danger); display: flex; align-items: center; gap: 4px; }
+
+.input {
+  width: 100%;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color 0.15s ease;
+}
+textarea.input { padding: var(--space-3); min-height: 96px; resize: vertical; }
+.input:focus { border-color: var(--primary); outline: none; box-shadow: var(--focus-ring); }
+.inputError { border-color: var(--danger); }
+.inputError:focus { box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 30%, transparent); }
+
+/* ===== PasswordField ===== */
+.passwordWrap { position: relative; width: 100%; }
+.passwordInput { padding-right: var(--tap-target); }
+.passwordToggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  min-width: var(--tap-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.passwordToggle:hover { color: var(--text); }
+
+/* ===== PasswordStrengthMeter ===== */
+.meter { display: flex; flex-direction: column; gap: var(--space-1); }
+.meterTrack { display: flex; gap: 4px; }
+.meterSegment {
+  height: 6px;
+  flex: 1;
+  border-radius: var(--radius-full);
+  transition: background 0.2s ease;
+}
+.meterLabel { font-size: 13px; color: var(--text-muted); }
+
+/* ===== Card ===== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5);
+}
+
+/* ===== Modal ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(3 12 24 / 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  z-index: 1000;
+  animation: fadeIn 0.15s ease;
+}
+.modal {
+  background: var(--bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90dvh;
+  display: flex;
+  flex-direction: column;
+  animation: modalIn 0.18s ease;
+}
+.modalLg { max-width: 900px; }
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--border);
+}
+.modalTitle { font-size: 18px; }
+.modalBody { padding: var(--space-5); overflow-y: auto; }
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--border);
+}
+.modalClose {
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+}
+.modalClose:hover { background: var(--surface-2); }
+@media (max-width: 767px) {
+  .overlay { padding: 0; align-items: flex-end; }
+  .modal { max-width: 100%; height: 96dvh; max-height: 96dvh; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+}
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes modalIn { from { opacity: 0; transform: translateY(12px); } }
+
+/* ===== Skeleton ===== */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ===== Estados ===== */
+.stateBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+  color: var(--text-muted);
+}
+.stateTitle { font-family: var(--font-display); font-weight: 700; color: var(--text); font-size: 17px; }
+.stateIcon { color: var(--text-muted); opacity: 0.7; }
+
+/* ===== FullPageLoader ===== */
+.fullLoader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(2px);
+  z-index: 2000;
+}
+
+/* ===== RangeSlider ===== */
+.rangeWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.rangeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+.rangeValue {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+.range {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  /* target táctil >= 44px; el track fino se dibuja en los pseudo-elementos */
+  height: 44px;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+}
+.range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    to right,
+    var(--primary) var(--range-fill, 0%),
+    var(--surface-2) var(--range-fill, 0%)
+  );
+}
+.range::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--grad-primary);
+  border: 2px solid var(--primary-contrast);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+}
+.range::-moz-range-track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--surface-2);
+}
+.range::-moz-range-progress {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+}
+.range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid var(--primary-contrast);
+  box-shadow: var(--shadow-sm);
+  cursor: grab;
+}
+.range:focus-visible { box-shadow: var(--focus-ring); }
+
+/* Toggle (switch) */
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: var(--tap-target);
+  cursor: pointer;
+}
+.toggleControl { display: inline-flex; align-items: center; gap: var(--space-2); }
+.toggleInput {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.toggleTrack {
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+.toggleThumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.toggleInput:checked + .toggleTrack {
+  background: var(--grad-primary);
+  border-color: transparent;
+}
+.toggleInput:checked + .toggleTrack .toggleThumb {
+  transform: translateX(20px);
+  background: #fff;
+}
+.toggleInput:focus-visible + .toggleTrack { box-shadow: var(--focus-ring); }
+.toggleEstado { font-size: 13px; color: var(--text-muted); min-width: 56px; }

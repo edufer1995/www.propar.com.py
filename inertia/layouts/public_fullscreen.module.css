@@ -1,0 +1,33 @@
+/*
+ * Layout público fullscreen (mapa de loteamientos): 100dvh sin scroll de
+ * página, navbar compacta translúcida superpuesta y contenido que ocupa
+ * todo el viewport.
+ */
+
+.pantalla {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.contenido {
+  position: absolute;
+  inset: 0;
+}
+
+/* ===== Navbar superpuesta =====
+   El contenido interno (logo, links, CTA Contacto, hamburguesa) reusa las
+   clases del layout público — misma altura (64px + borde) y estilos en
+   todo el sitio. Acá solo vive el contenedor, que flota sobre el mapa. */
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}

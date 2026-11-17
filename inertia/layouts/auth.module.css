@@ -1,0 +1,53 @@
+/* AuthLayout: pantalla centrada con card sobre degradado de marca sutil. */
+
+.screen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5) var(--space-4);
+  background:
+    radial-gradient(1100px 500px at 85% -10%, color-mix(in srgb, var(--brand-blue) 16%, transparent), transparent 70%),
+    radial-gradient(900px 480px at -10% 110%, color-mix(in srgb, var(--brand-green) 13%, transparent), transparent 70%),
+    var(--bg);
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.logoImg {
+  display: block;
+  height: 52px;
+  width: auto;
+}
+
+.tagline {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.footer {
+  margin-top: var(--space-5);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}

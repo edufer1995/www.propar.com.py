@@ -1,0 +1,33 @@
+# Dependencies and AdonisJS build
+node_modules
+build
+tmp/*
+!tmp/.gitkeep
+
+# Secrets
+.env
+.env.local
+.env.production.local
+.env.development.local
+
+# Frontend assets compiled code
+public/assets
+
+# Build tools specific
+npm-debug.log
+yarn-error.log
+
+# Editors specific
+.fleet
+.idea
+.vscode
+
+# Platform specific
+.DS_Store
+*.tsbuildinfo
+
+# Archivos subidos por los usuarios (migran con uploads:migrate, no van al repo)
+storage/uploads/
+
+# Carpeta de uploads del server viejo (insumo de uploads:migrate, no va al repo)
+/uploads/

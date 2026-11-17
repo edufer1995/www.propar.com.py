@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Imagen no disponible">
+  <!-- Placeholder de marca: se sirve cuando un upload no tiene archivo físico -->
+  <defs>
+    <linearGradient id="fondo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dbe6f3"/>
+      <stop offset="1" stop-color="#c3d6ec"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#fondo)"/>
+  <!-- Colinas (verde de marca) -->
+  <path d="M0 470 Q 200 380 420 450 T 800 430 V 600 H 0 Z" fill="#99cd68" opacity="0.8"/>
+  <path d="M0 520 Q 260 440 520 500 T 800 490 V 600 H 0 Z" fill="#7db34a" opacity="0.9"/>
+  <!-- Sol (azul de marca) -->
+  <circle cx="620" cy="170" r="60" fill="#4d82c1" opacity="0.85"/>
+  <!-- Casita -->
+  <g transform="translate(310 250)">
+    <rect x="20" y="60" width="140" height="100" rx="6" fill="#4d82c1"/>
+    <path d="M0 66 L90 0 L180 66 Z" fill="#3a689e"/>
+    <rect x="75" y="100" width="30" height="60" rx="3" fill="#dbe6f3"/>
+  </g>
+  <text x="400" y="560" text-anchor="middle" font-family="system-ui, sans-serif" font-size="26" fill="#3a689e">Imagen no disponible</text>
+</svg>

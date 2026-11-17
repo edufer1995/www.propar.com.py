@@ -1,0 +1,358 @@
+/* Layout público: navbar sticky translúcida, footer verde oscuro, FAB. */
+
+.page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.navbarInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 64px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.brand:hover { text-decoration: none; }
+
+.brandLogo {
+  display: block;
+  height: 40px;
+  width: auto;
+}
+
+.navLinks {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+}
+.navLink:hover {
+  text-decoration: none;
+  background: var(--surface-2);
+}
+.navLinkActive {
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.navCta {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--grad-accent);
+  color: var(--accent-contrast);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+}
+.navCta:hover { text-decoration: none; filter: brightness(1.06); }
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.hamburger {
+  min-width: var(--tap-target);
+  min-height: var(--tap-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: var(--text);
+}
+.hamburger:hover { background: var(--surface-2); }
+
+@media (min-width: 900px) {
+  .navLinks { display: flex; }
+  .hamburger { display: none; }
+}
+
+/* ===== Drawer mobile ===== */
+.drawerOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(3 12 24 / 0.55);
+  z-index: 300;
+  animation: fadeIn 0.15s ease;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(320px, 88vw);
+  background: var(--bg);
+  z-index: 301;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  gap: var(--space-2);
+  box-shadow: var(--shadow-lg);
+  animation: drawerIn 0.2s ease;
+  overflow-y: auto;
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.drawerLink {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text);
+}
+.drawerLink:hover { text-decoration: none; background: var(--surface-2); }
+.drawerLinkActive {
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+@keyframes fadeIn { from { opacity: 0; } }
+@keyframes drawerIn { from { transform: translateX(30px); opacity: 0; } }
+
+/* ===== Contenido ===== */
+.main { flex: 1; }
+
+/* ===== Footer ===== */
+.footer {
+  margin-top: var(--space-8);
+  background: var(--brand-teal-dark);
+  color: #d8e6e4;
+}
+
+.footerCta {
+  background: var(--grad-accent);
+  color: var(--accent-contrast);
+}
+.footerCtaInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  /* Los 16px laterales replican los de .container, que esta clase pisa. */
+  padding: var(--space-5) var(--space-4);
+  text-align: center;
+}
+.footerCtaInner h2 {
+  color: #fff;
+  font-size: 22px;
+}
+.footerCtaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target);
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-full);
+  background: #fff;
+  color: var(--brand-teal-dark);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.footerCtaBtn:hover { text-decoration: none; filter: brightness(0.96); }
+
+@media (min-width: 768px) {
+  .footerCtaInner { flex-direction: row; justify-content: space-between; text-align: left; }
+}
+
+/* Ojo con el padding: esta clase va junto a .container en el mismo div y,
+   al declararse después con igual especificidad, le pisa el `padding: 0
+   var(--space-4)`. Sin los 16px laterales las columnas quedaban pegadas
+   al borde, desalineadas del resto del sitio. */
+.footerCols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  padding: var(--space-7) var(--space-4) var(--space-6);
+}
+@media (min-width: 768px) {
+  .footerCols { grid-template-columns: 1.2fr 1fr 1fr; }
+}
+
+/* Fondo teal oscuro: el logo a color no contrasta, se pasa a blanco pleno. */
+.footerLogo {
+  display: block;
+  height: 42px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+.footerText { font-size: 14px; color: #b7cdca; margin-top: var(--space-2); }
+
+.footerTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: var(--space-3);
+}
+
+.footerList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: 14px;
+}
+.footerList a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: #d8e6e4;
+  min-height: 32px;
+}
+.footerList a:hover { color: #fff; }
+
+.footerSucursal { display: flex; flex-direction: column; }
+.footerSucursal strong { color: #fff; font-size: 14px; }
+.footerSucursal span { color: #b7cdca; font-size: 13px; }
+
+.footerSocial {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  flex-wrap: wrap;
+}
+.footerSocial a {
+  width: var(--tap-target);
+  height: var(--tap-target);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: rgb(255 255 255 / 0.1);
+  color: #fff;
+}
+.footerSocial a:hover { background: rgb(255 255 255 / 0.22); }
+/* Icono personalizado subido desde el ABM: tamaño fijo igual al SVG por
+   defecto; el radio evita esquinas duras de PNGs cuadrados sobre el círculo. */
+.footerSocialIcono {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+}
+
+.footerBottom {
+  border-top: 1px solid rgb(255 255 255 / 0.12);
+  padding: var(--space-4) 0;
+  text-align: center;
+  font-size: 13px;
+  color: #9fbab7;
+}
+
+/* ===== Botón flotante de WhatsApp ===== */
+.whatsappFab {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 250;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: #25d366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.15s ease;
+}
+
+/* Onda que sale del botón cada 3s. Es un pseudo-elemento detrás del
+   botón: no agrega nodos ni intercepta clicks. */
+.whatsappFab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-full);
+  background: #25d366;
+  z-index: -1;
+  animation: whatsappOnda 3s ease-out infinite;
+}
+
+/* El ícono saluda cada tanto (mismo ciclo que la onda). */
+.whatsappFab svg {
+  animation: whatsappSaludo 3s ease-in-out infinite;
+  transform-origin: center 70%;
+}
+
+.whatsappFab:hover { transform: scale(1.06); text-decoration: none; }
+/* Con el puntero encima no hace falta llamar la atención. */
+.whatsappFab:hover::before,
+.whatsappFab:hover svg { animation-play-state: paused; }
+
+@keyframes whatsappOnda {
+  0% { opacity: 0.55; transform: scale(1); }
+  /* La onda ocupa el primer tercio del ciclo; el resto es la pausa. */
+  35%, 100% { opacity: 0; transform: scale(1.7); }
+}
+
+@keyframes whatsappSaludo {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  68% { transform: rotate(-12deg); }
+  76% { transform: rotate(10deg); }
+  84% { transform: rotate(-6deg); }
+  92% { transform: rotate(3deg); }
+}
+
+/* Movimiento en bucle: se apaga con "reducir movimiento" del SO. */
+@media (prefers-reduced-motion: reduce) {
+  .whatsappFab::before,
+  .whatsappFab svg { animation: none; }
+}
+/* En /alquileres la barra de filtros vive abajo: el FAB sube. */
+.whatsappFabRaised { bottom: 84px; }

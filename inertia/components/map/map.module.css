@@ -1,0 +1,1625 @@
+/*
+ * Pantalla /propiedades: mapa fullscreen + overlays flotantes.
+ * Todo flota ENCIMA del mapa (no le quita espacio) y nada genera scroll
+ * de página.
+ */
+
+.mapa {
+  position: absolute;
+  inset: 0;
+}
+
+/* El div del mapa de Google ocupa todo el viewport. */
+.mapa > div {
+  height: 100%;
+}
+
+/* ===== Markers de fracción y clusters ===== */
+.fraccionMarker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid var(--brand-blue);
+  color: var(--brand-blue-dark);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+.fraccionMarker:hover {
+  transform: scale(1.12);
+}
+
+/* Fracción seleccionada: círculo invertido con el degradado de marca. */
+.fraccionMarkerActiva {
+  background: var(--grad-primary);
+  border-color: rgb(255 255 255 / 0.9);
+  color: var(--primary-contrast);
+  transform: scale(1.08);
+}
+
+/* Marker de alquiler: círculo naranja con llave (otra cosa, otro color). */
+.alquilerMarker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f59e0b;
+  border: 3px solid #ffffff;
+  color: #ffffff;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+.alquilerMarker:hover {
+  transform: scale(1.12);
+}
+
+.alquilerMarkerActivo {
+  transform: scale(1.18);
+  border-color: rgb(255 255 255 / 1);
+  box-shadow:
+    0 0 0 3px rgb(245 158 11 / 0.45),
+    var(--shadow-md);
+}
+
+.cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--grad-primary);
+  border: 3px solid rgb(255 255 255 / 0.85);
+  color: var(--primary-contrast);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+}
+
+/* Cluster de alquileres: misma anatomía, color naranja (va DESPUÉS de
+   .cluster para ganarle el background por orden de cascada). */
+.clusterAlquiler {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+/* ===== Overlays de texto (códigos y medidas) ===== */
+.overlayManzana {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: rgb(0 0 0 / 0.72);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.overlayLote {
+  display: inline-block;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 11px;
+  text-shadow:
+    0 1px 3px rgb(0 0 0 / 0.9),
+    0 0 2px rgb(0 0 0 / 0.9);
+  white-space: nowrap;
+}
+
+.overlayMedida {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: var(--radius-full);
+  /* Tono oscuro: legible sobre cualquier color de lote. */
+  background: rgb(23 30 41 / 0.95);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 11px;
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== Columna izquierda: filtros + lista de fracciones ===== */
+/* Zona de fracciones (tira + fila de filtros + contador), anclada a la
+   navbar del layout fullscreen (64px + 1px de borde = 65px).
+   RITMO UNIFORME de 8px entre los tres pisos: el colchón vertical
+   interno de la tira (.carrusel padding 8px, espacio para sombras y
+   hover) ES la separación — por eso top = 53 exacto y gap 0. */
+.zonaFracciones {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* El estado de bienvenida solo agranda las cards (mismo anclaje). */
+.zonaFraccionesCentrada {
+  top: 65px;
+}
+
+/* Estado de bienvenida: cards HERO, protagonistas absolutas; al
+   seleccionar suben y se compactan (los tamaños transicionan). */
+.zonaFraccionesCentrada .cardFraccion {
+  width: 700px;
+  min-height: 240px;
+  padding: var(--space-4) var(--space-5);
+  gap: var(--space-5);
+}
+.zonaFraccionesCentrada .cardFraccionThumb {
+  width: 200px;
+  height: 200px;
+}
+.zonaFraccionesCentrada .cardFraccionThumbImg {
+  border-radius: var(--radius-md);
+}
+.zonaFraccionesCentrada .cardFraccionCuerpo {
+  gap: 12px;
+}
+.zonaFraccionesCentrada .cardFraccionNombre {
+  font-size: 26px;
+}
+.zonaFraccionesCentrada .itemFraccionDistrito {
+  font-size: 17px;
+}
+.zonaFraccionesCentrada .itemFraccionDatos {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-3);
+}
+.zonaFraccionesCentrada .badgeDisponibles,
+.zonaFraccionesCentrada .badgeSinLibres {
+  font-size: 16px;
+  padding: 6px 16px;
+}
+.zonaFraccionesCentrada .itemFraccionPrecio {
+  font-size: 18px;
+}
+.zonaFraccionesCentrada .cardFraccionMedios {
+  font-size: 15px;
+  padding: 5px 12px;
+  bottom: -8px;
+  right: -10px;
+}
+
+/* Tablet: el hero se acota al ancho disponible. */
+@media (max-width: 860px) {
+  .zonaFraccionesCentrada .cardFraccion {
+    width: min(700px, calc(100vw - 120px));
+  }
+  .zonaFraccionesCentrada .cardFraccionThumb {
+    width: min(200px, 30vw);
+    height: min(200px, 30vw);
+  }
+}
+
+/* Móvil: versión intermedia del hero (el grande no entra y descuadra:
+   nombre en "…", precio desbordado). Datos en columna como el compacto. */
+@media (max-width: 767px) {
+  .zonaFraccionesCentrada .cardFraccion {
+    width: min(320px, calc(100vw - 104px));
+    min-height: 112px;
+    padding: var(--space-2) var(--space-3);
+    gap: var(--space-2);
+  }
+  .zonaFraccionesCentrada .cardFraccionThumb {
+    width: 80px;
+    height: 80px;
+  }
+  .zonaFraccionesCentrada .cardFraccionCuerpo {
+    gap: 4px;
+  }
+  .zonaFraccionesCentrada .cardFraccionNombre {
+    font-size: 16px;
+  }
+  .zonaFraccionesCentrada .itemFraccionDistrito {
+    font-size: 13px;
+  }
+  .zonaFraccionesCentrada .itemFraccionDatos {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+  .zonaFraccionesCentrada .badgeDisponibles,
+  .zonaFraccionesCentrada .badgeSinLibres,
+  .zonaFraccionesCentrada .badgeAlquiler {
+    font-size: 12.5px;
+    padding: 2px 9px;
+  }
+  .zonaFraccionesCentrada .itemFraccionPrecio {
+    font-size: 13px;
+  }
+  .zonaFraccionesCentrada .cardFraccionMedios {
+    font-size: 11px;
+    padding: 2px 7px;
+  }
+}
+
+/* Tercer estado: con la ficha de un lote abierta la tira se encoge a
+   miniatura + código y nombre. Anima con las mismas propiedades que el
+   paso hero → compacto (width / min-height / padding, 0.35s). */
+.zonaFraccionesMini .cardFraccion {
+  width: 236px;
+  min-height: 0;
+  padding: 4px var(--space-2);
+  gap: 6px;
+}
+.zonaFraccionesMini .cardFraccionThumb {
+  width: 30px;
+  height: 30px;
+}
+.zonaFraccionesMini .cardFraccionNombre {
+  font-size: 12px;
+}
+.zonaFraccionesMini .itemFraccionDistrito,
+.zonaFraccionesMini .itemFraccionDatos {
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+}
+/* Las filas plegadas miden 0 pero el gap del cuerpo se sigue aplicando:
+   sin esto, sus 4px empujan el nombre 2px arriba del centro de la
+   miniatura y el texto queda visiblemente desalineado. */
+.zonaFraccionesMini .cardFraccionCuerpo {
+  gap: 0;
+}
+/* El chip de galería no tiene lugar en la miniatura. */
+.zonaFraccionesMini .cardFraccionMedios {
+  opacity: 0;
+  pointer-events: none;
+}
+/* El vacío colapsa igual que una card: solo miniatura + "Sin resultados"
+   (el mensaje y el botón viven en las filas que este estado pliega). */
+.zonaFraccionesMini .cardFraccion.fraccionesVacio {
+  height: auto;
+}
+
+/* Tira horizontal de cards de fracciones. El padding lateral alinea las
+   flechas con el botón de preferencias (right: --space-3). */
+.fraccionesStrip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0 var(--space-3);
+}
+
+/* Estado vacío: usa las MISMAS clases que una card de fracción (thumb,
+   cuerpo, nombre...); acá solo se neutraliza lo interactivo. El margen
+   vertical replica el colchón de 8px del carrusel (que acá no envuelve)
+   para mantener el ritmo header → card → filtros.
+
+   ALTURA: las cards con resultados se estiran a su contenido (nombre +
+   distrito + fila de datos), y el vacío traía otro contenido —mensaje de
+   dos líneas y un botón de 44px— así que rendía más alto y se notaba el
+   salto al filtrar. Se fija a la altura que rinde una card en cada
+   estado; si cambia la anatomía de .cardFraccion hay que revisar estos
+   valores (son el único punto donde las dos cajas se acoplan). */
+.fraccionesVacio {
+  margin: var(--space-2) auto;
+  cursor: default;
+  overflow: hidden;
+}
+/* Doble clase a propósito: .cardFraccion declara height:100% más abajo
+   en el archivo y, con la misma especificidad, ganaba por orden. */
+.cardFraccion.fraccionesVacio {
+  height: 100px;
+}
+.fraccionesVacio:hover {
+  transform: none;
+}
+.zonaFraccionesCentrada .fraccionesVacio {
+  height: 240px;
+}
+/* El hero de móvil es más chico (min-height 112 + contenido = 133). Va
+   acá y no arriba con el resto del hero móvil: misma especificidad que
+   la regla de 240px, así que necesita ganar por orden. */
+@media (max-width: 767px) {
+  .zonaFraccionesCentrada .fraccionesVacio {
+    height: 133px;
+  }
+}
+
+/* El mensaje ocupa la línea del distrito: una sola, con … si no entra.
+   Dos líneas eran los 18px que desalineaban la caja en compacto. */
+.fraccionesVacioTexto {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.zonaFraccionesCentrada .fraccionesVacioTexto {
+  white-space: normal;
+}
+
+/* "Miniatura" del vacío: bandeja centrada que escala con el thumb. */
+.cardFraccionThumbVacio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+}
+.cardFraccionThumbVacio svg {
+  width: 45%;
+  height: 45%;
+}
+
+.panel {
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: var(--tap-target);
+  padding: var(--space-2) var(--space-3);
+  color: var(--text);
+  text-align: left;
+  /* El header nunca colapsa cuando el contenido del panel crece. */
+  flex-shrink: 0;
+}
+.panelHeader:hover {
+  background: var(--surface-2);
+}
+
+.panelTitulo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13.5px;
+  white-space: nowrap;
+}
+
+.panelContador {
+  flex: 1;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* ===== Cards de fracciones (tira horizontal) ===== */
+.cardFraccion {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2);
+  width: 250px;
+  height: 100%;
+  min-height: 76px;
+  padding: 6px var(--space-2);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  text-align: left;
+  color: var(--text);
+  transition:
+    transform 0.12s ease,
+    border-color 0.12s ease,
+    box-shadow 0.12s ease,
+    width 0.35s ease,
+    min-height 0.35s ease,
+    padding 0.35s ease;
+}
+/* La tira está arriba: el levante es hacia ABAJO (hacia el mapa). */
+.cardFraccion:hover {
+  transform: translateY(2px);
+}
+
+/* Seleccionada: borde + halo + el check de esquina. La card NO se mueve
+   de lugar (antes bajaba 4px y la tira "saltaba" al elegir). */
+.cardFraccionActiva {
+  /* El grosor del resaltado va en box-shadow y NO en el borde: cambiar el
+     ancho del borde agranda la caja y corre la card 1px. */
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--brand-blue) 12%, var(--bg));
+  box-shadow:
+    0 0 0 2px var(--primary),
+    0 0 0 5px color-mix(in srgb, var(--brand-blue) 35%, transparent),
+    var(--shadow-lg);
+}
+.cardFraccionActiva:hover {
+  transform: none;
+}
+
+.cardFraccionNombre {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* Código de la fracción (solo en el estado mini): ata el lote 135-19-1
+   con su fracción 135. */
+.cardFraccionCodigo {
+  flex-shrink: 0;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Nombres largos en UNA línea con … (el completo queda en el title). */
+.cardFraccionTexto {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* Miniatura de la galería (o placeholder de marca) a la izquierda. */
+.cardFraccionThumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  transition:
+    width 0.35s ease,
+    height 0.35s ease;
+}
+
+.cardFraccionThumbImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+/* Cuerpo de texto a la derecha de la miniatura. */
+.cardFraccionCuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+  transition: gap 0.35s ease;
+}
+
+/* Chip "ver galería" sobre la miniatura (span con role=button: la card
+   ya es un <button> y no admite botones anidados). */
+.cardFraccionMedios {
+  position: absolute;
+  bottom: -5px;
+  right: -7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  background: rgb(23 30 41 / 0.85);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cardFraccionMedios:hover {
+  background: var(--primary);
+}
+
+/* ===== Lightbox de la galería de una fracción ===== */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background: rgb(10 14 20 / 0.92);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.lightboxTope {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  color: #ffffff;
+}
+
+.lightboxTitulo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lightboxContador {
+  font-size: 12.5px;
+  font-weight: 700;
+  opacity: 0.8;
+  font-variant-numeric: tabular-nums;
+}
+
+.lightboxCerrar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-target);
+  height: var(--tap-target);
+  border-radius: var(--radius-full);
+  color: #ffffff;
+}
+.lightboxCerrar:hover {
+  background: rgb(255 255 255 / 0.12);
+}
+
+.lightboxCuerpo {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-2) var(--space-3);
+}
+
+.lightboxMedio {
+  max-width: calc(100vw - 140px);
+  max-height: calc(100dvh - 110px);
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.lightboxFlecha {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: rgb(255 255 255 / 0.1);
+  color: #ffffff;
+}
+.lightboxFlecha:hover {
+  background: rgb(255 255 255 / 0.22);
+}
+
+@media (max-width: 767px) {
+  .lightboxMedio {
+    max-width: calc(100vw - 16px);
+  }
+  /* En touch las flechas flotan sobre el medio (no hay ancho de sobra). */
+  .lightboxCuerpo {
+    position: relative;
+  }
+  .lightboxFlecha {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+  .lightboxFlecha:first-of-type {
+    left: 8px;
+  }
+  .lightboxFlecha:last-of-type {
+    right: 8px;
+  }
+}
+
+.itemFraccionCheck {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.itemFraccionDistrito {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  /* Holgado: en hero esta línea mide ~24px. Necesita un valor concreto
+     para que el pliegue del estado mini pueda animar. */
+  max-height: 44px;
+  overflow: hidden;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.2s ease;
+}
+
+/* Compacto: badge y precio en líneas propias (en fila no entran y el
+   badge se partía en dos renglones descuadrando la card). */
+.itemFraccionDatos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  margin-top: 2px;
+  /* Ídem: en hero son badge + precio en fila (~32px). */
+  max-height: 80px;
+  overflow: hidden;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.2s ease,
+    margin-top 0.35s ease;
+}
+
+.badgeDisponibles {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  background: var(--grad-accent);
+  color: #14330a;
+  font-weight: 800;
+  font-size: 11.5px;
+}
+
+/* Fracción sin lotes LIBRES: badge neutro en lugar de contador + precio. */
+.badgeSinLibres {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 11.5px;
+}
+
+/* Card de alquiler: mismo esqueleto que la fracción, acento naranja. */
+.cardAlquiler {
+  border-color: color-mix(in srgb, #f59e0b 55%, var(--border));
+}
+.badgeAlquiler {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  background: #f59e0b;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 11.5px;
+}
+.zonaFraccionesCentrada .badgeAlquiler {
+  font-size: 16px;
+  padding: 6px 16px;
+}
+
+.itemFraccionPrecio {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* ===== Preferencias del mapa (botón flotante, derecha-centro) ===== */
+.ajustes {
+  position: absolute;
+  top: 50%;
+  right: var(--space-3);
+  transform: translateY(-50%);
+  z-index: 19;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Columna de botones circulares (vista país + preferencias). */
+.ajustesBotones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ajustesBoton {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  color: var(--text);
+}
+.ajustesBoton:hover {
+  background: var(--surface-2);
+}
+.ajustesBoton[aria-expanded='true'],
+.ajustesBotonActivo {
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
+  border-color: transparent;
+}
+/* Activo = el control está cambiando lo que se ve (cards ocultas,
+   filtros aplicados): mismo criterio en toda la botonera flotante. */
+.ajustesBotonActivo:hover {
+  background: var(--grad-primary);
+}
+
+/* Aire extra antes de "Volver al inicio": es la única acción que borra
+   trabajo del usuario, no comparte bloque con los toggles. */
+.ajustesBotonSeparado {
+  margin-top: var(--space-4);
+}
+
+/* Contador de la esquina del botón (filtros puestos, cards ocultas). */
+.ajustesBadge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  background: var(--grad-accent);
+  color: var(--accent-contrast);
+  border: 2px solid var(--bg);
+  font-size: 11px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.ajustesPanel {
+  width: 240px;
+  max-width: calc(100vw - 80px);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.ajustesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.ajustesCerrar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+}
+.ajustesCerrar:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.controlSlider {
+  padding: var(--space-2) var(--space-3);
+}
+
+.leyenda {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid var(--border);
+  max-height: 240px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text);
+}
+.leyenda li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.leyendaColor {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid rgb(0 0 0 / 0.2);
+  flex-shrink: 0;
+}
+
+/* ===== Barra de búsqueda (debajo de la tira de fracciones) =====
+   Forma un bloque con las cards: acompaña sus tres tamaños con la misma
+   transición de 0.35s, así el paso hero → compacto → mini se lee como un
+   solo movimiento y no como dos piezas sueltas. */
+.buscadorBarra {
+  align-self: center;
+  /* Sin margen propio: la separación de 8px con la tira la pone el
+     colchón interno de la tira, igual que entre la navbar y las cards.
+     Un margin acá sumaría al colchón y rompería el ritmo uniforme. */
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: min(460px, calc(100vw - var(--space-4) * 2));
+  height: 44px;
+  padding: 0 6px 0 var(--space-3);
+  /* Píldora, como el resto del chrome flotante (botones del mapa,
+     flechas, navbar). La regla del sitio no es "todo redondo": los
+     controles van en --radius-full y los contenedores de contenido
+     —cards, paneles, menús— en --radius-md. Esta barra es control. */
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  transition:
+    width 0.35s ease,
+    height 0.35s ease;
+}
+.buscadorBarra:focus-within {
+  border-color: var(--primary);
+}
+
+/* Hero: la barra iguala el ancho de la card grande (700px). */
+.zonaFraccionesCentrada .buscadorBarra {
+  width: min(700px, calc(100vw - var(--space-4) * 2));
+  height: 56px;
+  padding: 0 8px 0 var(--space-4);
+}
+
+/* Mini (ficha de lote abierta): lo mínimo para seguir buscando sin
+   robarle pantalla al lote. Los botones quedan en icono. */
+.zonaFraccionesMini .buscadorBarra {
+  width: min(360px, calc(100vw - var(--space-4) * 2));
+  height: 36px;
+  padding: 0 4px 0 var(--space-2);
+  gap: 4px;
+}
+
+.buscadorBarraInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+}
+.buscadorBarraInput::placeholder {
+  color: var(--text-muted);
+}
+/* La X nativa del type=search duplicaría nuestro botón de limpiar. */
+.buscadorBarraInput::-webkit-search-cancel-button {
+  display: none;
+}
+.zonaFraccionesCentrada .buscadorBarraInput {
+  font-size: 16px;
+}
+.zonaFraccionesMini .buscadorBarraInput {
+  font-size: 12.5px;
+}
+
+.buscadorBarraLimpiar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  color: var(--text-muted);
+}
+.buscadorBarraLimpiar:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+/* Botones de la barra: "Filtros" (secundario) y "Buscar" (primario). */
+.buscadorBarraBoton {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.buscadorBarraBoton:hover {
+  background: var(--surface-2);
+}
+
+.buscadorBarraBotonActivo,
+.buscadorBarraBotonActivo:hover {
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
+  border-color: transparent;
+}
+
+.buscadorBarraSubmit,
+.buscadorBarraSubmit:hover {
+  background: var(--grad-accent);
+  color: var(--accent-contrast);
+  border-color: transparent;
+}
+
+.zonaFraccionesCentrada .buscadorBarraBoton {
+  height: 42px;
+  padding: 0 var(--space-4);
+  font-size: 14.5px;
+}
+/* En mini solo entran los iconos: el texto se pliega. */
+.zonaFraccionesMini .buscadorBarraBoton {
+  height: 28px;
+  padding: 0 var(--space-2);
+}
+.zonaFraccionesMini .buscadorBarraTexto {
+  display: none;
+}
+
+/* Contador de filtros activos (mismo lenguaje que el resto de la app). */
+.buscadorBarraBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+/* En mini el badge es lo único que queda del texto: va pegado al icono. */
+.zonaFraccionesMini .buscadorBarraBadge {
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: 10px;
+}
+
+/* ===== Contenido del modal de filtros =====
+   El disparador vive en la botonera de la derecha (MapControls); acá
+   solo queda el contenido. Cada grupo es un bloque del modal (buscador,
+   distritos, estados, visibilidad) y el separador los ordena sin
+   necesidad de <fieldset>. */
+.filtrosGrupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+}
+.filtrosGrupo + .filtrosGrupo {
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-4);
+}
+.filtrosGrupo:last-child {
+  padding-bottom: 0;
+}
+
+.filtrosGrupoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.filtrosGrupoTitulo {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Atajos del encabezado ("Todos", "Solo libres"). */
+/* Atajos de grupo (Todos · Ninguno · Solo libres) alineados a la derecha */
+.filtrosAtajos {
+  display: inline-flex;
+  gap: 12px;
+}
+.filtrosAtajo {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--primary);
+}
+.filtrosAtajo:hover {
+  text-decoration: underline;
+}
+
+/* Nota de una sección todavía sin opciones (estados sin fracción abierta):
+   la sección se muestra igual para que se sepa que el filtro existe. */
+.filtrosNota {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Listas de checkboxes (distritos, estados): scrollean dentro del modal
+   en lugar de estirarlo cuando el catálogo es largo. */
+.filtrosLista {
+  display: flex;
+  flex-direction: column;
+  max-height: 34dvh;
+  overflow-y: auto;
+}
+
+.cuotaOpcion {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--tap-target);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.cuotaOpcion:hover {
+  background: var(--surface-2);
+}
+
+.distritoOpcionNombre {
+  flex: 1;
+  min-width: 0;
+}
+
+.distritoOpcionCantidad {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.estadoCheck {
+  accent-color: var(--primary);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ===== Carrusel de lotes (abajo, flotante) ===== */
+.carruselWrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--space-2);
+  z-index: 18;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  /* Alineado con el botón de preferencias (right: --space-3). */
+  padding: 0 var(--space-3);
+}
+
+.carrusel {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: var(--space-2) 0;
+}
+
+/* Mismo tamaño y estilo que el botón de preferencias (.ajustesBoton):
+   todos los controles circulares flotantes se ven iguales. */
+.carruselFlecha {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  color: var(--text);
+}
+.carruselFlecha:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+.carruselFlecha:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.carruselContenedor {
+  display: flex;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+}
+
+@keyframes cardEntra {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.carruselSlide {
+  flex: 0 0 auto;
+  min-width: 0;
+  /* Estira todas las cards a la misma altura (la de las más altas). */
+  display: flex;
+  /* Entrada suave al (re)aparecer por el filtro de estados. */
+  animation: cardEntra 0.22s ease;
+}
+
+.cardLote {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 186px;
+  height: 100%;
+  /* Uniforme y compacta: misma altura que una card LIBRE completa. */
+  min-height: 88px;
+  padding: 6px var(--space-2);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  text-align: left;
+  color: var(--text);
+  transition:
+    transform 0.12s ease,
+    border-color 0.12s ease,
+    box-shadow 0.12s ease,
+    width 0.35s ease,
+    min-height 0.35s ease,
+    padding 0.35s ease,
+    gap 0.35s ease;
+}
+.cardLote:hover {
+  transform: translateY(-2px);
+}
+
+/* Con la ficha abierta la card solo confirma cuál lote es. El ancho es
+   fijo (no "auto": no interpola y el achique saltaría de golpe). */
+.cardLoteCompacta {
+  width: 148px;
+  min-height: 0;
+  padding: 5px var(--space-2);
+  gap: 0;
+  justify-content: center;
+}
+.cardLoteCompacta .cardLoteEstado {
+  max-width: 76px;
+}
+
+/* Las líneas de datos se pliegan animadas junto con la card. */
+.cardLoteDatos,
+.cardLotePrecio,
+.cardLoteCredito {
+  max-height: 24px;
+  overflow: hidden;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.2s ease;
+}
+.cardLoteCompacta .cardLoteDatos,
+.cardLoteCompacta .cardLotePrecio,
+.cardLoteCompacta .cardLoteCredito {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* Ídem la card de lote: antes subía 4px al elegirla. */
+.cardLoteActiva {
+  /* Ídem: el resaltado no toca el tamaño de la caja. */
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--brand-blue) 12%, var(--bg));
+  box-shadow:
+    0 0 0 2px var(--primary),
+    0 0 0 5px color-mix(in srgb, var(--brand-blue) 40%, transparent),
+    var(--shadow-lg);
+}
+.cardLoteActiva:hover {
+  transform: none;
+}
+
+.cardLoteHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+/* El código nunca se parte en varias líneas. */
+.cardLoteFml {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Estados largos ("RESERVA DE PROPIETARIO") se cortan con … y el texto
+   completo queda en el title. */
+.cardLoteEstado {
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.35);
+}
+
+.cardLoteDatos {
+  display: flex;
+  gap: var(--space-3);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.cardLotePrecio {
+  font-weight: 800;
+  font-size: 13.5px;
+  color: var(--primary);
+}
+
+.cardLoteCredito {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+/* Check de "esta es la elegida": círculo de marca pisando la esquina de
+   la card. Vive dentro del recuadro (el viewport del carrusel recorta lo
+   que sobresale) y aparece con un pop corto. */
+.cardCheck {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+  color: var(--primary-contrast);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.35);
+  animation: checkEntra 0.18s ease-out;
+}
+
+/* El check ocupa la esquina: el contenido de la card activa le deja el
+   hueco. Como el ancho de la card no cambia, nada se mueve de lugar. */
+.cardLoteActiva .cardLoteHeader {
+  padding-right: 20px;
+}
+.cardFraccionActiva .cardFraccionCuerpo {
+  padding-right: 18px;
+}
+
+@keyframes checkEntra {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===== Popup del lote (InfoWindow) ===== */
+.popup {
+  min-width: 176px;
+  max-width: 208px;
+  font-family: var(--font-body);
+  color: #1f2733;
+}
+
+.popupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+  padding: 4px var(--space-2);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 11.5px;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.45);
+}
+
+.popupHeaderAlquiler {
+  background: #f59e0b;
+}
+
+/* Portada del alquiler dentro del popup. */
+.popupPortada {
+  width: 100%;
+  height: 88px;
+  object-fit: cover;
+  display: block;
+}
+
+.popupCerrar {
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 4px;
+  cursor: pointer;
+}
+
+.popupTabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+}
+.popupTabla th {
+  text-align: left;
+  color: #64748b;
+  font-weight: 600;
+  padding: 2px 6px 2px 8px;
+  white-space: nowrap;
+}
+.popupTabla td {
+  text-align: right;
+  font-weight: 700;
+  padding: 2px 8px 2px 6px;
+  overflow-wrap: anywhere;
+}
+.popupTabla tr:nth-child(odd) {
+  background: #f7f9fc;
+}
+
+.popupBotones {
+  display: flex;
+  gap: 4px;
+  padding: 6px var(--space-2) var(--space-2);
+  flex-wrap: wrap;
+}
+
+.popupBoton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 28px;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 11px;
+  text-decoration: none;
+  cursor: pointer;
+  color: #ffffff;
+}
+.popupBoton:hover {
+  filter: brightness(1.08);
+  text-decoration: none;
+}
+
+.popupBotonWhatsApp {
+  background: #25d366;
+}
+.popupBotonTel {
+  background: var(--brand-blue);
+}
+.popupBotonMaps {
+  background: #374151;
+}
+.popupBotonComprar {
+  background: var(--grad-accent);
+  color: #14330a;
+  flex: 1;
+}
+
+/* ===== Modal de compra ===== */
+.compraResumen {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 13.5px;
+}
+
+.compraError {
+  margin: 0 0 var(--space-2);
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.compraAcciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* ===== Estados de carga / error del detalle: centrados en el mapa ===== */
+.detalleEstado {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 21;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 767px) {
+  .ajustes {
+    right: var(--space-2);
+  }
+
+  /* Con las dos etiquetas puestas, el input se queda en ~100px y deja de
+     ser "largo": en pantalla chica los botones van a puro icono. Y la
+     altura no baja de los 44px del target táctil en NINGUNO de los tres
+     estados, así que la barra se queda en su tamaño grande: en touch
+     manda la accesibilidad, no la densidad. */
+  .buscadorBarraTexto {
+    display: none;
+  }
+  .buscadorBarra,
+  .zonaFraccionesCentrada .buscadorBarra,
+  .zonaFraccionesMini .buscadorBarra {
+    height: 56px;
+    padding: 0 6px 0 var(--space-3);
+  }
+  .buscadorBarraBoton,
+  .zonaFraccionesCentrada .buscadorBarraBoton,
+  .zonaFraccionesMini .buscadorBarraBoton {
+    height: 44px;
+    padding: 0 var(--space-3);
+  }
+
+  /* En touch se navega con swipe; las flechas solo estorban. */
+  .carruselFlecha {
+    display: none;
+  }
+
+  .cardLote {
+    width: 210px;
+  }
+  /* Va después de .cardLoteCompacta (misma especificidad): sin esto el
+     ancho de móvil pisaría el del estado compacto. */
+  .cardLoteCompacta {
+    width: 144px;
+  }
+
+  /* Popup del lote compacto: en pantalla chica el globo a tamaño
+     desktop ocupa medio mapa y roza los controles laterales. Estos
+     valores tienen que quedar POR DEBAJO de los de escritorio. */
+  .popup {
+    min-width: 156px;
+    max-width: 182px;
+  }
+  .popupHeader {
+    font-size: 11px;
+    padding: 4px var(--space-2);
+  }
+  .popupTabla {
+    font-size: 11px;
+  }
+  .popupTabla th {
+    padding: 2px 5px 2px 7px;
+  }
+  .popupTabla td {
+    padding: 2px 7px 2px 5px;
+  }
+  .popupBotones {
+    gap: 4px;
+    padding: 5px 6px 6px;
+  }
+  .popupBoton {
+    min-height: 26px;
+    padding: 2px 7px;
+    font-size: 10.5px;
+  }
+}
+
+/* ===== Sin animaciones en pantallas chicas y con "reducir movimiento"
+   del SO: menos frames, menos batería (el vuelo de cámara y los
+   scrollTo de Embla hacen lo propio en JS via sinAnimaciones()). ===== */
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .zonaFracciones,
+  .cardFraccion,
+  .cardFraccionThumb,
+  .cardLote,
+  .carruselFlecha,
+  .buscadorBarra,
+  .cardFraccionMedios {
+    transition: none !important;
+  }
+
+  .carruselSlide {
+    animation: none !important;
+  }
+
+  .cardFraccion:hover,
+  .cardLote:hover,
+  .fraccionMarker:hover {
+    transform: none;
+  }
+}

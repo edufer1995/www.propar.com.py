@@ -1,0 +1,5 @@
+import { LeadSchema } from '#database/schema'
+
+export default class Lead extends LeadSchema {
+  static table = 'leads'
+}
