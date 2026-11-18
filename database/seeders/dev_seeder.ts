@@ -66,12 +66,6 @@ export default class extends BaseSeeder {
         activo: true,
       },
       { nombre: 'WhatsApp', url: 'https://wa.me/595976522694', orden: 3, activo: true },
-      {
-        nombre: 'YouTube',
-        url: 'https://www.youtube.com/@abasinmobiliaria',
-        orden: 4,
-        activo: true,
-      },
     ]
 
     for (const red of redes) {

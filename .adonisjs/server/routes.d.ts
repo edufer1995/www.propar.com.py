@@ -7,8 +7,6 @@ export type ScannedRoutes = {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'home': { paramsTuple?: []; params?: {} }
     'public.quienesSomos': { paramsTuple?: []; params?: {} }
-    'public.parking': { paramsTuple?: []; params?: {} }
-    'public.abasGuarda': { paramsTuple?: []; params?: {} }
     'public.contacto.show': { paramsTuple?: []; params?: {} }
     'public.contacto.store': { paramsTuple?: []; params?: {} }
     'public.robots': { paramsTuple?: []; params?: {} }
@@ -53,12 +51,6 @@ export type ScannedRoutes = {
     'app.promociones.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.promociones.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.promociones.destroyMasivo': { paramsTuple?: []; params?: {} }
-    'app.alquileres.index': { paramsTuple?: []; params?: {} }
-    'app.alquileres.export': { paramsTuple?: []; params?: {} }
-    'app.alquileres.store': { paramsTuple?: []; params?: {} }
-    'app.alquileres.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.alquileres.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.alquileres.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.fracciones.index': { paramsTuple?: []; params?: {} }
     'app.fracciones.export': { paramsTuple?: []; params?: {} }
     'app.fracciones.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -74,24 +66,6 @@ export type ScannedRoutes = {
     'app.lotesDistritos.store': { paramsTuple?: []; params?: {} }
     'app.lotesDistritos.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.lotesDistritos.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.ofrecemos.index': { paramsTuple?: []; params?: {} }
-    'app.ofrecemos.export': { paramsTuple?: []; params?: {} }
-    'app.ofrecemos.store': { paramsTuple?: []; params?: {} }
-    'app.ofrecemos.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.ofrecemos.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.ofrecemos.destroyMasivo': { paramsTuple?: []; params?: {} }
-    'app.horarios.index': { paramsTuple?: []; params?: {} }
-    'app.horarios.export': { paramsTuple?: []; params?: {} }
-    'app.horarios.store': { paramsTuple?: []; params?: {} }
-    'app.horarios.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.horarios.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.horarios.destroyMasivo': { paramsTuple?: []; params?: {} }
-    'app.direccionContacto.index': { paramsTuple?: []; params?: {} }
-    'app.direccionContacto.export': { paramsTuple?: []; params?: {} }
-    'app.direccionContacto.store': { paramsTuple?: []; params?: {} }
-    'app.direccionContacto.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.direccionContacto.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.direccionContacto.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.quienesSomos.show': { paramsTuple?: []; params?: {} }
     'app.quienesSomos.update': { paramsTuple?: []; params?: {} }
     'app.trayectoria.show': { paramsTuple?: []; params?: {} }
@@ -102,8 +76,6 @@ export type ScannedRoutes = {
     'app.vision.update': { paramsTuple?: []; params?: {} }
     'app.producto.show': { paramsTuple?: []; params?: {} }
     'app.producto.update': { paramsTuple?: []; params?: {} }
-    'app.parking.show': { paramsTuple?: []; params?: {} }
-    'app.parking.update': { paramsTuple?: []; params?: {} }
     'app.leads.index': { paramsTuple?: []; params?: {} }
     'app.leads.export': { paramsTuple?: []; params?: {} }
     'app.leads.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -126,8 +98,6 @@ export type ScannedRoutes = {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'home': { paramsTuple?: []; params?: {} }
     'public.quienesSomos': { paramsTuple?: []; params?: {} }
-    'public.parking': { paramsTuple?: []; params?: {} }
-    'public.abasGuarda': { paramsTuple?: []; params?: {} }
     'public.contacto.show': { paramsTuple?: []; params?: {} }
     'public.robots': { paramsTuple?: []; params?: {} }
     'public.sitemap': { paramsTuple?: []; params?: {} }
@@ -148,26 +118,17 @@ export type ScannedRoutes = {
     'app.redesSociales.export': { paramsTuple?: []; params?: {} }
     'app.promociones.index': { paramsTuple?: []; params?: {} }
     'app.promociones.export': { paramsTuple?: []; params?: {} }
-    'app.alquileres.index': { paramsTuple?: []; params?: {} }
-    'app.alquileres.export': { paramsTuple?: []; params?: {} }
     'app.fracciones.index': { paramsTuple?: []; params?: {} }
     'app.fracciones.export': { paramsTuple?: []; params?: {} }
     'app.planos.index': { paramsTuple?: []; params?: {} }
     'app.planos.export': { paramsTuple?: []; params?: {} }
     'app.colores.index': { paramsTuple?: []; params?: {} }
     'app.lotesDistritos.index': { paramsTuple?: []; params?: {} }
-    'app.ofrecemos.index': { paramsTuple?: []; params?: {} }
-    'app.ofrecemos.export': { paramsTuple?: []; params?: {} }
-    'app.horarios.index': { paramsTuple?: []; params?: {} }
-    'app.horarios.export': { paramsTuple?: []; params?: {} }
-    'app.direccionContacto.index': { paramsTuple?: []; params?: {} }
-    'app.direccionContacto.export': { paramsTuple?: []; params?: {} }
     'app.quienesSomos.show': { paramsTuple?: []; params?: {} }
     'app.trayectoria.show': { paramsTuple?: []; params?: {} }
     'app.mision.show': { paramsTuple?: []; params?: {} }
     'app.vision.show': { paramsTuple?: []; params?: {} }
     'app.producto.show': { paramsTuple?: []; params?: {} }
-    'app.parking.show': { paramsTuple?: []; params?: {} }
     'app.leads.index': { paramsTuple?: []; params?: {} }
     'app.leads.export': { paramsTuple?: []; params?: {} }
     'app.usuariosApp.index': { paramsTuple?: []; params?: {} }
@@ -179,8 +140,6 @@ export type ScannedRoutes = {
     'drive.fs.serve': { paramsTuple: [...ParamValue[]]; params: {'*': ParamValue[]} }
     'home': { paramsTuple?: []; params?: {} }
     'public.quienesSomos': { paramsTuple?: []; params?: {} }
-    'public.parking': { paramsTuple?: []; params?: {} }
-    'public.abasGuarda': { paramsTuple?: []; params?: {} }
     'public.contacto.show': { paramsTuple?: []; params?: {} }
     'public.robots': { paramsTuple?: []; params?: {} }
     'public.sitemap': { paramsTuple?: []; params?: {} }
@@ -201,26 +160,17 @@ export type ScannedRoutes = {
     'app.redesSociales.export': { paramsTuple?: []; params?: {} }
     'app.promociones.index': { paramsTuple?: []; params?: {} }
     'app.promociones.export': { paramsTuple?: []; params?: {} }
-    'app.alquileres.index': { paramsTuple?: []; params?: {} }
-    'app.alquileres.export': { paramsTuple?: []; params?: {} }
     'app.fracciones.index': { paramsTuple?: []; params?: {} }
     'app.fracciones.export': { paramsTuple?: []; params?: {} }
     'app.planos.index': { paramsTuple?: []; params?: {} }
     'app.planos.export': { paramsTuple?: []; params?: {} }
     'app.colores.index': { paramsTuple?: []; params?: {} }
     'app.lotesDistritos.index': { paramsTuple?: []; params?: {} }
-    'app.ofrecemos.index': { paramsTuple?: []; params?: {} }
-    'app.ofrecemos.export': { paramsTuple?: []; params?: {} }
-    'app.horarios.index': { paramsTuple?: []; params?: {} }
-    'app.horarios.export': { paramsTuple?: []; params?: {} }
-    'app.direccionContacto.index': { paramsTuple?: []; params?: {} }
-    'app.direccionContacto.export': { paramsTuple?: []; params?: {} }
     'app.quienesSomos.show': { paramsTuple?: []; params?: {} }
     'app.trayectoria.show': { paramsTuple?: []; params?: {} }
     'app.mision.show': { paramsTuple?: []; params?: {} }
     'app.vision.show': { paramsTuple?: []; params?: {} }
     'app.producto.show': { paramsTuple?: []; params?: {} }
-    'app.parking.show': { paramsTuple?: []; params?: {} }
     'app.leads.index': { paramsTuple?: []; params?: {} }
     'app.leads.export': { paramsTuple?: []; params?: {} }
     'app.usuariosApp.index': { paramsTuple?: []; params?: {} }
@@ -245,24 +195,15 @@ export type ScannedRoutes = {
     'app.redesSociales.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.promociones.store': { paramsTuple?: []; params?: {} }
     'app.promociones.destroyMasivo': { paramsTuple?: []; params?: {} }
-    'app.alquileres.store': { paramsTuple?: []; params?: {} }
-    'app.alquileres.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.planos.store': { paramsTuple?: []; params?: {} }
     'app.planos.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.colores.update': { paramsTuple?: []; params?: {} }
     'app.lotesDistritos.store': { paramsTuple?: []; params?: {} }
-    'app.ofrecemos.store': { paramsTuple?: []; params?: {} }
-    'app.ofrecemos.destroyMasivo': { paramsTuple?: []; params?: {} }
-    'app.horarios.store': { paramsTuple?: []; params?: {} }
-    'app.horarios.destroyMasivo': { paramsTuple?: []; params?: {} }
-    'app.direccionContacto.store': { paramsTuple?: []; params?: {} }
-    'app.direccionContacto.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.quienesSomos.update': { paramsTuple?: []; params?: {} }
     'app.trayectoria.update': { paramsTuple?: []; params?: {} }
     'app.mision.update': { paramsTuple?: []; params?: {} }
     'app.vision.update': { paramsTuple?: []; params?: {} }
     'app.producto.update': { paramsTuple?: []; params?: {} }
-    'app.parking.update': { paramsTuple?: []; params?: {} }
     'app.leads.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.usuariosApp.store': { paramsTuple?: []; params?: {} }
     'app.usuariosApp.destroyMasivo': { paramsTuple?: []; params?: {} }
@@ -275,13 +216,9 @@ export type ScannedRoutes = {
     'app.carruseles.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.redesSociales.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.promociones.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.alquileres.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.fracciones.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.planos.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.lotesDistritos.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.ofrecemos.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.horarios.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.direccionContacto.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.usuariosApp.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.usuarios.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
@@ -290,12 +227,8 @@ export type ScannedRoutes = {
     'app.carruseles.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.redesSociales.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.promociones.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.alquileres.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.planos.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.lotesDistritos.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.ofrecemos.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.horarios.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'app.direccionContacto.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.leads.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.usuariosApp.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.usuarios.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

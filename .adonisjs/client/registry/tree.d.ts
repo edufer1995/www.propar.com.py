@@ -10,8 +10,6 @@ export interface ApiDefinition {
   home: typeof routes['home']
   public: {
     quienesSomos: typeof routes['public.quienesSomos']
-    parking: typeof routes['public.parking']
-    abasGuarda: typeof routes['public.abasGuarda']
     contacto: {
       show: typeof routes['public.contacto.show']
       store: typeof routes['public.contacto.store']
@@ -81,14 +79,6 @@ export interface ApiDefinition {
       destroy: typeof routes['app.promociones.destroy']
       destroyMasivo: typeof routes['app.promociones.destroyMasivo']
     }
-    alquileres: {
-      index: typeof routes['app.alquileres.index']
-      export: typeof routes['app.alquileres.export']
-      store: typeof routes['app.alquileres.store']
-      update: typeof routes['app.alquileres.update']
-      destroy: typeof routes['app.alquileres.destroy']
-      destroyMasivo: typeof routes['app.alquileres.destroyMasivo']
-    }
     fracciones: {
       index: typeof routes['app.fracciones.index']
       export: typeof routes['app.fracciones.export']
@@ -112,30 +102,6 @@ export interface ApiDefinition {
       update: typeof routes['app.lotesDistritos.update']
       destroy: typeof routes['app.lotesDistritos.destroy']
     }
-    ofrecemos: {
-      index: typeof routes['app.ofrecemos.index']
-      export: typeof routes['app.ofrecemos.export']
-      store: typeof routes['app.ofrecemos.store']
-      update: typeof routes['app.ofrecemos.update']
-      destroy: typeof routes['app.ofrecemos.destroy']
-      destroyMasivo: typeof routes['app.ofrecemos.destroyMasivo']
-    }
-    horarios: {
-      index: typeof routes['app.horarios.index']
-      export: typeof routes['app.horarios.export']
-      store: typeof routes['app.horarios.store']
-      update: typeof routes['app.horarios.update']
-      destroy: typeof routes['app.horarios.destroy']
-      destroyMasivo: typeof routes['app.horarios.destroyMasivo']
-    }
-    direccionContacto: {
-      index: typeof routes['app.direccionContacto.index']
-      export: typeof routes['app.direccionContacto.export']
-      store: typeof routes['app.direccionContacto.store']
-      update: typeof routes['app.direccionContacto.update']
-      destroy: typeof routes['app.direccionContacto.destroy']
-      destroyMasivo: typeof routes['app.direccionContacto.destroyMasivo']
-    }
     quienesSomos: {
       show: typeof routes['app.quienesSomos.show']
       update: typeof routes['app.quienesSomos.update']
@@ -155,10 +121,6 @@ export interface ApiDefinition {
     producto: {
       show: typeof routes['app.producto.show']
       update: typeof routes['app.producto.update']
-    }
-    parking: {
-      show: typeof routes['app.parking.show']
-      update: typeof routes['app.parking.update']
     }
     leads: {
       index: typeof routes['app.leads.index']
