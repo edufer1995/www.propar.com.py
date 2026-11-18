@@ -66,7 +66,7 @@ export default await Env.create(new URL('../', import.meta.url), {
   // Google Maps (se comparte al frontend como prop de Inertia)
   GOOGLE_MAPS_API_KEY: Env.schema.string(),
 
-  // Primer administrador (lo crea `node ace admin:inicial` si no hay usuarios)
+  // Primer administrador (lo crea AdminInicialProvider al arrancar si no hay usuarios)
   ADMIN_INICIAL_USUARIO: Env.schema.string.optional(),
   ADMIN_INICIAL_PASSWORD: Env.schema.string.optional(),
 

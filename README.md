@@ -55,8 +55,18 @@ npm run dev                  # http://localhost:3334
 | `npm run lint` / `npm run format`       | ESLint / Prettier                              |
 | `node ace erp:verificar`                | Prueba la conexión con el ERP (solo lectura)   |
 | `node ace erp:verificar --fraccion=234` | Detalle de los lotes de una fracción en el ERP |
-| `node ace admin:inicial`                | Crea el primer admin desde `ADMIN_INICIAL_*`   |
 | `npm run build`                         | Build de producción (cliente + SSR + backend)  |
+
+## Primer administrador
+
+Con la tabla `users` vacía, el servidor crea un administrador al arrancar
+si están `ADMIN_INICIAL_USUARIO` y `ADMIN_INICIAL_PASSWORD` (mínimo 10
+caracteres). Después de entrar, cambiar la clave en "Mi cuenta" y borrar la
+variable.
+
+> Con Node 24 los comandos ace propios (`erp:verificar`, `admin:inicial`) no
+> cargan por un bug de `jsonschema` 1.5.0 ("Invalid URL"); con Node 22
+> funcionan.
 
 ## Seguridad
 
