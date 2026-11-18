@@ -1,6 +1,5 @@
 import { BaseCommand } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
-import env from '#start/env'
 
 /**
  * Crea el primer administrador a partir de ADMIN_INICIAL_USUARIO y
@@ -15,6 +14,8 @@ export default class AdminInicial extends BaseCommand {
   static options: CommandOptions = { startApp: true }
 
   async run() {
+    /* Import diferido (como erp:verificar): a nivel de módulo rompe el índice de comandos. */
+    const { default: env } = await import('#start/env')
     const username = env.get('ADMIN_INICIAL_USUARIO')?.trim()
     const password = env.get('ADMIN_INICIAL_PASSWORD')
     if (!username || !password) {
