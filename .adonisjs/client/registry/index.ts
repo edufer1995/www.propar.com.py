@@ -36,6 +36,24 @@ const routes = {
     tokens: [{"old":"/contacto","type":0,"val":"contacto","end":""}],
     types: placeholder as Registry['public.contacto.store']['types'],
   },
+  'public.preguntas': {
+    methods: ["GET","HEAD"],
+    pattern: '/preguntas-frecuentes',
+    tokens: [{"old":"/preguntas-frecuentes","type":0,"val":"preguntas-frecuentes","end":""}],
+    types: placeholder as Registry['public.preguntas']['types'],
+  },
+  'public.vender.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/deseo-vender',
+    tokens: [{"old":"/deseo-vender","type":0,"val":"deseo-vender","end":""}],
+    types: placeholder as Registry['public.vender.show']['types'],
+  },
+  'public.vender.store': {
+    methods: ["POST"],
+    pattern: '/deseo-vender',
+    tokens: [{"old":"/deseo-vender","type":0,"val":"deseo-vender","end":""}],
+    types: placeholder as Registry['public.vender.store']['types'],
+  },
   'public.robots': {
     methods: ["GET","HEAD"],
     pattern: '/robots.txt',
@@ -179,6 +197,42 @@ const routes = {
     pattern: '/app/sucursales/destroy-masivo',
     tokens: [{"old":"/app/sucursales/destroy-masivo","type":0,"val":"app","end":""},{"old":"/app/sucursales/destroy-masivo","type":0,"val":"sucursales","end":""},{"old":"/app/sucursales/destroy-masivo","type":0,"val":"destroy-masivo","end":""}],
     types: placeholder as Registry['app.sucursales.destroyMasivo']['types'],
+  },
+  'app.preguntas.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/app/preguntas',
+    tokens: [{"old":"/app/preguntas","type":0,"val":"app","end":""},{"old":"/app/preguntas","type":0,"val":"preguntas","end":""}],
+    types: placeholder as Registry['app.preguntas.index']['types'],
+  },
+  'app.preguntas.export': {
+    methods: ["GET","HEAD"],
+    pattern: '/app/preguntas/export',
+    tokens: [{"old":"/app/preguntas/export","type":0,"val":"app","end":""},{"old":"/app/preguntas/export","type":0,"val":"preguntas","end":""},{"old":"/app/preguntas/export","type":0,"val":"export","end":""}],
+    types: placeholder as Registry['app.preguntas.export']['types'],
+  },
+  'app.preguntas.store': {
+    methods: ["POST"],
+    pattern: '/app/preguntas',
+    tokens: [{"old":"/app/preguntas","type":0,"val":"app","end":""},{"old":"/app/preguntas","type":0,"val":"preguntas","end":""}],
+    types: placeholder as Registry['app.preguntas.store']['types'],
+  },
+  'app.preguntas.update': {
+    methods: ["PUT"],
+    pattern: '/app/preguntas/:id',
+    tokens: [{"old":"/app/preguntas/:id","type":0,"val":"app","end":""},{"old":"/app/preguntas/:id","type":0,"val":"preguntas","end":""},{"old":"/app/preguntas/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['app.preguntas.update']['types'],
+  },
+  'app.preguntas.destroy': {
+    methods: ["DELETE"],
+    pattern: '/app/preguntas/:id',
+    tokens: [{"old":"/app/preguntas/:id","type":0,"val":"app","end":""},{"old":"/app/preguntas/:id","type":0,"val":"preguntas","end":""},{"old":"/app/preguntas/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['app.preguntas.destroy']['types'],
+  },
+  'app.preguntas.destroyMasivo': {
+    methods: ["POST"],
+    pattern: '/app/preguntas/destroy-masivo',
+    tokens: [{"old":"/app/preguntas/destroy-masivo","type":0,"val":"app","end":""},{"old":"/app/preguntas/destroy-masivo","type":0,"val":"preguntas","end":""},{"old":"/app/preguntas/destroy-masivo","type":0,"val":"destroy-masivo","end":""}],
+    types: placeholder as Registry['app.preguntas.destroyMasivo']['types'],
   },
   'app.carruseles.index': {
     methods: ["GET","HEAD"],

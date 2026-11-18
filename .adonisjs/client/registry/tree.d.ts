@@ -14,6 +14,11 @@ export interface ApiDefinition {
       show: typeof routes['public.contacto.show']
       store: typeof routes['public.contacto.store']
     }
+    preguntas: typeof routes['public.preguntas']
+    vender: {
+      show: typeof routes['public.vender.show']
+      store: typeof routes['public.vender.store']
+    }
     robots: typeof routes['public.robots']
     sitemap: typeof routes['public.sitemap']
     loteamientos: typeof routes['public.loteamientos'] & {
@@ -54,6 +59,14 @@ export interface ApiDefinition {
       update: typeof routes['app.sucursales.update']
       destroy: typeof routes['app.sucursales.destroy']
       destroyMasivo: typeof routes['app.sucursales.destroyMasivo']
+    }
+    preguntas: {
+      index: typeof routes['app.preguntas.index']
+      export: typeof routes['app.preguntas.export']
+      store: typeof routes['app.preguntas.store']
+      update: typeof routes['app.preguntas.update']
+      destroy: typeof routes['app.preguntas.destroy']
+      destroyMasivo: typeof routes['app.preguntas.destroyMasivo']
     }
     carruseles: {
       index: typeof routes['app.carruseles.index']

@@ -23,8 +23,8 @@
   height: 38px;
   border-radius: 50%;
   background: #ffffff;
-  border: 3px solid var(--brand-blue);
-  color: var(--brand-blue-dark);
+  border: 3px solid var(--brand-verde);
+  color: var(--brand-verde-osc);
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 13px;
@@ -52,7 +52,7 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #f59e0b;
+  background: var(--reservado);
   border: 3px solid #ffffff;
   color: #ffffff;
   box-shadow: var(--shadow-md);
@@ -91,7 +91,7 @@
 /* Cluster de alquileres: misma anatomía, color naranja (va DESPUÉS de
    .cluster para ganarle el background por orden de cascada). */
 .clusterAlquiler {
-  background: #f59e0b;
+  background: var(--reservado);
   color: #ffffff;
 }
 
@@ -447,10 +447,10 @@
   /* El grosor del resaltado va en box-shadow y NO en el borde: cambiar el
      ancho del borde agranda la caja y corre la card 1px. */
   border-color: var(--primary);
-  background: color-mix(in srgb, var(--brand-blue) 12%, var(--bg));
+  background: color-mix(in srgb, var(--brand-verde) 12%, var(--bg));
   box-shadow:
     0 0 0 2px var(--primary),
-    0 0 0 5px color-mix(in srgb, var(--brand-blue) 35%, transparent),
+    0 0 0 5px color-mix(in srgb, var(--brand-verde) 35%, transparent),
     var(--shadow-lg);
 }
 .cardFraccionActiva:hover {
@@ -687,8 +687,9 @@
   align-items: center;
   padding: 1px 8px;
   border-radius: var(--radius-full);
-  background: var(--grad-accent);
-  color: #14330a;
+  /* Pastilla de la maqueta: tinte verde con texto verde oscuro */
+  background: var(--surface-2);
+  color: var(--tinte-texto);
   font-weight: 800;
   font-size: 11.5px;
 }
@@ -708,7 +709,7 @@
 
 /* Card de alquiler: mismo esqueleto que la fracción, acento naranja. */
 .cardAlquiler {
-  border-color: color-mix(in srgb, #f59e0b 55%, var(--border));
+  border-color: color-mix(in srgb, var(--reservado) 55%, var(--border));
 }
 .badgeAlquiler {
   white-space: nowrap;
@@ -716,7 +717,7 @@
   align-items: center;
   padding: 1px 8px;
   border-radius: var(--radius-full);
-  background: #f59e0b;
+  background: var(--reservado);
   color: #ffffff;
   font-weight: 800;
   font-size: 11.5px;
@@ -993,8 +994,8 @@
 
 .buscadorBarraSubmit,
 .buscadorBarraSubmit:hover {
-  background: var(--grad-accent);
-  color: var(--accent-contrast);
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
   border-color: transparent;
 }
 
@@ -1272,10 +1273,10 @@
 .cardLoteActiva {
   /* Ídem: el resaltado no toca el tamaño de la caja. */
   border-color: var(--primary);
-  background: color-mix(in srgb, var(--brand-blue) 12%, var(--bg));
+  background: color-mix(in srgb, var(--brand-verde) 12%, var(--bg));
   box-shadow:
     0 0 0 2px var(--primary),
-    0 0 0 5px color-mix(in srgb, var(--brand-blue) 40%, transparent),
+    0 0 0 5px color-mix(in srgb, var(--brand-verde) 40%, transparent),
     var(--shadow-lg);
 }
 .cardLoteActiva:hover {
@@ -1395,7 +1396,7 @@
 }
 
 .popupHeaderAlquiler {
-  background: #f59e0b;
+  background: var(--reservado);
 }
 
 /* Portada del alquiler dentro del popup. */
@@ -1466,14 +1467,14 @@
   background: #25d366;
 }
 .popupBotonTel {
-  background: var(--brand-blue);
+  background: var(--brand-verde);
 }
 .popupBotonMaps {
   background: #374151;
 }
 .popupBotonComprar {
   background: var(--grad-accent);
-  color: #14330a;
+  color: var(--accent-contrast);
   flex: 1;
 }
 

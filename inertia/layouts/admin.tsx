@@ -15,6 +15,7 @@ type RutaNav =
   | 'app.promociones.index'
   | 'app.redesSociales.index'
   | 'app.sucursales.index'
+  | 'app.preguntas.index'
   | 'app.leads.index'
   | 'app.usuariosApp.index'
   | 'app.planos.index'
@@ -65,6 +66,7 @@ const NAV: NavGroup[] = [
       { label: 'Misión', route: 'app.mision.show', minNivel: 2 },
       { label: 'Visión', route: 'app.vision.show', minNivel: 2 },
       { label: 'Producto', route: 'app.producto.show', minNivel: 2 },
+      { label: 'Preguntas frecuentes', route: 'app.preguntas.index', minNivel: 2 },
     ],
   },
   {
@@ -91,6 +93,7 @@ const RUTA_URL: Record<RutaNav, string> = {
   'app.promociones.index': '/app/promociones',
   'app.redesSociales.index': '/app/redes-sociales',
   'app.sucursales.index': '/app/sucursales',
+  'app.preguntas.index': '/app/preguntas',
   'app.leads.index': '/app/leads',
   'app.usuariosApp.index': '/app/usuarios-app',
   'app.planos.index': '/app/planos',

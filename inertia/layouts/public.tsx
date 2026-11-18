@@ -1,9 +1,10 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
-import { Mail, Menu, Phone, X } from 'lucide-react'
+import { Mail, Phone } from 'lucide-react'
 import { IconoRed, IconoWhatsApp } from '~/components/public/icons'
 import { toast } from '~/lib/swal'
+import { SiteHeader } from '~/layouts/site_header'
 import styles from './public.module.css'
 
 /** Datos del pie que envían todos los controllers públicos. */
@@ -25,14 +26,7 @@ export type PiePagina = {
   }[]
 }
 
-export type RutaPublica =
-  'home' | 'public.loteamientos' | 'public.quienesSomos' | 'public.contacto.show'
-
-export const NAV: { label: string; route: RutaPublica; path: string }[] = [
-  { label: 'Inicio', route: 'home', path: '/' },
-  { label: 'Loteamientos', route: 'public.loteamientos', path: '/loteamientos' },
-  { label: 'Quiénes somos', route: 'public.quienesSomos', path: '/quienes-somos' },
-]
+export { NAV, type RutaPublica } from '~/layouts/site_header'
 
 /** Mensaje precargado del WhatsApp flotante según la página actual. */
 function mensajeWhatsApp(pathname: string): string {
@@ -51,30 +45,11 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   const telVentas = String(props.telVentas ?? '+595976522694')
   const contactoEmail = String(props.contactoEmail ?? '')
 
-  const [drawerOpen, setDrawerOpen] = useState(false)
-
-  /** Cierra el drawer al navegar (ajuste de estado durante el render). */
-  const [prevUrl, setPrevUrl] = useState(url)
-  if (url !== prevUrl) {
-    setPrevUrl(url)
-    setDrawerOpen(false)
-  }
-
   /** Flash del server → toasts SweetAlert (regla ui-standards). */
   useEffect(() => {
     if (flash.success) toast(flash.success, 'success')
     if (flash.error) toast(flash.error, 'error')
   }, [flash.success, flash.error, url])
-
-  /** Cerrar drawer con Esc. */
-  useEffect(() => {
-    if (!drawerOpen) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setDrawerOpen(false)
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [drawerOpen])
-
-  const esActiva = (path: string) => (path === '/' ? pathname === '/' : pathname.startsWith(path))
 
   const linkWhatsApp = `https://wa.me/${whatsappVentas.replace(/\D/g, '')}?text=${encodeURIComponent(
     mensajeWhatsApp(pathname)
@@ -82,109 +57,26 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className={styles.page}>
-      <header className={styles.navbar}>
-        <div className={`${styles.container} ${styles.navbarInner}`}>
-          <Link route="home" className={styles.brand} aria-label="Propar Inmobiliaria — Inicio">
-            <img src="/img/logo.png" alt="Propar Inmobiliaria" className={styles.brandLogo} />
-          </Link>
-
-          <nav className={styles.navLinks} aria-label="Navegación principal">
-            {NAV.map((item) => (
-              <Link
-                key={item.route}
-                route={item.route}
-                className={[styles.navLink, esActiva(item.path) ? styles.navLinkActive : '']
-                  .filter(Boolean)
-                  .join(' ')}
-                aria-current={esActiva(item.path) ? 'page' : undefined}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Link route="public.contacto.show" className={styles.navCta}>
-              Contacto
-            </Link>
-          </nav>
-
-          <div className={styles.navActions}>
-            <button
-              className={styles.hamburger}
-              onClick={() => setDrawerOpen(true)}
-              aria-label="Abrir menú"
-              aria-expanded={drawerOpen}
-            >
-              <Menu size={24} />
-            </button>
-          </div>
+      <div className={styles.topbar}>
+        <div className={`${styles.container} ${styles.topbarInner}`}>
+          <span>Lotes en cuotas en todo el Paraguay desde 1986</span>
+          <span className={styles.topbarExtra}>Lunes a viernes · Asunción 8:00 a 18:00</span>
         </div>
-      </header>
-
-      {drawerOpen && (
-        <>
-          <div className={styles.drawerOverlay} onClick={() => setDrawerOpen(false)} aria-hidden />
-          <nav className={styles.drawer} aria-label="Menú">
-            <div className={styles.drawerHeader}>
-              <img
-                src="/img/logo.png"
-                alt="Propar Inmobiliaria"
-                className={styles.brandLogo}
-                style={{ height: 32 }}
-              />
-              <button
-                className={styles.hamburger}
-                style={{ display: 'inline-flex' }}
-                onClick={() => setDrawerOpen(false)}
-                aria-label="Cerrar menú"
-                autoFocus
-              >
-                <X size={24} />
-              </button>
-            </div>
-            {NAV.map((item) => (
-              <Link
-                key={item.route}
-                route={item.route}
-                className={[styles.drawerLink, esActiva(item.path) ? styles.drawerLinkActive : '']
-                  .filter(Boolean)
-                  .join(' ')}
-                aria-current={esActiva(item.path) ? 'page' : undefined}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Link
-              route="public.contacto.show"
-              className={styles.navCta}
-              style={{ justifyContent: 'center' }}
-            >
-              Contacto
-            </Link>
-          </nav>
-        </>
-      )}
+      </div>
+      <SiteHeader className={styles.navbar} />
 
       <main className={styles.main}>{children}</main>
 
       <footer className={styles.footer}>
-        <div className={styles.footerCta}>
-          <div className={`${styles.container} ${styles.footerCtaInner}`}>
-            <h2>¿Querés vender una propiedad?</h2>
-            <Link
-              route="public.contacto.show"
-              qs={{ asunto: 'vender-propiedad' }}
-              className={styles.footerCtaBtn}
-            >
-              Contactanos
-            </Link>
-          </div>
-        </div>
-
         <div className={`${styles.container} ${styles.footerCols}`}>
           <div>
-            <img src="/img/logo.png" alt="Propar Inmobiliaria" className={styles.footerLogo} />
+            <img
+              src="/img/propar-logo-blanco.svg"
+              alt="Propar Inmobiliaria"
+              className={styles.footerLogo}
+            />
             <p className={styles.footerText}>
-              Inmobiliaria Propar S.R.L. — lotes en cuotas en Asunción, Ciudad del Este, Encarnación
-              y todo el Paraguay.
+              Desarrollo y venta de loteamientos en el Paraguay desde 1986.
             </p>
             {piePagina && piePagina.redes.length > 0 && (
               <div className={styles.footerSocial}>
@@ -209,20 +101,29 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
           </div>
 
           <div>
-            <div className={styles.footerTitle}>Sucursales</div>
+            <div className={styles.footerTitle}>Propar</div>
             <ul className={styles.footerList}>
-              {(piePagina?.sucursales ?? []).map((s) => (
-                <li key={s.id} className={styles.footerSucursal}>
-                  <strong>{s.titulo}</strong>
-                  {s.telefonos && <span>{s.telefonos}</span>}
-                </li>
-              ))}
+              <li>
+                <Link route="public.loteamientos">Loteamientos</Link>
+              </li>
+              <li>
+                <Link route="public.vender.show">Deseo vender</Link>
+              </li>
+              <li>
+                <Link route="public.quienesSomos">Nosotros</Link>
+              </li>
             </ul>
           </div>
 
           <div>
-            <div className={styles.footerTitle}>Contacto</div>
+            <div className={styles.footerTitle}>Ayuda</div>
             <ul className={styles.footerList}>
+              <li>
+                <Link route="public.preguntas">Preguntas frecuentes</Link>
+              </li>
+              <li>
+                <Link route="public.contacto.show">Contacto</Link>
+              </li>
               {contactoEmail && (
                 <li>
                   <a href={`mailto:${contactoEmail}`}>
@@ -237,11 +138,23 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
               </li>
             </ul>
           </div>
+
+          <div>
+            <div className={styles.footerTitle}>Sucursales</div>
+            <ul className={styles.footerList}>
+              {(piePagina?.sucursales ?? []).map((s) => (
+                <li key={s.id} className={styles.footerSucursal}>
+                  <strong>{s.titulo}</strong>
+                  {s.telefonos && <span>{s.telefonos}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className={styles.footerBottom}>
           <div className={styles.container}>
-            © {new Date().getFullYear()} Inmobiliaria Propar S.R.L. — Todos los derechos reservados
+            © {new Date().getFullYear()} Inmobiliaria Propar S.R.L. · Todos los derechos reservados
           </div>
         </div>
       </footer>

@@ -9,6 +9,9 @@ export type ScannedRoutes = {
     'public.quienesSomos': { paramsTuple?: []; params?: {} }
     'public.contacto.show': { paramsTuple?: []; params?: {} }
     'public.contacto.store': { paramsTuple?: []; params?: {} }
+    'public.preguntas': { paramsTuple?: []; params?: {} }
+    'public.vender.show': { paramsTuple?: []; params?: {} }
+    'public.vender.store': { paramsTuple?: []; params?: {} }
     'public.robots': { paramsTuple?: []; params?: {} }
     'public.sitemap': { paramsTuple?: []; params?: {} }
     'public.loteamientos': { paramsTuple?: []; params?: {} }
@@ -33,6 +36,12 @@ export type ScannedRoutes = {
     'app.sucursales.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.sucursales.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.sucursales.destroyMasivo': { paramsTuple?: []; params?: {} }
+    'app.preguntas.index': { paramsTuple?: []; params?: {} }
+    'app.preguntas.export': { paramsTuple?: []; params?: {} }
+    'app.preguntas.store': { paramsTuple?: []; params?: {} }
+    'app.preguntas.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'app.preguntas.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'app.preguntas.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.carruseles.index': { paramsTuple?: []; params?: {} }
     'app.carruseles.export': { paramsTuple?: []; params?: {} }
     'app.carruseles.store': { paramsTuple?: []; params?: {} }
@@ -99,6 +108,8 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'public.quienesSomos': { paramsTuple?: []; params?: {} }
     'public.contacto.show': { paramsTuple?: []; params?: {} }
+    'public.preguntas': { paramsTuple?: []; params?: {} }
+    'public.vender.show': { paramsTuple?: []; params?: {} }
     'public.robots': { paramsTuple?: []; params?: {} }
     'public.sitemap': { paramsTuple?: []; params?: {} }
     'public.loteamientos': { paramsTuple?: []; params?: {} }
@@ -112,6 +123,8 @@ export type ScannedRoutes = {
     'app.perfil': { paramsTuple?: []; params?: {} }
     'app.sucursales.index': { paramsTuple?: []; params?: {} }
     'app.sucursales.export': { paramsTuple?: []; params?: {} }
+    'app.preguntas.index': { paramsTuple?: []; params?: {} }
+    'app.preguntas.export': { paramsTuple?: []; params?: {} }
     'app.carruseles.index': { paramsTuple?: []; params?: {} }
     'app.carruseles.export': { paramsTuple?: []; params?: {} }
     'app.redesSociales.index': { paramsTuple?: []; params?: {} }
@@ -141,6 +154,8 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'public.quienesSomos': { paramsTuple?: []; params?: {} }
     'public.contacto.show': { paramsTuple?: []; params?: {} }
+    'public.preguntas': { paramsTuple?: []; params?: {} }
+    'public.vender.show': { paramsTuple?: []; params?: {} }
     'public.robots': { paramsTuple?: []; params?: {} }
     'public.sitemap': { paramsTuple?: []; params?: {} }
     'public.loteamientos': { paramsTuple?: []; params?: {} }
@@ -154,6 +169,8 @@ export type ScannedRoutes = {
     'app.perfil': { paramsTuple?: []; params?: {} }
     'app.sucursales.index': { paramsTuple?: []; params?: {} }
     'app.sucursales.export': { paramsTuple?: []; params?: {} }
+    'app.preguntas.index': { paramsTuple?: []; params?: {} }
+    'app.preguntas.export': { paramsTuple?: []; params?: {} }
     'app.carruseles.index': { paramsTuple?: []; params?: {} }
     'app.carruseles.export': { paramsTuple?: []; params?: {} }
     'app.redesSociales.index': { paramsTuple?: []; params?: {} }
@@ -180,6 +197,7 @@ export type ScannedRoutes = {
   }
   POST: {
     'public.contacto.store': { paramsTuple?: []; params?: {} }
+    'public.vender.store': { paramsTuple?: []; params?: {} }
     'public.loteamientos.comprar': { paramsTuple?: []; params?: {} }
     'auth.login': { paramsTuple?: []; params?: {} }
     'auth.forgot': { paramsTuple?: []; params?: {} }
@@ -189,6 +207,8 @@ export type ScannedRoutes = {
     'app.perfil.password': { paramsTuple?: []; params?: {} }
     'app.sucursales.store': { paramsTuple?: []; params?: {} }
     'app.sucursales.destroyMasivo': { paramsTuple?: []; params?: {} }
+    'app.preguntas.store': { paramsTuple?: []; params?: {} }
+    'app.preguntas.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.carruseles.store': { paramsTuple?: []; params?: {} }
     'app.carruseles.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.redesSociales.store': { paramsTuple?: []; params?: {} }
@@ -213,6 +233,7 @@ export type ScannedRoutes = {
   }
   PUT: {
     'app.sucursales.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'app.preguntas.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.carruseles.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.redesSociales.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.promociones.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -224,6 +245,7 @@ export type ScannedRoutes = {
   }
   DELETE: {
     'app.sucursales.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'app.preguntas.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.carruseles.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.redesSociales.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.promociones.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

@@ -67,6 +67,42 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/public/contacto_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'public.preguntas': {
+    methods: ["GET","HEAD"]
+    pattern: '/preguntas-frecuentes'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/public/preguntas_frecuentes_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/public/preguntas_frecuentes_controller').default['index']>>>
+    }
+  }
+  'public.vender.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/deseo-vender'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/public/deseo_vender_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/public/deseo_vender_controller').default['show']>>>
+    }
+  }
+  'public.vender.store': {
+    methods: ["POST"]
+    pattern: '/deseo-vender'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/vender').venderValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/vender').venderValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/public/deseo_vender_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/public/deseo_vender_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'public.robots': {
     methods: ["GET","HEAD"]
     pattern: '/robots.txt'
@@ -353,6 +389,78 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/sucursales_controller').default['destroyMasivo']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/sucursales_controller').default['destroyMasivo']>>>
+    }
+  }
+  'app.preguntas.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/app/preguntas'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['index']>>>
+    }
+  }
+  'app.preguntas.export': {
+    methods: ["GET","HEAD"]
+    pattern: '/app/preguntas/export'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['export']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['export']>>>
+    }
+  }
+  'app.preguntas.store': {
+    methods: ["POST"]
+    pattern: '/app/preguntas'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['store']>>>
+    }
+  }
+  'app.preguntas.update': {
+    methods: ["PUT"]
+    pattern: '/app/preguntas/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['update']>>>
+    }
+  }
+  'app.preguntas.destroy': {
+    methods: ["DELETE"]
+    pattern: '/app/preguntas/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['destroy']>>>
+    }
+  }
+  'app.preguntas.destroyMasivo': {
+    methods: ["POST"]
+    pattern: '/app/preguntas/destroy-masivo'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['destroyMasivo']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/preguntas_frecuentes_controller').default['destroyMasivo']>>>
     }
   }
   'app.carruseles.index': {

@@ -4,12 +4,15 @@ import styles from './public.module.css'
 
 /** Encabezado de sección del sitio público, con flechas opcionales. */
 export function Seccion({
+  eyebrow,
   titulo,
   subtitulo,
   onPrev,
   onNext,
   children,
 }: {
+  /** Antetítulo corto en mayúsculas (ej. "Promociones"). */
+  eyebrow?: string
   titulo: string
   subtitulo?: string
   onPrev?: () => void
@@ -20,6 +23,7 @@ export function Seccion({
     <section className={styles.seccion}>
       <div className={styles.seccionHeader}>
         <div>
+          {eyebrow && <span className={styles.seccionEyebrow}>{eyebrow}</span>}
           <h2 className={styles.seccionTitulo}>{titulo}</h2>
           {subtitulo && <p className={styles.seccionSub}>{subtitulo}</p>}
         </div>

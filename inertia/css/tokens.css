@@ -5,50 +5,59 @@
  */
 
 :root {
-  /* Marca */
-  --brand-blue: #4d82c1;
-  --brand-blue-dark: #3a689e;
-  --brand-green: #99cd68;
-  --brand-green-dark: #7db34a;
-  --brand-sky: #dbe6f3;
-  --brand-gray: #717171;
-  --brand-teal-dark: #033537;
+  /* Marca (manual de marca Propar; sin rojo: el naranja queda solo para
+     el estado "Reservado") */
+  --brand-verde: #6a822b;
+  --brand-verde-osc: #55691f;
+  --brand-marron: #785624;
+  --brand-marron-osc: #5e431b;
+  --brand-tinta: #212529;
+  --brand-gris: #5f6368;
+  --brand-tinte: #eef2e4;
+  --brand-naranja: #ec8a1a;
 
-  /* Degradados */
-  --grad-primary: linear-gradient(135deg, var(--primary), var(--brand-blue-dark));
-  --grad-accent: linear-gradient(135deg, var(--brand-green), var(--brand-green-dark));
-  --grad-hero: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-green) 100%);
-  --grad-danger: linear-gradient(135deg, #dc2626, #f97316);
+  /* Degradados (la marca es plana: degradados suaves de un mismo tono) */
+  --grad-primary: linear-gradient(135deg, var(--primary), var(--brand-verde-osc));
+  --grad-accent: linear-gradient(135deg, var(--brand-marron), var(--brand-marron-osc));
+  --grad-hero: linear-gradient(135deg, var(--brand-verde-osc) 0%, var(--brand-marron) 100%);
+  --grad-danger: linear-gradient(135deg, #b42318, #c2410c);
 
   /* Semánticas (light) */
   --bg: #ffffff;
-  --surface: #f7f9fc;
-  --surface-2: #eef2f8;
-  --text: #1f2733;
-  --text-muted: #64748b;
-  --border: #dde5ef;
-  /* AA 4.99:1 con blanco (el --brand-blue original quedaba en 3.98) */
-  --primary: #4271ae;
+  --surface: #f5f6fa;
+  --surface-2: var(--brand-tinte);
+  --text: var(--brand-tinta);
+  --text-muted: var(--brand-gris);
+  --border: #dcdcdc;
+  /* Verde de marca apenas oscurecido: 4.83:1 con blanco (el #6a822b da 4.34) */
+  --primary: #637a27;
+  --primary-hover: var(--brand-verde-osc);
   --primary-contrast: #ffffff;
-  --accent: var(--brand-green);
-  /* Texto sobre --accent / --grad-accent (7.5:1 sobre el extremo claro) */
-  --accent-contrast: #14330a;
-  --danger: #dc2626;
-  --success: #15803d;
+  --accent: var(--brand-marron);
+  /* Texto sobre --surface-2 (pastillas tinte de la maqueta) */
+  --tinte-texto: #3f4f17;
+  --accent-contrast: #ffffff;
+  --reservado: var(--brand-naranja);
+  --reservado-contrast: var(--brand-tinta);
+  --danger: #b42318;
+  --success: #3f7a1f;
   --warning: #b45309;
-  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--brand-blue) 35%, transparent);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--brand-naranja) 70%, transparent);
 
   /* Tipografía */
+  /* La maqueta usa CarmenSans: hasta confirmar la licencia web se usan
+     las variables que ya sirve el sitio. */
   --font-display: 'Montserrat', system-ui, sans-serif;
   --font-body: 'Nunito Sans', system-ui, sans-serif;
 
   /* Métricas */
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-md: 8px;
+  --radius-card: 10px;
+  --radius-lg: 14px;
   --radius-full: 999px;
   --shadow-sm: 0 1px 3px rgb(15 23 42 / 0.08);
-  --shadow-md: 0 4px 14px rgb(15 23 42 / 0.12);
+  --shadow-md: 0 2px 8px rgb(99 99 99 / 0.2);
   --shadow-lg: 0 12px 32px rgb(15 23 42 / 0.18);
   --space-1: 4px;
   --space-2: 8px;
@@ -65,22 +74,27 @@
 }
 
 [data-theme='dark'] {
-  --bg: #0e1420;
-  --surface: #17202e;
-  --surface-2: #1f2a3b;
-  --text: #e6ecf4;
-  --text-muted: #94a3b8;
-  --border: #2b3a50;
-  --primary: #6b9bd2;
-  --primary-contrast: #0e1420;
+  --bg: #141712;
+  --surface: #1c2019;
+  --surface-2: #252b1f;
+  --text: #e9ecef;
+  --text-muted: #adb5bd;
+  --border: #343a2e;
+  --primary: #9cb85a;
+  --primary-hover: #b2cb76;
+  --primary-contrast: #141712;
+  --accent: #c49a5a;
+  --tinte-texto: #b2cb76;
+  --accent-contrast: #141712;
   /* Ambos extremos claros: el texto oscuro (--primary-contrast) mantiene AA */
-  --grad-primary: linear-gradient(135deg, var(--primary), #8fb4de);
+  --grad-primary: linear-gradient(135deg, var(--primary), #b2cb76);
+  --grad-accent: linear-gradient(135deg, #c49a5a, #d6b07a);
   /* Estados más luminosos para AA sobre fondos oscuros */
   --danger: #f87171;
-  --success: #4ade80;
+  --success: #86c95a;
   --warning: #fbbf24;
   --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.4);
   --shadow-md: 0 4px 14px rgb(0 0 0 / 0.5);
   --shadow-lg: 0 12px 32px rgb(0 0 0 / 0.6);
-  --focus-ring: 0 0 0 3px color-mix(in srgb, #6b9bd2 45%, transparent);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--brand-naranja) 70%, transparent);
 }
