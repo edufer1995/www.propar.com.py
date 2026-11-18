@@ -34,6 +34,8 @@
   --primary-hover: var(--brand-verde-osc);
   --primary-contrast: #ffffff;
   --accent: var(--brand-marron);
+  /* Texto sobre --surface-2 (pastillas tinte de la maqueta) */
+  --tinte-texto: #3f4f17;
   --accent-contrast: #ffffff;
   --reservado: var(--brand-naranja);
   --reservado-contrast: var(--brand-tinta);
@@ -82,6 +84,7 @@
   --primary-hover: #b2cb76;
   --primary-contrast: #141712;
   --accent: #c49a5a;
+  --tinte-texto: #b2cb76;
   --accent-contrast: #141712;
   /* Ambos extremos claros: el texto oscuro (--primary-contrast) mantiene AA */
   --grad-primary: linear-gradient(135deg, var(--primary), #b2cb76);

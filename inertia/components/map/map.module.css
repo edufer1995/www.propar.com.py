@@ -687,8 +687,9 @@
   align-items: center;
   padding: 1px 8px;
   border-radius: var(--radius-full);
-  background: var(--grad-accent);
-  color: var(--accent-contrast);
+  /* Pastilla de la maqueta: tinte verde con texto verde oscuro */
+  background: var(--surface-2);
+  color: var(--tinte-texto);
   font-weight: 800;
   font-size: 11.5px;
 }
@@ -993,8 +994,8 @@
 
 .buscadorBarraSubmit,
 .buscadorBarraSubmit:hover {
-  background: var(--grad-accent);
-  color: var(--accent-contrast);
+  background: var(--grad-primary);
+  color: var(--primary-contrast);
   border-color: transparent;
 }
 
