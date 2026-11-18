@@ -2,11 +2,9 @@ import { BaseCommand } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 
 /**
- * Crea el primer administrador a partir de ADMIN_INICIAL_USUARIO y
- * ADMIN_INICIAL_PASSWORD. Corre en el pre-deploy: si alguna de las dos
- * falta, o ya existe algún usuario, no hace nada. Así la contraseña nunca
- * pasa por el repo ni por los logs; después de entrar conviene cambiarla
- * desde "Mi cuenta" y borrar la variable.
+ * Lo mismo que hace AdminInicialProvider al arrancar el servidor, a mano.
+ * Ojo: con Node 24 los comandos propios no cargan en el build de
+ * producción (ver providers/admin_inicial_provider.ts).
  */
 export default class AdminInicial extends BaseCommand {
   static commandName = 'admin:inicial'
@@ -14,34 +12,15 @@ export default class AdminInicial extends BaseCommand {
   static options: CommandOptions = { startApp: true }
 
   async run() {
-    /* Import diferido (como erp:verificar): a nivel de módulo rompe el índice de comandos. */
-    const { default: env } = await import('#start/env')
-    const username = env.get('ADMIN_INICIAL_USUARIO')?.trim()
-    const password = env.get('ADMIN_INICIAL_PASSWORD')
-    if (!username || !password) {
-      this.logger.info('admin:inicial: sin ADMIN_INICIAL_USUARIO/PASSWORD, no se crea nada')
-      return
+    const { crearAdminInicial } = await import('#services/admin_inicial')
+    const resultado = await crearAdminInicial()
+    const mensajes = {
+      'sin-variables': 'sin ADMIN_INICIAL_USUARIO/PASSWORD, no se crea nada',
+      'clave-corta': 'la contraseña debe tener al menos 10 caracteres',
+      'ya-hay-usuarios': 'ya hay usuarios, no se crea nada',
+      'creado': 'administrador creado',
     }
-    if (password.length < 10) {
-      this.logger.error('admin:inicial: la contraseña debe tener al menos 10 caracteres')
-      this.exitCode = 1
-      return
-    }
-
-    const { default: User } = await import('#models/user')
-    const existente = await User.query().first()
-    if (existente) {
-      this.logger.info('admin:inicial: ya hay usuarios, no se crea nada')
-      return
-    }
-
-    const usuario = await User.create({
-      username,
-      nombre: username,
-      password,
-      rolId: 1,
-      activo: true,
-    })
-    this.logger.success(`admin:inicial: administrador "${usuario.username}" creado`)
+    this.logger.info(`admin:inicial: ${mensajes[resultado]}`)
+    if (resultado === 'clave-corta') this.exitCode = 1
   }
 }
