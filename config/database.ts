@@ -6,11 +6,11 @@ import env from '#start/env'
 
 /**
  * Conexión al ERP Oracle (vistas INMC017_V / INMM011_V). Solo se registra
- * con ORACLE_DRIVER=real: declararla con driver fake exigiría el paquete
+ * con ERP_DRIVER=oracle: declararla con driver fake exigiría el paquete
  * `oracledb` (no instalado a propósito) y rompería el boot.
  *
  * Para activarla: npm install oracledb + Oracle Instant Client en el host,
- * ORACLE_DRIVER=real y las variables ORACLE_* en .env.
+ * ERP_DRIVER=oracle y las variables ORACLE_* en .env.
  */
 /**
  * El ERP exige Native Network Encryption (ORA-12660) y el modo thin de
@@ -18,14 +18,14 @@ import env from '#start/env'
  * carga las librerías del Oracle Instant Client del sistema (paquete
  * oracle-instantclient-basic; su RPM deja las libs visibles vía ldconfig).
  */
-if (env.get('ORACLE_DRIVER') === 'real') {
-  // @ts-expect-error — oracledb solo está instalado donde ORACLE_DRIVER=real
+if (env.get('ERP_DRIVER') === 'oracle') {
+  // @ts-expect-error — oracledb solo está instalado donde ERP_DRIVER=oracle
   const { default: oracledb } = await import('oracledb')
   oracledb.initOracleClient()
 }
 
 const oracleConnection: Record<string, OracleConfig> =
-  env.get('ORACLE_DRIVER') === 'real'
+  env.get('ERP_DRIVER') === 'oracle'
     ? {
         oracle: {
           client: 'oracledb',

@@ -28,12 +28,12 @@
 |
 | Para ACTIVARLA hace falta:
 |  1. npm install oracledb  (y el Oracle Instant Client en el host)
-|  2. ORACLE_DRIVER=real + ORACLE_HOST/PORT/USER/PASSWORD/DB_NAME en .env
+|  2. ERP_DRIVER=oracle + ORACLE_HOST/PORT/USER/PASSWORD/DB_NAME en .env
 |  3. config/database.ts registra la conexión 'oracle' automáticamente
-|     cuando ORACLE_DRIVER=real (con fake ni se declara, para no exigir
+|     cuando ERP_DRIVER=oracle (con fake ni se declara, para no exigir
 |     el paquete oracledb en el boot).
 |
-| Esta clase NO se instancia con ORACLE_DRIVER=fake: solo debe compilar.
+| Esta clase NO se instancia con ERP_DRIVER=fake u odoo: solo debe compilar.
 |
 */
 
@@ -50,7 +50,7 @@ import LotesErpRepository, {
 const COLUMNA_LOTE_INMM011 = 'CODDIGO_LOTE'
 
 export default class OracleLotesErpRepository extends LotesErpRepository {
-  /** Conexión registrada en config/database.ts solo con ORACLE_DRIVER=real */
+  /** Conexión registrada en config/database.ts solo con ERP_DRIVER=oracle */
   #oracle() {
     return db.connection('oracle')
   }

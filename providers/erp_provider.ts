@@ -4,19 +4,17 @@
 |--------------------------------------------------------------------------
 |
 | Bindea la clase abstracta LotesErpRepository en el container según
-| ORACLE_DRIVER:
-|  - fake → CachedLotesErpRepository(FakeLotesErpRepository)   [desarrollo]
-|  - real → CachedLotesErpRepository(OracleLotesErpRepository) [producción]
+| ERP_DRIVER:
+|  - fake   → CachedLotesErpRepository(FakeLotesErpRepository)   [desarrollo]
+|  - odoo   → CachedLotesErpRepository(OdooLotesErpRepository)   [Propar]
+|  - oracle → CachedLotesErpRepository(OracleLotesErpRepository) [vistas Oracle]
 |
-| Los controladores la reciben con inyección:
+| Los controladores y servicios lo reciben por @inject:
 |
-|   @inject()
-|   export default class LoteamientosController {
 |     constructor(private erp: LotesErpRepository) {}
-|   }
 |
-| El import del repositorio Oracle es dinámico: con driver fake ese módulo
-| ni se carga (no requiere oracledb ni la conexión 'oracle').
+| Con odoo, si falta alguna ODOO_* el boot falla con un mensaje que dice
+| cuál: mejor que arrancar y mostrar el mapa vacío.
 |
 */
 
@@ -33,7 +31,29 @@ export default class ErpProvider {
       const { default: CachedLotesErpRepository } =
         await import('#repositories/erp/cached_lotes_erp_repository')
 
-      if (env.get('ORACLE_DRIVER') === 'real') {
+      const driver = env.get('ERP_DRIVER')
+
+      if (driver === 'odoo') {
+        const faltan = (['ODOO_URL', 'ODOO_DB', 'ODOO_LOGIN', 'ODOO_API_KEY'] as const).filter(
+          (nombre) => !env.get(nombre)
+        )
+        if (faltan.length > 0) {
+          throw new Error(`ERP_DRIVER=odoo requiere ${faltan.join(', ')} en el .env`)
+        }
+        const { default: OdooClient } = await import('#repositories/erp/odoo_client')
+        const { default: OdooLotesErpRepository } =
+          await import('#repositories/erp/odoo_lotes_erp_repository')
+        const cliente = new OdooClient({
+          url: env.get('ODOO_URL')!,
+          db: env.get('ODOO_DB')!,
+          login: env.get('ODOO_LOGIN')!,
+          apiKey: env.get('ODOO_API_KEY')!,
+          timeoutMs: env.get('ODOO_TIMEOUT_MS'),
+        })
+        return new CachedLotesErpRepository(new OdooLotesErpRepository(cliente))
+      }
+
+      if (driver === 'oracle') {
         const { default: OracleLotesErpRepository } =
           await import('#repositories/erp/oracle_lotes_erp_repository')
         return new CachedLotesErpRepository(new OracleLotesErpRepository())

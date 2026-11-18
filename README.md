@@ -13,8 +13,10 @@ sitio viejo (AdonisJS 4, `../www.abas.com.py`).
   renderizan server-side para SEO; admin/auth/styleguide son client-only
 - Rutas tipadas con **Tuyau** (codegen en `.adonisjs/`); las rutas se definen
   top-level en `start/routes.ts` (sin loops ni condicionales)
-- ERP Oracle detrás de `ORACLE_DRIVER` (`fake` en desarrollo: genera un
-  dataset determinístico; el driver real queda pendiente de credenciales)
+- ERP detrás de `ERP_DRIVER`: `odoo` es el Odoo de Propar (lotes, estados y
+  precios cruzados por FML, ver `app/repositories/erp/odoo_lotes_erp_repository.ts`);
+  `fake` genera un dataset determinístico para desarrollo; `oracle` queda de
+  la base de Abas
 
 ## Setup local
 
@@ -48,6 +50,7 @@ npm run dev                  # http://localhost:3334
 | `node ace etl:import`             | ETL del sitio viejo → Postgres v2             |
 | `node ace etl:verify-auth`        | Verifica la migración de credenciales         |
 | `node ace uploads:migrate`        | Migra los archivos subidos del sitio viejo    |
+| `node ace erp:verificar`          | Prueba la conexión con el ERP (solo lectura)  |
 | `npm run build`                   | Build de producción (cliente + SSR + backend) |
 
 ## Seguridad (Etapa 6)
@@ -70,8 +73,9 @@ npm run dev                  # http://localhost:3334
 
 - [ ] **Uploads físicos**: correr `node ace uploads:migrate` contra el storage
       real del sitio viejo y montar `UPLOADS_PATH` en un volumen persistente.
-- [ ] **Oracle real**: setear `ORACLE_DRIVER` al driver real con las
-      credenciales del ERP (hoy corre el fake determinístico).
+- [ ] **Odoo de producción**: `ERP_DRIVER=odoo` + `ODOO_URL`, `ODOO_DB`,
+      `ODOO_LOGIN` y `ODOO_API_KEY` en el `.env` del servidor (la clave
+      nunca en el repo). Probar con `node ace erp:verificar --fraccion=<código>`.
 - [ ] **Map ID propio**: el mapa usa `DEMO_MAP_ID` de Google; crear un Map ID
       en Google Cloud y reemplazarlo en `inertia/pages/public/loteamientos.tsx`.
 - [ ] **Restricción de la API key de Maps**: la key sale de

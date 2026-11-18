@@ -9,11 +9,13 @@
 |
 | Implementaciones:
 |  - FakeLotesErpRepository:   dataset determinístico en memoria (desarrollo)
+|  - OdooLotesErpRepository:   Odoo de Propar (fraction.loteamiento,
+|                               loteamiento.lote, pricelist.lote)
 |  - OracleLotesErpRepository: consultas reales a las vistas del ERP
 |  - CachedLotesErpRepository: decorator con cache en memoria
 |
 | El provider #providers/erp_provider bindea esta clase abstracta en el
-| container según ORACLE_DRIVER, así los controladores la reciben con @inject.
+| container según ERP_DRIVER, así los controladores la reciben con @inject.
 |
 */
 
