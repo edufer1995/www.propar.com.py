@@ -7,7 +7,7 @@ import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react'
 import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 
-const appName = import.meta.env.VITE_APP_NAME || 'ABAS Inmobiliaria'
+const appName = import.meta.env.VITE_APP_NAME || 'Propar Inmobiliaria'
 
 export default function render(page: any) {
   return createInertiaApp({

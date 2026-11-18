@@ -4,14 +4,7 @@ import type { HttpContext } from '@adonisjs/core/http'
  * Rutas públicas del sitio para el sitemap. Única fuente: si se agrega una
  * página pública nueva, sumarla acá.
  */
-const RUTAS_PUBLICAS = [
-  '/',
-  '/quienes-somos',
-  '/loteamientos',
-  '/parking',
-  '/abas-guarda',
-  '/contacto',
-]
+const RUTAS_PUBLICAS = ['/', '/quienes-somos', '/loteamientos', '/contacto']
 
 /**
  * SEO técnico (Etapa 6): robots.txt y sitemap.xml servidos por rutas.

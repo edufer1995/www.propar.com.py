@@ -170,8 +170,8 @@ test.group('Fracciones — medios (admin + público)', (group) => {
   })
 
   test('una galería con spec equivocada se rechaza con 422', async ({ client }) => {
-    /* Un upload de spec fotoAlquiler no puede colarse como foto de fracción. */
-    const rutaFoto = join(FIXTURES, 'foto-alquiler.png')
+    /* Un upload de otra spec (fotoInstitucional) no puede colarse como foto de fracción. */
+    const rutaFoto = join(FIXTURES, 'foto-ajena.png')
     await sharp({
       create: { width: 1280, height: 800, channels: 3, background: { r: 20, g: 60, b: 20 } },
     })
@@ -179,7 +179,7 @@ test.group('Fracciones — medios (admin + público)', (group) => {
       .toFile(rutaFoto)
     const ajena = await new UploadService().guardar(
       { rutaTemporal: rutaFoto, nombreOriginal: 'ajena.png' },
-      'fotoAlquiler'
+      'fotoInstitucional'
     )
     uploadsCreados.push(ajena.id)
 

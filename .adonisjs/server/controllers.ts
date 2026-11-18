@@ -5,7 +5,6 @@
 
 export const controllers = {
   admin: {
-    Alquileres: () => import('#controllers/admin/alquileres_controller'),
     Carruseles: () => import('#controllers/admin/carruseles_controller'),
     Colores: () => import('#controllers/admin/colores_controller'),
     concerns: {
@@ -14,18 +13,14 @@ export const controllers = {
       RecursoBase: () => import('#controllers/admin/concerns/recurso_base'),
       SingletonBase: () => import('#controllers/admin/concerns/singleton_base'),
     },
-    DireccionContacto: () => import('#controllers/admin/direccion_contacto_controller'),
     Fracciones: () => import('#controllers/admin/fracciones_controller'),
-    Horarios: () => import('#controllers/admin/horarios_controller'),
     Leads: () => import('#controllers/admin/leads_controller'),
     LotesDistritos: () => import('#controllers/admin/lotes_distritos_controller'),
-    Ofrecemos: () => import('#controllers/admin/ofrecemos_controller'),
     Planos: () => import('#controllers/admin/planos_controller'),
     Promociones: () => import('#controllers/admin/promociones_controller'),
     RedesSociales: () => import('#controllers/admin/redes_sociales_controller'),
     singletons: {
       Mision: () => import('#controllers/admin/singletons/mision_controller'),
-      Parking: () => import('#controllers/admin/singletons/parking_controller'),
       Producto: () => import('#controllers/admin/singletons/producto_controller'),
       QuienesSomos: () => import('#controllers/admin/singletons/quienes_somos_controller'),
       Trayectoria: () => import('#controllers/admin/singletons/trayectoria_controller'),
@@ -48,11 +43,9 @@ export const controllers = {
     Session: () => import('#controllers/auth/session_controller'),
   },
   public: {
-    AbasGuarda: () => import('#controllers/public/abas_guarda_controller'),
     Contacto: () => import('#controllers/public/contacto_controller'),
     Home: () => import('#controllers/public/home_controller'),
     Loteamientos: () => import('#controllers/public/loteamientos_controller'),
-    Parking: () => import('#controllers/public/parking_controller'),
     QuienesSomos: () => import('#controllers/public/quienes_somos_controller'),
     Seo: () => import('#controllers/public/seo_controller'),
   },

@@ -53,7 +53,7 @@ const config: RecursoConfig<Fila> = {
       nombre: 'url',
       etiqueta: 'URL',
       requerido: true,
-      hint: 'Ej.: https://www.facebook.com/AbasInmobiliaria/',
+      hint: 'Ej.: https://www.facebook.com/proprasrl',
       maxLength: 300,
     },
     { tipo: 'number', nombre: 'orden', etiqueta: 'Orden', requerido: true, min: 0 },

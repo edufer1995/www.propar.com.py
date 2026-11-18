@@ -2,7 +2,7 @@ import { BaseSchema } from '@adonisjs/lucid/schema'
 
 /**
  * Singletons del CMS institucional: quienes_somos, mision, vision,
- * producto, trayectoria y parking.
+ * producto y trayectoria.
  */
 export default class extends BaseSchema {
   async up() {
@@ -128,35 +128,9 @@ export default class extends BaseSchema {
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })
-
-    this.schema.createTable('parking', (table) => {
-      table.increments('id').notNullable()
-      table.string('titulo').nullable()
-      table.text('parrafo_uno').nullable()
-      table.text('parrafo_dos').nullable()
-      table.text('parrafo_tres').nullable()
-      table
-        .integer('imagen_uno_upload_id')
-        .unsigned()
-        .nullable()
-        .references('id')
-        .inTable('uploads')
-        .onDelete('SET NULL')
-      table
-        .integer('imagen_dos_upload_id')
-        .unsigned()
-        .nullable()
-        .references('id')
-        .inTable('uploads')
-        .onDelete('SET NULL')
-
-      table.timestamp('created_at').notNullable()
-      table.timestamp('updated_at').nullable()
-    })
   }
 
   async down() {
-    this.schema.dropTable('parking')
     this.schema.dropTable('trayectoria')
     this.schema.dropTable('producto')
     this.schema.dropTable('vision')

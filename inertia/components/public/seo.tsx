@@ -3,12 +3,12 @@ import { Head, usePage } from '@inertiajs/react'
 /**
  * Meta tags SEO de las páginas públicas (Etapa 6): title único, meta
  * description y Open Graph. El title pasa por el mismo sufijo
- * " - ABAS Inmobiliaria" que aplica el cliente (app.tsx), para que el
+ * " - Propar Inmobiliaria" que aplica el cliente (app.tsx), para que el
  * HTML SSR y el cliente coincidan.
  */
 export function Seo({ title, description }: { title: string; description: string }) {
   const { url, props } = usePage()
-  const appName = import.meta.env.VITE_APP_NAME || 'ABAS Inmobiliaria'
+  const appName = import.meta.env.VITE_APP_NAME || 'Propar Inmobiliaria'
   const origen = String((props as { appUrl?: string }).appUrl ?? '').replace(/\/$/, '')
   const ruta = url.split('?')[0]
   const urlCanonica = origen ? `${origen}${ruta === '/' ? '/' : ruta}` : undefined

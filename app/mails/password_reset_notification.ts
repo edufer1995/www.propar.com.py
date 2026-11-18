@@ -7,7 +7,7 @@ import { BaseMail } from '@adonisjs/mail'
  * en claro (en la base solo se guarda el sha256).
  */
 export default class PasswordResetNotification extends BaseMail {
-  subject = 'Restablecé tu contraseña — ABAS Inmobiliaria'
+  subject = 'Restablecé tu contraseña — Propar Inmobiliaria'
 
   constructor(
     private user: User,

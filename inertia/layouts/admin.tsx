@@ -21,17 +21,12 @@ type RutaNav =
   | 'app.fracciones.index'
   | 'app.colores.index'
   | 'app.lotesDistritos.index'
-  | 'app.alquileres.index'
   | 'app.usuarios.index'
-  | 'app.ofrecemos.index'
-  | 'app.horarios.index'
-  | 'app.direccionContacto.index'
   | 'app.quienesSomos.show'
   | 'app.trayectoria.show'
   | 'app.mision.show'
   | 'app.vision.show'
   | 'app.producto.show'
-  | 'app.parking.show'
 
 /**
  * minNivel replica la política de roles de start/routes.ts (la autoridad es
@@ -62,7 +57,6 @@ const NAV: NavGroup[] = [
       { label: 'Lotes por distrito', route: 'app.lotesDistritos.index', minNivel: 2 },
     ],
   },
-  { title: null, items: [{ label: 'Alquileres', route: 'app.alquileres.index', minNivel: 2 }] },
   {
     title: 'Institucional',
     items: [
@@ -71,10 +65,6 @@ const NAV: NavGroup[] = [
       { label: 'Misión', route: 'app.mision.show', minNivel: 2 },
       { label: 'Visión', route: 'app.vision.show', minNivel: 2 },
       { label: 'Producto', route: 'app.producto.show', minNivel: 2 },
-      { label: 'Parking', route: 'app.parking.show', minNivel: 2 },
-      { label: 'Ofrecemos', route: 'app.ofrecemos.index', minNivel: 2 },
-      { label: 'Horarios', route: 'app.horarios.index', minNivel: 2 },
-      { label: 'Dirección', route: 'app.direccionContacto.index', minNivel: 2 },
     ],
   },
   {
@@ -107,17 +97,12 @@ const RUTA_URL: Record<RutaNav, string> = {
   'app.fracciones.index': '/app/fracciones',
   'app.colores.index': '/app/colores',
   'app.lotesDistritos.index': '/app/lotes-por-distrito',
-  'app.alquileres.index': '/app/alquileres',
   'app.usuarios.index': '/app/usuarios',
-  'app.ofrecemos.index': '/app/ofrecemos',
-  'app.horarios.index': '/app/horarios',
-  'app.direccionContacto.index': '/app/direccion-contacto',
   'app.quienesSomos.show': '/app/quienes-somos',
   'app.trayectoria.show': '/app/trayectoria',
   'app.mision.show': '/app/mision',
   'app.vision.show': '/app/vision',
   'app.producto.show': '/app/producto',
-  'app.parking.show': '/app/parking',
 }
 
 function NavLinkItem({ item, currentUrl }: { item: NavItem; currentUrl: string }) {
@@ -183,7 +168,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       >
         <div className={styles.sidebarHeader}>
           <Link route="app.dashboard" style={{ textDecoration: 'none' }}>
-            <img src="/img/logo.png" alt="ABAS Inmobiliaria" className={styles.logoImg} />
+            <img src="/img/logo.png" alt="Propar Inmobiliaria" className={styles.logoImg} />
           </Link>
           <button
             className={styles.iconBtn}

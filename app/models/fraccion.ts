@@ -5,7 +5,7 @@ import { column, hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 
 /** El driver de PG serializa arrays JS como array de Postgres si no se
- *  stringifica (mismo patrón que Alquiler.imagenes). */
+ *  stringifica. */
 const prepararJson = (value: unknown) =>
   value === null || value === undefined ? null : JSON.stringify(value)
 

@@ -3,7 +3,7 @@
 | Tests de las rutas de archivos (/api/file/public y /api/uploads)
 |--------------------------------------------------------------------------
 |
-| Corren contra abas_v2: crean sus propias filas (upload de prueba, user
+| Corren contra la base de desarrollo: crean sus propias filas (upload de prueba, user
 | de prueba) y las eliminan al final — nunca truncan tablas.
 |
 */

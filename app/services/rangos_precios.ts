@@ -1,6 +1,6 @@
 /*
 |--------------------------------------------------------------------------
-| Rangos de precio de cuota (buscador del home y filtro de alquileres)
+| Rangos de precio de cuota (buscador del home y filtros del mapa)
 |--------------------------------------------------------------------------
 |
 | Derivado 1:1 de la constante RANGO_PRECIOS del sitio viejo

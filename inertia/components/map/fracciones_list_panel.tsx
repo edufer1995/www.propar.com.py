@@ -1,25 +1,22 @@
 import { useEffect, useMemo, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
-import { Check, ChevronLeft, ChevronRight, Images, Inbox, KeyRound, MapPin } from 'lucide-react'
+import { Check, ChevronLeft, ChevronRight, Images, Inbox, MapPin } from 'lucide-react'
 
 import { Button } from '~/components/ui'
 import { formatGs } from '~/lib/format'
 import { sinAnimaciones } from './camara'
 
-import type { AlquilerMapa, FraccionMapa } from './types'
+import type { FraccionMapa } from './types'
 import styles from './map.module.css'
 
-/** La tira mezcla fracciones y alquileres, cada uno con su card. */
-type ItemStrip =
-  { tipo: 'fraccion'; fraccion: FraccionMapa } | { tipo: 'alquiler'; alquiler: AlquilerMapa }
+/** Item de la tira (hoy solo fracciones). */
+type ItemStrip = { tipo: 'fraccion'; fraccion: FraccionMapa }
 
 /**
  * Fracciones como carrusel horizontal de cards debajo de la barra de
  * filtros (mismo patrón que el carrusel de lotes), siempre visible.
  * Click en una card agrega/quita la fracción de la selección del mapa;
  * al seleccionar desde el mapa, la tira centra la card correspondiente.
- * Los alquileres con ubicación se suman al final de la tira con card
- * propia (naranja): click vuela al marker y abre su ficha.
  */
 export function FraccionesListPanel({
   fracciones,
@@ -29,10 +26,6 @@ export function FraccionesListPanel({
   onSelect,
   onVerMedios,
   onLimpiarFiltros,
-  alquileres = [],
-  alquilerSeleccionadoId = null,
-  onSelectAlquiler,
-  onVerFotosAlquiler,
 }: {
   fracciones: FraccionMapa[]
   seleccionadas: number[]
@@ -50,32 +43,25 @@ export function FraccionesListPanel({
   onVerMedios: (codigo: number) => void
   /** CTA del estado vacío: resetea búsqueda, cuota y distritos */
   onLimpiarFiltros?: () => void
-  /** Alquileres visibles (toggle "Alquileres" activo + filtros) */
-  alquileres?: AlquilerMapa[]
-  /** Alquiler con popup abierto: su card se marca y se centra */
-  alquilerSeleccionadoId?: number | null
-  onSelectAlquiler?: (id: number) => void
-  onVerFotosAlquiler?: (id: number) => void
 }) {
   /**
    * Espejo del carrusel de lotes: la PRIMERA fracción arranca centrada y
    * las siguientes se despliegan hacia la IZQUIERDA. Se logra invirtiendo
    * el orden de las cards y arrancando en el último snap (la primera).
-   * Los alquileres van al final de la tira (extremo izquierdo).
    */
   const lista = useMemo<ItemStrip[]>(() => {
-    const items: ItemStrip[] = [
-      ...fracciones.map((fraccion) => ({ tipo: 'fraccion' as const, fraccion })),
-      ...alquileres.map((alquiler) => ({ tipo: 'alquiler' as const, alquiler })),
-    ]
+    const items: ItemStrip[] = fracciones.map((fraccion) => ({
+      tipo: 'fraccion' as const,
+      fraccion,
+    }))
     return items.reverse()
-  }, [fracciones, alquileres])
+  }, [fracciones])
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'center',
     skipSnaps: true,
     containScroll: false,
-    startIndex: Math.max(0, fracciones.length + alquileres.length - 1),
+    startIndex: Math.max(0, fracciones.length - 1),
   })
 
   const [puedeAtras, setPuedeAtras] = useState(false)
@@ -104,16 +90,6 @@ export function FraccionesListPanel({
     if (indice !== -1) emblaApi.scrollTo(indice, sinAnimaciones())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emblaApi, ultimaSeleccionada])
-
-  /** Marker de alquiler → tira: centra su card. */
-  useEffect(() => {
-    if (!emblaApi || alquilerSeleccionadoId === null) return
-    const indice = lista.findIndex(
-      (i) => i.tipo === 'alquiler' && i.alquiler.id === alquilerSeleccionadoId
-    )
-    if (indice !== -1) emblaApi.scrollTo(indice, sinAnimaciones())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [emblaApi, alquilerSeleccionadoId])
 
   /** Al cambiar la lista (filtros), volver a arrancar en la primera. */
   useEffect(() => {
@@ -170,26 +146,16 @@ export function FraccionesListPanel({
 
           <div className={styles.carrusel} ref={emblaRef}>
             <div className={styles.carruselContenedor}>
-              {lista.map((item) =>
-                item.tipo === 'fraccion' ? (
-                  <CardFraccion
-                    key={`f-${item.fraccion.codigo}`}
-                    fraccion={item.fraccion}
-                    activa={seleccionadas.includes(item.fraccion.codigo)}
-                    compacta={compacta}
-                    onSelect={onSelect}
-                    onVerMedios={onVerMedios}
-                  />
-                ) : (
-                  <CardAlquiler
-                    key={`a-${item.alquiler.id}`}
-                    alquiler={item.alquiler}
-                    activa={item.alquiler.id === alquilerSeleccionadoId}
-                    onSelect={onSelectAlquiler}
-                    onVerFotos={onVerFotosAlquiler}
-                  />
-                )
-              )}
+              {lista.map((item) => (
+                <CardFraccion
+                  key={`f-${item.fraccion.codigo}`}
+                  fraccion={item.fraccion}
+                  activa={seleccionadas.includes(item.fraccion.codigo)}
+                  compacta={compacta}
+                  onSelect={onSelect}
+                  onVerMedios={onVerMedios}
+                />
+              ))}
             </div>
           </div>
 
@@ -290,101 +256,6 @@ function CardFraccion({
               /* Fracción sin LIBRES: se muestra igual (paridad con el sitio
                  viejo) pero sin precio, que sería el de lotes ya tomados. */
               <span className={styles.badgeSinLibres}>Sin lotes libres</span>
-            )}
-          </span>
-        </span>
-      </button>
-    </div>
-  )
-}
-
-/** Card naranja de alquiler: click vuela al marker y abre su ficha. */
-function CardAlquiler({
-  alquiler,
-  activa,
-  onSelect,
-  onVerFotos,
-}: {
-  alquiler: AlquilerMapa
-  activa: boolean
-  onSelect?: (id: number) => void
-  onVerFotos?: (id: number) => void
-}) {
-  const titulo = alquiler.direccion ?? 'Alquiler'
-  return (
-    <div className={styles.carruselSlide}>
-      <button
-        role="listitem"
-        className={[
-          styles.cardFraccion,
-          styles.cardAlquiler,
-          activa ? styles.cardFraccionActiva : '',
-        ]
-          .filter(Boolean)
-          .join(' ')}
-        onClick={() => onSelect?.(alquiler.id)}
-        aria-pressed={activa}
-      >
-        {activa && (
-          <span className={styles.cardCheck} aria-hidden>
-            <Check size={13} strokeWidth={3} />
-          </span>
-        )}
-
-        <span className={styles.cardFraccionThumb}>
-          <img
-            src={alquiler.imagenes[0] ?? '/img/placeholder.svg'}
-            alt={alquiler.imagenes[0] ? `Foto de ${titulo}` : ''}
-            className={styles.cardFraccionThumbImg}
-            loading="lazy"
-          />
-          {alquiler.imagenes.length > 0 && (
-            <span
-              role="button"
-              tabIndex={0}
-              className={styles.cardFraccionMedios}
-              title="Ver fotos"
-              onClick={(e) => {
-                e.stopPropagation()
-                onVerFotos?.(alquiler.id)
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  onVerFotos?.(alquiler.id)
-                }
-              }}
-            >
-              <Images size={11} aria-hidden /> {alquiler.imagenes.length}
-            </span>
-          )}
-        </span>
-
-        <span className={styles.cardFraccionCuerpo}>
-          <span className={styles.cardFraccionNombre} title={titulo}>
-            <span className={styles.cardFraccionTexto}>{titulo}</span>
-          </span>
-          <span className={styles.itemFraccionDistrito}>
-            {/* La zona repetiría la dirección cuando el ABM cargó lo mismo en ambas:
-                en ese caso se muestran los ambientes (como el popup). */}
-            <KeyRound size={12} />{' '}
-            {alquiler.ubicacion && alquiler.ubicacion !== alquiler.direccion
-              ? alquiler.ubicacion
-              : [
-                  alquiler.habitaciones !== null ? `${alquiler.habitaciones} hab.` : null,
-                  alquiler.banos !== null ? `${alquiler.banos} baños` : null,
-                  alquiler.cocinas !== null ? `${alquiler.cocinas} coc.` : null,
-                ]
-                  .filter(Boolean)
-                  .join(' · ') || 'Alquiler'}
-          </span>
-          <span className={styles.itemFraccionDatos}>
-            <span className={styles.badgeAlquiler}>Alquiler</span>
-            {alquiler.precioMensual !== null && (
-              <span className={styles.itemFraccionPrecio}>
-                {formatGs(alquiler.precioMensual)}/mes
-              </span>
             )}
           </span>
         </span>

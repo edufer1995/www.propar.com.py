@@ -8,7 +8,7 @@
 | envía al server como `<campo>UploadIds`).
 |
 | Ningún recurso de la Etapa 5a lo usa todavía: queda listo para
-| alquileres (fotos) en la 5b.
+| otras galerías.
 |
 */
 

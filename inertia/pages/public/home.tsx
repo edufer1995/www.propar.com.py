@@ -45,7 +45,7 @@ type HomeProps = {
 
 /**
  * Subtítulo de la card de red: el usuario que sale de la URL cargada en el
- * admin (…/abasinmobiliaria → @abasinmobiliaria). En los enlaces de
+ * admin (…/proparsrl → @proparsrl). En los enlaces de
  * WhatsApp el último tramo es el número, y se muestra como tal.
  */
 function cuentaDeRed(url: string): string {
@@ -110,7 +110,7 @@ export default function Home({
 
   useEffect(() => {
     if (!promoModal) return
-    const clave = `abas:promo-modal:${promoModal.id}`
+    const clave = `propar:promo-modal:${promoModal.id}`
     if (sessionStorage.getItem(clave)) return
     const timer = window.setTimeout(() => {
       sessionStorage.setItem(clave, '1')
@@ -123,7 +123,7 @@ export default function Home({
     <>
       <Seo
         title="Lotes en cuotas en Paraguay"
-        description="Elias A. Saba S.A. Inmobiliaria (ABAS): venta de lotes en cuotas, loteamientos, alquileres y estacionamiento en Paraguay."
+        description="Inmobiliaria Propar S.R.L.: venta de lotes en cuotas y loteamientos en Paraguay."
       />
 
       {/* (a) Carrusel de portada */}

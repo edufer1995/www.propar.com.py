@@ -3,7 +3,7 @@
 | Tests de /loteamientos (Etapa 4b)
 |--------------------------------------------------------------------------
 |
-| Corren contra abas_v2 con el ERP fake (determinístico por seed): la
+| Corren contra la base de desarrollo con el ERP fake (determinístico por seed): la
 | página Inertia, el detalle GeoJSON de una fracción (incluido el techo
 | de queries SQL que reemplaza el N+1 del sitio viejo) y el flujo de
 | compra (lead + snapshot + mail + rate limit). El mailer se fakea.

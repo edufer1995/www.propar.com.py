@@ -10,14 +10,14 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
     <div className={styles.screen}>
       <main className={styles.card}>
         <div className={styles.brand}>
-          <img src="/img/logo.png" alt="ABAS Inmobiliaria" className={styles.logoImg} />
-          <span className={styles.tagline}>Elias A. Saba S.A. Inmobiliaria — Administración</span>
+          <img src="/img/logo.png" alt="Propar Inmobiliaria" className={styles.logoImg} />
+          <span className={styles.tagline}>Propar Inmobiliaria — Administración</span>
         </div>
         {children}
       </main>
 
       <footer className={styles.footer}>
-        © {new Date().getFullYear()} Elias A. Saba S.A. Inmobiliaria
+        © {new Date().getFullYear()} Inmobiliaria Propar S.R.L.
       </footer>
     </div>
   )

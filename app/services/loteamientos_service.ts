@@ -4,7 +4,7 @@
 |--------------------------------------------------------------------------
 |
 | Une las dos fuentes de datos del mapa:
-|  - PG abas_v2: geometrías (fracciones, manzanas, lotes, lotes_colores)
+|  - PostgreSQL: geometrías (fracciones, manzanas, lotes, lotes_colores)
 |  - ERP (LotesErpRepository): datos comerciales por lote (estado, precios)
 |
 | El detalle de una fracción se resuelve con 3 queries SQL fijas
@@ -113,8 +113,8 @@ const fraccionesAvisadas = new Set<number>()
 /**
  * "SIN DATOS" en el mapa no es un problema de colores: es un lote que
  * existe en nuestra geometría y que el ERP no devolvió para esa fracción.
- * Puede ser que la vista consultada no lo incluya (INMC017_V son los
- * "lotes en venta": una plaza o un edificio público podrían no estar), o
+ * Puede ser que el ERP no lo tenga cargado (una plaza o un edificio
+ * público pueden no estar como lote), o
  * que la terna manzana|lote no coincida. Se registra el recuento para
  * poder distinguirlo del cruce de colores, que es otro problema.
  */

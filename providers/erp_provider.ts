@@ -5,9 +5,8 @@
 |
 | Bindea la clase abstracta LotesErpRepository en el container según
 | ERP_DRIVER:
-|  - fake   → CachedLotesErpRepository(FakeLotesErpRepository)   [desarrollo]
-|  - odoo   → CachedLotesErpRepository(OdooLotesErpRepository)   [Propar]
-|  - oracle → CachedLotesErpRepository(OracleLotesErpRepository) [vistas Oracle]
+|  - fake → CachedLotesErpRepository(FakeLotesErpRepository) [desarrollo y tests]
+|  - odoo → CachedLotesErpRepository(OdooLotesErpRepository) [Odoo de Propar]
 |
 | Los controladores y servicios lo reciben por @inject:
 |
@@ -51,12 +50,6 @@ export default class ErpProvider {
           timeoutMs: env.get('ODOO_TIMEOUT_MS'),
         })
         return new CachedLotesErpRepository(new OdooLotesErpRepository(cliente))
-      }
-
-      if (driver === 'oracle') {
-        const { default: OracleLotesErpRepository } =
-          await import('#repositories/erp/oracle_lotes_erp_repository')
-        return new CachedLotesErpRepository(new OracleLotesErpRepository())
       }
 
       const { default: FakeLotesErpRepository } =

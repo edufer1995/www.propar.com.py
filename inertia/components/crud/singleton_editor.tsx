@@ -4,7 +4,7 @@
 |--------------------------------------------------------------------------
 |
 | Editor genérico de las páginas institucionales (quiénes somos, misión,
-| visión, producto, trayectoria, parking): una sola fila, sin lista.
+| visión, producto, trayectoria): una sola fila, sin lista.
 | Reutiliza el motor de campos del CRUD (campos.tsx): GET show entrega
 | los valores actuales y POST update persiste (useForm-like con Inertia
 | router + unsaved changes + toast del flash).

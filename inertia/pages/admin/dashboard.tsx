@@ -1,12 +1,11 @@
 import { type ReactElement, type ReactNode } from 'react'
 import { Head } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
-import { Image, KeyRound, LandPlot, Map, MessageSquare, Users } from 'lucide-react'
+import { Image, LandPlot, Map, MessageSquare, Users } from 'lucide-react'
 import AdminLayout from '~/layouts/admin'
 import { formatNumber } from '~/lib/format'
 
 type Counts = {
-  alquileres: number
   carruseles: number
   fracciones: number
   lotes: number
@@ -17,20 +16,9 @@ type Counts = {
 const TILES: {
   key: keyof Counts
   label: string
-  ruta:
-    | 'app.alquileres.index'
-    | 'app.carruseles.index'
-    | 'app.planos.index'
-    | 'app.leads.index'
-    | 'app.usuarios.index'
+  ruta: 'app.carruseles.index' | 'app.planos.index' | 'app.leads.index' | 'app.usuarios.index'
   icon: ReactNode
 }[] = [
-  {
-    key: 'alquileres',
-    label: 'Alquileres',
-    ruta: 'app.alquileres.index',
-    icon: <KeyRound size={22} />,
-  },
   {
     key: 'carruseles',
     label: 'Carruseles',

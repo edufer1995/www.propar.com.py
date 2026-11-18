@@ -12,7 +12,7 @@ export function LottiePlayer({
   loop = true,
   className,
 }: {
-  /** Ruta pública, ej: /lotties/spinner-abas.json */
+  /** Ruta pública, ej: /lotties/flecha-ir.json */
   src: string
   size?: number
   loop?: boolean
@@ -31,11 +31,11 @@ export function LottiePlayer({
   )
 }
 
-/** Loader full-page con el Lottie de marca (regla de oro: vista 1 de 4 en cargas completas). */
+/** Loader full-page (regla de oro: vista 1 de 4 en cargas completas). */
 export function FullPageLoader({ label = 'Cargando...' }: { label?: string }) {
   return (
     <div className={styles.fullLoader} role="status" aria-label={label}>
-      <LottiePlayer src="/lotties/spinner-abas.json" size={140} />
+      <Spinner />
       <span>{label}</span>
     </div>
   )

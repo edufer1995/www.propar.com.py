@@ -50,16 +50,12 @@ export function contarFiltrosActivos({
   distritosOcultos,
   estadosOcultos,
   verFracciones,
-  verAlquileres,
-  hayAlquileres,
 }: {
   busqueda: string
   rango: string
   distritosOcultos: Set<number>
   estadosOcultos: Set<string>
   verFracciones: boolean
-  verAlquileres: boolean
-  hayAlquileres: boolean
 }): number {
   return [
     busqueda.trim() !== '',
@@ -67,7 +63,6 @@ export function contarFiltrosActivos({
     distritosOcultos.size > 0,
     estadosOcultos.size > 0,
     !verFracciones,
-    hayAlquileres && !verAlquileres,
   ].filter(Boolean).length
 }
 
@@ -103,9 +98,6 @@ export function FiltrosModal({
   fraccionesVisibles,
   verFracciones,
   onToggleFracciones,
-  totalAlquileres,
-  verAlquileres,
-  onToggleAlquileres,
   onLimpiar,
 }: {
   abierto: boolean
@@ -140,9 +132,6 @@ export function FiltrosModal({
   fraccionesVisibles: number
   verFracciones: boolean
   onToggleFracciones: () => void
-  totalAlquileres: number
-  verAlquileres: boolean
-  onToggleAlquileres: () => void
   /** Deja los filtros como recién entrado (no toca la selección del mapa) */
   onLimpiar: () => void
 }) {
@@ -280,11 +269,9 @@ export function FiltrosModal({
         </div>
       )}
 
-      {/* Un toggle por capa, y solo si esa capa tiene algo cargado: sin
-          alquileres no hay nada que mostrar ni ocultar, así que el
-          control tampoco va. Sin ninguna de las dos, el grupo entero se
-          va con ellas. */}
-      {(totalFracciones > 0 || totalAlquileres > 0) && (
+      {/* Solo si hay fracciones cargadas: sin ellas no hay nada que
+          mostrar ni ocultar. */}
+      {totalFracciones > 0 && (
         <div className={styles.filtrosGrupo}>
           <span className={styles.filtrosGrupoTitulo}>Qué se ve en el mapa</span>
 
@@ -293,14 +280,6 @@ export function FiltrosModal({
               label={`Fracciones (${totalFracciones})`}
               checked={verFracciones}
               onChange={onToggleFracciones}
-            />
-          )}
-
-          {totalAlquileres > 0 && (
-            <ToggleField
-              label={`Alquileres (${totalAlquileres})`}
-              checked={verAlquileres}
-              onChange={onToggleAlquileres}
             />
           )}
         </div>

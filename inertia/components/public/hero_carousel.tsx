@@ -63,7 +63,7 @@ export function HeroCarousel({ slides }: { slides: SlideCarrusel[] }) {
               </div>
               <div className={styles.heroImagen}>
                 {slide.imagenUrl && (
-                  <img src={slide.imagenUrl} alt={slide.titulo ?? 'Lanzamiento ABAS'} />
+                  <img src={slide.imagenUrl} alt={slide.titulo ?? 'Lanzamiento Propar'} />
                 )}
               </div>
             </div>

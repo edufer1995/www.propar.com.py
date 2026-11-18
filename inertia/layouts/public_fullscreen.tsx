@@ -49,8 +49,12 @@ export default function PublicFullscreenLayout({ children }: { children: ReactNo
           solo cambia el contenedor .navbar, que acá flota sobre el mapa. */}
       <header className={styles.navbar}>
         <div className={`${publicStyles.container} ${publicStyles.navbarInner}`}>
-          <Link route="home" className={publicStyles.brand} aria-label="ABAS Inmobiliaria — Inicio">
-            <img src="/img/logo.png" alt="ABAS Inmobiliaria" className={publicStyles.brandLogo} />
+          <Link
+            route="home"
+            className={publicStyles.brand}
+            aria-label="Propar Inmobiliaria — Inicio"
+          >
+            <img src="/img/logo.png" alt="Propar Inmobiliaria" className={publicStyles.brandLogo} />
           </Link>
 
           <nav className={publicStyles.navLinks} aria-label="Navegación principal">
@@ -98,7 +102,7 @@ export default function PublicFullscreenLayout({ children }: { children: ReactNo
             <div className={publicStyles.drawerHeader}>
               <img
                 src="/img/logo.png"
-                alt="ABAS Inmobiliaria"
+                alt="Propar Inmobiliaria"
                 className={publicStyles.brandLogo}
                 style={{ height: 32 }}
               />

@@ -1,5 +1,5 @@
 /*
- * Design tokens — única fuente de verdad de la marca ABAS.
+ * Design tokens — única fuente de verdad de la marca Propar.
  * Los componentes SOLO usan variables semánticas (--bg, --surface, --text...);
  * nunca un hex suelto. Dark mode = redefinir las semánticas bajo [data-theme].
  */

@@ -4,7 +4,7 @@
 |--------------------------------------------------------------------------
 |
 | Páginas de una sola fila (quiénes somos, misión, visión, producto,
-| trayectoria, parking): GET show renderiza el formulario con los datos
+| trayectoria): GET show renderiza el formulario con los datos
 | actuales y POST update valida y persiste sobre la (única) fila,
 | creándola si aún no existe.
 |

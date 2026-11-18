@@ -6,7 +6,7 @@ import Swal from 'sweetalert2'
 import { texts } from './texts'
 
 const themed = Swal.mixin({
-  customClass: { popup: 'abas-swal' },
+  customClass: { popup: 'propar-swal' },
   confirmButtonColor: 'var(--primary)',
   cancelButtonColor: 'var(--text-muted)',
 })

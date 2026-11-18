@@ -7,7 +7,7 @@
 | solo acepta rutas internas ("/algo") o URLs http(s) absolutas y rechaza
 | esquemas tipo "javascript:".
 |
-| Corren contra abas_v2: crean filas propias con un prefijo único y las
+| Corren contra la base de desarrollo: crean filas propias con un prefijo único y las
 | borran al final — nunca truncan tablas.
 |
 */

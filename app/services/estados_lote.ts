@@ -1,6 +1,6 @@
 /*
 |--------------------------------------------------------------------------
-| Cruce de estados de lote: ERP (Oracle) ↔ catálogo de colores (PG)
+| Cruce de estados de lote: ERP ↔ catálogo de colores (PG)
 |--------------------------------------------------------------------------
 |
 | El estado de un lote lo manda el ERP como texto libre (LOT_ESTADO) y el

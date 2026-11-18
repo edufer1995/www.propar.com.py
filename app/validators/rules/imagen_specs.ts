@@ -86,15 +86,7 @@ export const IMAGEN_SPECS = {
     aspecto: 'cuatroTres',
     recomendado: 'ideal 1200×900',
   },
-  /** Fotos de alquileres */
-  fotoAlquiler: {
-    anchoMinimo: 1024,
-    altoMinimo: 768,
-    pesoMaximoBytes: 3 * MB,
-    aspecto: 'libre',
-    recomendado: 'ideal 1600×1200 apaisada',
-  },
-  /** Fotos de páginas institucionales (quiénes somos, parking, ofrecemos) */
+  /** Fotos de páginas institucionales (quiénes somos, trayectoria) */
   fotoInstitucional: {
     anchoMinimo: 800,
     altoMinimo: 500,

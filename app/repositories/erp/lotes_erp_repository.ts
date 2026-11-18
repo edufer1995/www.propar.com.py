@@ -3,15 +3,14 @@
 | Contrato de la capa ERP (lotes)
 |--------------------------------------------------------------------------
 |
-| Abstrae las consultas que el sitio viejo hacía directo contra las vistas
-| Oracle INMC017_V / INMM011_V. Los DTOs exponen números crudos en camelCase:
+| Abstrae de dónde salen los datos comerciales de los lotes (estado,
+| precios, superficie). Los DTOs exponen números crudos en camelCase:
 | el formato de moneda ("Gs. 1.250.000") lo aplica el frontend.
 |
 | Implementaciones:
 |  - FakeLotesErpRepository:   dataset determinístico en memoria (desarrollo)
 |  - OdooLotesErpRepository:   Odoo de Propar (fraction.loteamiento,
 |                               loteamiento.lote, pricelist.lote)
-|  - OracleLotesErpRepository: consultas reales a las vistas del ERP
 |  - CachedLotesErpRepository: decorator con cache en memoria
 |
 | El provider #providers/erp_provider bindea esta clase abstracta en el
@@ -56,7 +55,6 @@ export interface FraccionResumen {
 
 /**
  * Detalle de un lote tal como lo entrega el ERP.
- * Equivale a una fila de INMC017_V / INMM011_V.
  */
 export interface LoteErp {
   fraccionCodigo: number

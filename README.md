@@ -1,22 +1,27 @@
-# abas.com.py — v2
+# propar.com.py
 
-Migración del sitio de **Elias A. Saba S.A. Inmobiliaria (ABAS)**: sitio público
-(home, loteamientos con mapa Google Maps, alquileres, parking, institucional y
-contacto) + panel de administración completo (25 secciones), reemplazando al
-sitio viejo (AdonisJS 4, `../www.abas.com.py`).
+Sitio web de **Inmobiliaria Propar S.R.L.** (Paraguay): sitio público (home,
+loteamientos con mapa de Google Maps, quiénes somos y contacto) + panel de
+administración.
+
+Los datos comerciales de cada lote (estado, superficie, precio contado,
+cuota y cantidad de cuotas) **no se cargan en el admin**: se leen del ERP
+Odoo de Propar cruzando por la terna **FML** (fracción-manzana-lote). El
+admin solo sube el dibujo del plano.
 
 ## Stack
 
 - **AdonisJS v7** (Node ≥ 24) + **Inertia** + **React 19** (Vite)
-- **PostgreSQL** (datos propios + réplica local de los datos del ERP)
+- **PostgreSQL**: contenido del sitio y geometrías de los planos
 - **SSR selectivo**: las páginas públicas (`inertia/pages/public/**`) se
   renderizan server-side para SEO; admin/auth/styleguide son client-only
 - Rutas tipadas con **Tuyau** (codegen en `.adonisjs/`); las rutas se definen
   top-level en `start/routes.ts` (sin loops ni condicionales)
-- ERP detrás de `ERP_DRIVER`: `odoo` es el Odoo de Propar (lotes, estados y
-  precios cruzados por FML, ver `app/repositories/erp/odoo_lotes_erp_repository.ts`);
-  `fake` genera un dataset determinístico para desarrollo; `oracle` queda de
-  la base de Abas
+- ERP detrás de `ERP_DRIVER`:
+  - `odoo`: Odoo de Propar, **solo lectura** (ver
+    `app/repositories/erp/odoo_lotes_erp_repository.ts` para el mapeo de
+    modelos y campos)
+  - `fake`: dataset determinístico en memoria para desarrollo y tests
 
 ## Setup local
 
@@ -29,11 +34,12 @@ podman run -d --name mailpit -p 8025:8025 -p 1025:1025 axllent/mailpit
 # 2. Dependencias y entorno
 npm install
 cp .env.example .env   # completar APP_KEY (node ace generate:key) y GOOGLE_MAPS_API_KEY
+                       # para datos reales: ERP_DRIVER=odoo + las ODOO_*
 
 # 3. Base de datos
 node ace migration:run
-node ace etl:import          # importa el dump del sitio viejo (7.301 lotes)
-node ace db:seed             # usuario dev.admin / abas-dev-2026 + datos de dev
+node ace db:seed             # datos de desarrollo
+node ace dev:crear-admin     # usuario dev / dev12345 (solo desarrollo)
 
 # 4. Levantar
 npm run dev                  # http://localhost:3334
@@ -41,19 +47,17 @@ npm run dev                  # http://localhost:3334
 
 ## Comandos útiles
 
-| Comando                           | Qué hace                                      |
-| --------------------------------- | --------------------------------------------- |
-| `npm run dev`                     | Dev server con HMR (puerto 3334)              |
-| `npm test`                        | Suite completa (Japa, functional)             |
-| `npm run typecheck`               | tsc del backend + del frontend Inertia        |
-| `npm run lint` / `npm run format` | ESLint / Prettier                             |
-| `node ace etl:import`             | ETL del sitio viejo → Postgres v2             |
-| `node ace etl:verify-auth`        | Verifica la migración de credenciales         |
-| `node ace uploads:migrate`        | Migra los archivos subidos del sitio viejo    |
-| `node ace erp:verificar`          | Prueba la conexión con el ERP (solo lectura)  |
-| `npm run build`                   | Build de producción (cliente + SSR + backend) |
+| Comando                                 | Qué hace                                       |
+| --------------------------------------- | ---------------------------------------------- |
+| `npm run dev`                           | Dev server con HMR (puerto 3334)               |
+| `npm test`                              | Suite completa (Japa, functional)              |
+| `npm run typecheck`                     | tsc del backend + del frontend Inertia         |
+| `npm run lint` / `npm run format`       | ESLint / Prettier                              |
+| `node ace erp:verificar`                | Prueba la conexión con el ERP (solo lectura)   |
+| `node ace erp:verificar --fraccion=234` | Detalle de los lotes de una fracción en el ERP |
+| `npm run build`                         | Build de producción (cliente + SSR + backend)  |
 
-## Seguridad (Etapa 6)
+## Seguridad
 
 - **Roles** (tabla `roles`, nivel ascendente = menos privilegio):
   nivel 1 _Administrador_ accede a todo; nivel 2 _Vendedor_ gestiona el
@@ -68,22 +72,23 @@ npm run dev                  # http://localhost:3334
 - Cookies de sesión `Secure` en producción, `HttpOnly` + `SameSite=Lax`
   siempre. CSRF activo. Rate limiting en login, forgot-password, contacto y
   solicitudes de compra.
+- **Odoo**: la integración bloquea en código cualquier método que no sea de
+  lectura. La API key va solo en el `.env` del servidor, nunca en el repo.
 
 ## Pendientes de producción
 
-- [ ] **Uploads físicos**: correr `node ace uploads:migrate` contra el storage
-      real del sitio viejo y montar `UPLOADS_PATH` en un volumen persistente.
+- [ ] **Hosting**: deploy en Railway (Node + PostgreSQL) con `UPLOADS_PATH`
+      en un volumen persistente.
 - [ ] **Odoo de producción**: `ERP_DRIVER=odoo` + `ODOO_URL`, `ODOO_DB`,
-      `ODOO_LOGIN` y `ODOO_API_KEY` en el `.env` del servidor (la clave
-      nunca en el repo). Probar con `node ace erp:verificar --fraccion=<código>`.
+      `ODOO_LOGIN` y `ODOO_API_KEY`. Probar con
+      `node ace erp:verificar --fraccion=<código>`.
+- [ ] **Diseño Propar**: aplicar la maqueta aprobada y el manual de marca
+      (tokens en `inertia/css/tokens.css`).
 - [ ] **Map ID propio**: el mapa usa `DEMO_MAP_ID` de Google; crear un Map ID
       en Google Cloud y reemplazarlo en `inertia/pages/public/loteamientos.tsx`.
 - [ ] **Restricción de la API key de Maps**: la key sale de
       `GOOGLE_MAPS_API_KEY` y viaja al cliente solo como prop de Inertia, pero
-      una key de Maps JS es pública por naturaleza — hay que restringirla por
+      una key de Maps JS es pública por naturaleza: hay que restringirla por
       **HTTP referrer** (dominio de producción) en la consola de Google Cloud.
-- [ ] **Emails de usuarios del admin**: el sitio viejo no tenía emails; cargar
-      los reales para que funcione "olvidé mi contraseña" para todos.
-- [ ] **SMTP real**: reemplazar Mailpit por el SMTP del negocio
-      (`SMTP_HOST/SMTP_PORT` + remitentes `MAIL_FROM`, `CONTACTO_EMAIL`,
-      `VENTAS_EMAIL`).
+- [ ] **SMTP real**: configurar el SMTP del negocio (`SMTP_HOST/SMTP_PORT` +
+      remitentes `MAIL_FROM`, `CONTACTO_EMAIL`, `VENTAS_EMAIL`).

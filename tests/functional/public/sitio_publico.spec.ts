@@ -3,7 +3,7 @@
 | Tests del sitio público (Etapa 4a)
 |--------------------------------------------------------------------------
 |
-| Corren contra abas_v2: las páginas leen datos reales; el formulario de
+| Corren contra la base de desarrollo: las páginas leen datos reales; el formulario de
 | contacto crea leads de prueba que se eliminan al final. El mailer se
 | fakea (nunca se toca el SMTP real).
 |
@@ -31,7 +31,6 @@ test.group('Sitio público — páginas', () => {
     .with([
       { url: '/', componente: 'public/home' },
       { url: '/quienes-somos', componente: 'public/quienes_somos' },
-      { url: '/parking', componente: 'public/parking' },
       { url: '/contacto', componente: 'public/contacto' },
       { url: '/loteamientos', componente: 'public/loteamientos' },
     ])
@@ -57,21 +56,10 @@ test.group('Sitio público — páginas', () => {
     assert.equal(props.rangosCuota[5].etiqueta, 'Mayor a 1.000.000 Gs')
   })
 
-  test('/alquileres ya no existe: los alquileres viven en el mapa', async ({ client, assert }) => {
-    /* Decisión del cliente: sin redirect, 404 directo. */
-    const pagina = await client.get('/alquileres')
-    pagina.assertStatus(404)
-
-    /* El mapa expone los activos con ubicación cargada en el ABM. */
-    const mapa = await client.get('/loteamientos').withInertia()
-    mapa.assertStatus(200)
-    const props = mapa.inertiaProps as {
-      alquileres: { id: number; centro: { lat: number; lng: number }; imagenes: string[] }[]
-    }
-    assert.isArray(props.alquileres)
-    for (const alquiler of props.alquileres) {
-      assert.isNumber(alquiler.centro.lat)
-      assert.isNumber(alquiler.centro.lng)
+  test('las páginas de Abas (alquileres, parking, abas-guarda) no existen', async ({ client }) => {
+    for (const url of ['/alquileres', '/parking', '/abas-guarda']) {
+      const pagina = await client.get(url)
+      pagina.assertStatus(404)
     }
   })
 

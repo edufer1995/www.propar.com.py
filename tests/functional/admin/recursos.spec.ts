@@ -8,7 +8,7 @@
 | leads es solo lectura (store → 404) y los campos imagen rechazan uploads
 | de otra spec.
 |
-| Corren contra abas_v2: crean filas propias con un prefijo único y las
+| Corren contra la base de desarrollo: crean filas propias con un prefijo único y las
 | borran al final — nunca truncan tablas.
 |
 */

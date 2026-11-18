@@ -67,7 +67,7 @@ export default function QuienesSomos({
     <>
       <Seo
         title="Quiénes somos"
-        description="Historia, trayectoria, misión y visión de Elias A. Saba S.A. Inmobiliaria, pionera en loteamientos en Paraguay."
+        description="Historia, trayectoria, misión y visión de Inmobiliaria Propar S.R.L., loteamientos en Paraguay."
       />
       <div className={layoutStyles.container}>
         {!quienesSomos && !trayectoria && !mision ? (
@@ -100,10 +100,10 @@ export default function QuienesSomos({
               {(quienesSomos?.imagenDos || quienesSomos?.imagenTres) && (
                 <div className={styles.imagenesGrid}>
                   {quienesSomos.imagenDos && (
-                    <img src={quienesSomos.imagenDos} alt="ABAS Inmobiliaria" />
+                    <img src={quienesSomos.imagenDos} alt="Propar Inmobiliaria" />
                   )}
                   {quienesSomos.imagenTres && (
-                    <img src={quienesSomos.imagenTres} alt="ABAS Inmobiliaria" />
+                    <img src={quienesSomos.imagenTres} alt="Propar Inmobiliaria" />
                   )}
                 </div>
               )}

@@ -76,35 +76,3 @@ export const usuarioAppValidator = vine.create({
   documento: vine.string().trim().minLength(4).maxLength(30),
   correo: vine.string().trim().email().maxLength(254),
 })
-
-export const alquilerValidator = vine.create({
-  direccion: vine.string().trim().minLength(3).maxLength(255),
-  ubicacion: vine.string().trim().maxLength(120).nullable(),
-  contacto: vine.string().trim().maxLength(255).nullable(),
-  precioMensual: vine.number().min(0).nullable(),
-  precioGarantia: vine.number().min(0).nullable(),
-  habitaciones: vine.number().withoutDecimals().min(0).max(50).nullable(),
-  banos: vine.number().withoutDecimals().min(0).max(50).nullable(),
-  cocinas: vine.number().withoutDecimals().min(0).max(50).nullable(),
-  observaciones: vine.string().trim().maxLength(2000).nullable(),
-  expensas: vine.boolean(),
-  balcon: vine.boolean(),
-  activo: vine.boolean(),
-  lat: vine.number().min(-90).max(90).nullable(),
-  lng: vine.number().min(-180).max(180).nullable(),
-})
-
-export const ofrecemosValidator = vine.create({
-  descripcion: vine.string().trim().maxLength(600).nullable(),
-  imagenCheck: vine.boolean(),
-})
-
-export const nuestroHorarioValidator = vine.create({
-  descripcion: vine.string().trim().maxLength(255).nullable(),
-  obs: vine.string().trim().maxLength(255).nullable(),
-  obsCheck: vine.boolean(),
-})
-
-export const direccionContactoValidator = vine.create({
-  descripcion: vine.string().trim().minLength(2).maxLength(255),
-})

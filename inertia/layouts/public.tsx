@@ -1,10 +1,9 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
-import { Mail, MapPin, Menu, Phone, X } from 'lucide-react'
+import { Mail, Menu, Phone, X } from 'lucide-react'
 import { IconoRed, IconoWhatsApp } from '~/components/public/icons'
 import { toast } from '~/lib/swal'
-import { linkWhatsAppAbasGuarda } from '~/lib/abas_guarda'
 import styles from './public.module.css'
 
 /** Datos del pie que envían todos los controllers públicos. */
@@ -27,30 +26,20 @@ export type PiePagina = {
 }
 
 export type RutaPublica =
-  | 'home'
-  | 'public.loteamientos'
-  | 'public.parking'
-  | 'public.abasGuarda'
-  | 'public.quienesSomos'
-  | 'public.contacto.show'
+  'home' | 'public.loteamientos' | 'public.quienesSomos' | 'public.contacto.show'
 
 export const NAV: { label: string; route: RutaPublica; path: string }[] = [
   { label: 'Inicio', route: 'home', path: '/' },
   { label: 'Loteamientos', route: 'public.loteamientos', path: '/loteamientos' },
-  { label: 'Parking', route: 'public.parking', path: '/parking' },
-  { label: 'Abas Guarda', route: 'public.abasGuarda', path: '/abas-guarda' },
   { label: 'Quiénes somos', route: 'public.quienesSomos', path: '/quienes-somos' },
 ]
 
 /** Mensaje precargado del WhatsApp flotante según la página actual. */
 function mensajeWhatsApp(pathname: string): string {
-  if (pathname.startsWith('/parking')) {
-    return 'Hola ABAS, quisiera información sobre el estacionamiento de Ciudad del Este.'
-  }
   if (pathname.startsWith('/loteamientos')) {
-    return 'Hola ABAS, estoy interesado/a en un lote y quisiera más información.'
+    return 'Hola Propar, estoy interesado/a en un lote y quisiera más información.'
   }
-  return 'Hola ABAS, vengo del sitio web y quisiera más información.'
+  return 'Hola Propar, vengo del sitio web y quisiera más información.'
 }
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
@@ -58,8 +47,9 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   const pathname = url.split('?')[0]
 
   const piePagina = (props as { piePagina?: PiePagina }).piePagina
-  const whatsappVentas = String(props.whatsappVentas ?? '+595983392306')
-  const telVentas = String(props.telVentas ?? '+59521444061')
+  const whatsappVentas = String(props.whatsappVentas ?? '+595976522694')
+  const telVentas = String(props.telVentas ?? '+595976522694')
+  const contactoEmail = String(props.contactoEmail ?? '')
 
   const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -86,19 +76,16 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
 
   const esActiva = (path: string) => (path === '/' ? pathname === '/' : pathname.startsWith(path))
 
-  /** En /abas-guarda el WhatsApp flotante va a Abas Guarda, no a ventas. */
-  const linkWhatsApp = pathname.startsWith('/abas-guarda')
-    ? linkWhatsAppAbasGuarda()
-    : `https://wa.me/${whatsappVentas.replace(/\D/g, '')}?text=${encodeURIComponent(
-        mensajeWhatsApp(pathname)
-      )}`
+  const linkWhatsApp = `https://wa.me/${whatsappVentas.replace(/\D/g, '')}?text=${encodeURIComponent(
+    mensajeWhatsApp(pathname)
+  )}`
 
   return (
     <div className={styles.page}>
       <header className={styles.navbar}>
         <div className={`${styles.container} ${styles.navbarInner}`}>
-          <Link route="home" className={styles.brand} aria-label="ABAS Inmobiliaria — Inicio">
-            <img src="/img/logo.png" alt="ABAS Inmobiliaria" className={styles.brandLogo} />
+          <Link route="home" className={styles.brand} aria-label="Propar Inmobiliaria — Inicio">
+            <img src="/img/logo.png" alt="Propar Inmobiliaria" className={styles.brandLogo} />
           </Link>
 
           <nav className={styles.navLinks} aria-label="Navegación principal">
@@ -139,7 +126,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             <div className={styles.drawerHeader}>
               <img
                 src="/img/logo.png"
-                alt="ABAS Inmobiliaria"
+                alt="Propar Inmobiliaria"
                 className={styles.brandLogo}
                 style={{ height: 32 }}
               />
@@ -194,10 +181,10 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
 
         <div className={`${styles.container} ${styles.footerCols}`}>
           <div>
-            <img src="/img/logo.png" alt="ABAS Inmobiliaria" className={styles.footerLogo} />
+            <img src="/img/logo.png" alt="Propar Inmobiliaria" className={styles.footerLogo} />
             <p className={styles.footerText}>
-              Elias A. Saba S.A. Inmobiliaria — más de 60 años desarrollando loteamientos,
-              alquileres y proyectos inmobiliarios en todo el Paraguay.
+              Inmobiliaria Propar S.R.L. — lotes en cuotas en Asunción, Ciudad del Este, Encarnación
+              y todo el Paraguay.
             </p>
             {piePagina && piePagina.redes.length > 0 && (
               <div className={styles.footerSocial}>
@@ -236,19 +223,16 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
           <div>
             <div className={styles.footerTitle}>Contacto</div>
             <ul className={styles.footerList}>
-              <li>
-                <a href="mailto:contacto@abas.com.py">
-                  <Mail size={16} /> contacto@abas.com.py
-                </a>
-              </li>
+              {contactoEmail && (
+                <li>
+                  <a href={`mailto:${contactoEmail}`}>
+                    <Mail size={16} /> {contactoEmail}
+                  </a>
+                </li>
+              )}
               <li>
                 <a href={`tel:${telVentas}`}>
                   <Phone size={16} /> {telVentas}
-                </a>
-              </li>
-              <li>
-                <a href="https://goo.gl/maps/5TRQMt9ohHihjpG3A" target="_blank" rel="noreferrer">
-                  <MapPin size={16} /> Eligio Ayala esq. México, Asunción
                 </a>
               </li>
             </ul>
@@ -257,8 +241,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
 
         <div className={styles.footerBottom}>
           <div className={styles.container}>
-            © {new Date().getFullYear()} Elias A. Saba S.A. Inmobiliaria — Todos los derechos
-            reservados
+            © {new Date().getFullYear()} Inmobiliaria Propar S.R.L. — Todos los derechos reservados
           </div>
         </div>
       </footer>

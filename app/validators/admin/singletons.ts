@@ -47,13 +47,6 @@ export const productoValidator = vine.create({
   parrafoUno: parrafo(),
 })
 
-export const parkingValidator = vine.create({
-  titulo: titulo(),
-  parrafoUno: parrafo(),
-  parrafoDos: parrafo(),
-  parrafoTres: parrafo(),
-})
-
 export const loteDistritoValidator = vine.create({
   distritoCodigo: vine.number().withoutDecimals().min(1),
 })

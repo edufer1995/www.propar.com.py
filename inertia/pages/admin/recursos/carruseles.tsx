@@ -60,7 +60,7 @@ const config: RecursoConfig<Fila> = {
       tipo: 'text',
       nombre: 'url',
       etiqueta: 'Enlace del botón (opcional)',
-      hint: 'Ej.: /abas-guarda. Si se carga, el slide muestra "Conocé más" con este enlace en lugar de "Ver lotes"',
+      hint: 'Ej.: /loteamientos?fraccion=234. Si se carga, el slide muestra "Conocé más" con este enlace en lugar de "Ver lotes"',
       maxLength: 300,
     },
     { tipo: 'toggle', nombre: 'activo', etiqueta: 'Visible en el home' },

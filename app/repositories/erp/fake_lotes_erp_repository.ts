@@ -3,14 +3,14 @@
 | Implementación FAKE del ERP
 |--------------------------------------------------------------------------
 |
-| Genera un dataset EN MEMORIA a partir de los datos reales de abas_v2
+| Genera un dataset EN MEMORIA a partir de los datos de la base de la web
 | (fracciones, lotes y lotes_colores migrados por el ETL) y les inventa
-| lo que solo vive en Oracle: estado, superficie, cuotas y precios.
+| lo que solo vive en el ERP: estado, superficie, cuotas y precios.
 |
 | Es DETERMINÍSTICO: usa un PRNG (mulberry32) con seed fija y recorre los
 | registros en orden estable, así dos instancias — o dos boots — producen
 | exactamente el mismo dataset. Eso permite desarrollar y testear el
-| frontend sin Oracle y sin sorpresas entre recargas.
+| frontend sin ERP y sin sorpresas entre recargas.
 |
 */
 
@@ -75,7 +75,7 @@ export default class FakeLotesErpRepository extends LotesErpRepository {
   #dataset: Promise<Dataset> | null = null
 
   /**
-   * Construye el dataset leyendo códigos reales de abas_v2 y generando
+   * Construye el dataset leyendo los códigos cargados en la base y generando
    * estados/precios con el PRNG en orden estable.
    */
   async #generar(): Promise<Dataset> {

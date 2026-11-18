@@ -28,12 +28,13 @@ test.group('Público / SEO técnico', () => {
     const respuesta = await client.get('/sitemap.xml')
     respuesta.assertStatus(200)
     assert.include(respuesta.header('content-type') ?? '', 'xml')
-    for (const ruta of ['/loteamientos', '/parking', '/quienes-somos', '/contacto']) {
+    for (const ruta of ['/loteamientos', '/quienes-somos', '/contacto']) {
       assert.include(respuesta.text(), `<loc>`)
       assert.include(respuesta.text(), ruta)
     }
-    /* /alquileres se quitó del sitio (vive dentro del mapa). */
-    assert.notInclude(respuesta.text(), '/alquileres')
+    for (const ruta of ['/alquileres', '/parking', '/abas-guarda']) {
+      assert.notInclude(respuesta.text(), ruta)
+    }
   })
 
   test('las páginas públicas llegan con SSR (title renderizado en el HTML)', async ({
@@ -41,9 +42,9 @@ test.group('Público / SEO técnico', () => {
     assert,
   }) => {
     const casos: [string, string][] = [
-      ['/', 'Lotes en cuotas en Paraguay - ABAS Inmobiliaria'],
-      ['/quienes-somos', 'Quiénes somos - ABAS Inmobiliaria'],
-      ['/loteamientos', 'Loteamientos en el mapa - ABAS Inmobiliaria'],
+      ['/', 'Lotes en cuotas en Paraguay - Propar Inmobiliaria'],
+      ['/quienes-somos', 'Quiénes somos - Propar Inmobiliaria'],
+      ['/loteamientos', 'Loteamientos en el mapa - Propar Inmobiliaria'],
     ]
     for (const [ruta, titulo] of casos) {
       const respuesta = await client.get(ruta)

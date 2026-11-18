@@ -55,17 +55,17 @@ export default class extends BaseSeeder {
     const redes = [
       {
         nombre: 'Facebook',
-        url: 'https://www.facebook.com/AbasInmobiliaria/',
+        url: 'https://www.facebook.com/proprasrl',
         orden: 1,
         activo: true,
       },
       {
         nombre: 'Instagram',
-        url: 'https://www.instagram.com/abasinmobiliaria/',
+        url: 'https://www.instagram.com/proparsrl',
         orden: 2,
         activo: true,
       },
-      { nombre: 'WhatsApp', url: 'https://wa.me/59521444061', orden: 3, activo: true },
+      { nombre: 'WhatsApp', url: 'https://wa.me/595976522694', orden: 3, activo: true },
       {
         nombre: 'YouTube',
         url: 'https://www.youtube.com/@abasinmobiliaria',

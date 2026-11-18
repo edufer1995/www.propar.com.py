@@ -5,7 +5,7 @@
 |
 | Verifican que el dataset en memoria sea determinístico, que los filtros
 | respeten la semántica del sitio viejo y que los precios generados sean
-| coherentes entre sí. Solo LEE de abas_v2 (códigos reales migrados).
+| coherentes entre sí. Solo LEE de la base de desarrollo (códigos reales migrados).
 |
 */
 
@@ -82,7 +82,7 @@ test.group('ERP fake — filtros', () => {
       assert.isAtLeast(fraccion.codigo, 60)
       assert.isAtMost(fraccion.codigo, 70)
     }
-    // Bordes inclusive (60 y 70 existen en abas_v2)
+    // Bordes inclusive (60 y 70 existen en la base de desarrollo)
     assert.include(
       resultado.map((f) => f.codigo),
       60

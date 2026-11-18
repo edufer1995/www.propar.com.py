@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "abas-v2",
+      "name": "propar",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3333

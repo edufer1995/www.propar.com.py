@@ -26,8 +26,6 @@ yarn-error.log
 .DS_Store
 *.tsbuildinfo
 
-# Archivos subidos por los usuarios (migran con uploads:migrate, no van al repo)
+# Archivos subidos por los usuarios (no van al repo)
 storage/uploads/
 
-# Carpeta de uploads del server viejo (insumo de uploads:migrate, no va al repo)
-/uploads/

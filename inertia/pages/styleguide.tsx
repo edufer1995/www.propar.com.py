@@ -53,7 +53,7 @@ export default function Styleguide() {
       >
         <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h1 style={{ fontSize: 28 }}>ABAS · Styleguide</h1>
+            <h1 style={{ fontSize: 28 }}>Propar · Styleguide</h1>
             <p style={{ color: 'var(--text-muted)' }}>
               Referencia viva del sistema de diseño (solo desarrollo).
             </p>
@@ -232,7 +232,6 @@ export default function Styleguide() {
 
         <Section title="Lottie de marca">
           <Row>
-            <LottiePlayer src="/lotties/spinner-abas.json" size={110} />
             <LottiePlayer src="/lotties/btn-buscar.json" size={72} />
             <LottiePlayer src="/lotties/flecha-ir.json" size={72} />
           </Row>

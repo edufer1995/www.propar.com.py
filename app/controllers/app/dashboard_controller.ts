@@ -1,15 +1,13 @@
 import User from '#models/user'
 import Lead from '#models/lead'
 import Lote from '#models/lote'
-import Alquiler from '#models/alquiler'
 import Carrusel from '#models/carrusel'
 import Fraccion from '#models/fraccion'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class DashboardController {
   async index({ inertia }: HttpContext) {
-    const [alquileres, carruseles, fracciones, lotes, leads, usuarios] = await Promise.all([
-      Alquiler.query().count('* as total').firstOrFail(),
+    const [carruseles, fracciones, lotes, leads, usuarios] = await Promise.all([
       Carrusel.query().count('* as total').firstOrFail(),
       Fraccion.query().count('* as total').firstOrFail(),
       Lote.query().count('* as total').firstOrFail(),
@@ -19,7 +17,6 @@ export default class DashboardController {
 
     return inertia.render('admin/dashboard', {
       counts: {
-        alquileres: Number(alquileres.$extras.total),
         carruseles: Number(carruseles.$extras.total),
         fracciones: Number(fracciones.$extras.total),
         lotes: Number(lotes.$extras.total),

@@ -6,8 +6,6 @@ import logger from '@adonisjs/core/services/logger'
 import limiter from '@adonisjs/limiter/services/main'
 import type { HttpContext } from '@adonisjs/core/http'
 
-import Alquiler from '#models/alquiler'
-import Upload from '#models/upload'
 import Lead from '#models/lead'
 import LoteColor from '#models/lote_color'
 import LoteamientosService from '#services/loteamientos_service'
@@ -67,11 +65,10 @@ export default class LoteamientosController {
      * completa. Los parámetros de la URL (deep-links del SearchBox del
      * home) se ecoan en `filtros` como estado inicial de esos filtros.
      */
-    const [fracciones, distritos, colores, alquileres] = await Promise.all([
+    const [fracciones, distritos, colores] = await Promise.all([
       this.servicio.fraccionesFiltradas({}),
       this.erp.distritos(),
       LoteColor.query().select('estado', 'color').orderBy('id', 'asc'),
-      this.#alquileresDelMapa(),
     ])
 
     return inertia.render('public/loteamientos', {
@@ -94,46 +91,7 @@ export default class LoteamientosController {
         fracciones: fracciones.length,
         lotesDisponibles: fracciones.reduce((suma, f) => suma + f.disponibles, 0),
       },
-      alquileres,
     })
-  }
-
-  /**
-   * Alquileres del mapa: activos y con ubicación cargada en el ABM (los
-   * demás no se pueden dibujar). Incluye las URLs de su galería para el
-   * lightbox: son pocas filas, no amerita un endpoint aparte.
-   */
-  async #alquileresDelMapa() {
-    const filas = await Alquiler.query().where('estado', 'A').whereNotNull('coordenadas')
-
-    const idsImagenes = filas.flatMap((a) => (Array.isArray(a.imagenes) ? a.imagenes : []))
-    const unicos = [...new Set(idsImagenes)]
-    const uploads = unicos.length ? await Upload.findMany(unicos) : []
-    const urls = new Map(uploads.map((u) => [u.id, `/api/file/public/${u.link}`]))
-
-    return filas
-      .filter((a) => {
-        const c = a.coordenadas as { lat?: unknown; lng?: unknown } | null
-        return c && typeof c.lat === 'number' && typeof c.lng === 'number'
-      })
-      .map((a) => {
-        const c = a.coordenadas as { lat: number; lng: number }
-        const imagenes = (Array.isArray(a.imagenes) ? (a.imagenes as number[]) : [])
-          .map((id) => urls.get(id))
-          .filter((u): u is string => Boolean(u))
-        return {
-          id: a.id,
-          direccion: a.direccion,
-          ubicacion: a.ubicacion,
-          precioMensual: a.precioMensual ? Number(a.precioMensual) : null,
-          precioGarantia: a.precioGarantia ? Number(a.precioGarantia) : null,
-          habitaciones: a.habitaciones,
-          banos: a.banos,
-          cocinas: a.cocinas,
-          centro: { lat: c.lat, lng: c.lng },
-          imagenes,
-        }
-      })
   }
 
   /**

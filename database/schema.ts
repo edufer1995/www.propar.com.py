@@ -7,63 +7,6 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
-export class AlquilereSchema extends BaseModel {
-  static $columns = [
-    'balcon',
-    'banos',
-    'cocinas',
-    'contacto',
-    'coordenadas',
-    'createdAt',
-    'direccion',
-    'estado',
-    'expensas',
-    'habitaciones',
-    'id',
-    'imagenes',
-    'observaciones',
-    'precioGarantia',
-    'precioMensual',
-    'ubicacion',
-    'updatedAt',
-  ] as const
-  $columns = AlquilereSchema.$columns
-  @column()
-  declare balcon: boolean | null
-  @column()
-  declare banos: number | null
-  @column()
-  declare cocinas: number | null
-  @column()
-  declare contacto: string | null
-  @column()
-  declare coordenadas: any | null
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column()
-  declare direccion: string | null
-  @column()
-  declare estado: string | null
-  @column()
-  declare expensas: boolean | null
-  @column()
-  declare habitaciones: number | null
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare imagenes: any | null
-  @column()
-  declare observaciones: string | null
-  @column()
-  declare precioGarantia: string | null
-  @column()
-  declare precioMensual: string | null
-  @column()
-  declare ubicacion: string | null
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
-}
-
 export class CarruseleSchema extends BaseModel {
   static $columns = [
     'createdAt',
@@ -98,51 +41,6 @@ export class CarruseleSchema extends BaseModel {
   declare updatedAt: DateTime | null
   @column()
   declare url: string | null
-}
-
-export class DireccionContactoSchema extends BaseModel {
-  static $columns = ['createdAt', 'descripcion', 'id', 'updatedAt'] as const
-  $columns = DireccionContactoSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column()
-  declare descripcion: string | null
-  @column({ isPrimary: true })
-  declare id: number
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
-}
-
-export class EtlIdMapSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'idNuevo', 'idViejo', 'tabla'] as const
-  $columns = EtlIdMapSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare idNuevo: number
-  @column()
-  declare idViejo: number
-  @column()
-  declare tabla: string
-}
-
-export class EtlRechazoSchema extends BaseModel {
-  static $columns = ['createdAt', 'id', 'motivo', 'payload', 'pkOriginal', 'tabla'] as const
-  $columns = EtlRechazoSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare motivo: string
-  @column()
-  declare payload: any | null
-  @column()
-  declare pkOriginal: string | null
-  @column()
-  declare tabla: string
 }
 
 export class FraccioneSchema extends BaseModel {
@@ -346,80 +244,6 @@ export class MisionSchema extends BaseModel {
   declare imagenDosUploadId: number | null
   @column()
   declare imagenUnoUploadId: number | null
-  @column()
-  declare parrafoUno: string | null
-  @column()
-  declare titulo: string | null
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
-}
-
-export class NuestrosHorarioSchema extends BaseModel {
-  static $columns = ['createdAt', 'descripcion', 'id', 'obs', 'obsCheck', 'updatedAt'] as const
-  $columns = NuestrosHorarioSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column()
-  declare descripcion: string | null
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare obs: string | null
-  @column()
-  declare obsCheck: boolean | null
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
-}
-
-export class OfrecemoSchema extends BaseModel {
-  static $columns = [
-    'createdAt',
-    'descripcion',
-    'id',
-    'imagenCheck',
-    'imagenUploadId',
-    'updatedAt',
-  ] as const
-  $columns = OfrecemoSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column()
-  declare descripcion: string | null
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare imagenCheck: boolean | null
-  @column()
-  declare imagenUploadId: number | null
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
-}
-
-export class ParkingSchema extends BaseModel {
-  static $columns = [
-    'createdAt',
-    'id',
-    'imagenDosUploadId',
-    'imagenUnoUploadId',
-    'parrafoDos',
-    'parrafoTres',
-    'parrafoUno',
-    'titulo',
-    'updatedAt',
-  ] as const
-  $columns = ParkingSchema.$columns
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-  @column({ isPrimary: true })
-  declare id: number
-  @column()
-  declare imagenDosUploadId: number | null
-  @column()
-  declare imagenUnoUploadId: number | null
-  @column()
-  declare parrafoDos: string | null
-  @column()
-  declare parrafoTres: string | null
   @column()
   declare parrafoUno: string | null
   @column()

@@ -83,7 +83,7 @@ export default function Contacto({ asuntos, piePagina }: ContactoProps) {
     <>
       <Seo
         title="Contacto y sucursales"
-        description="Contactá con ABAS Inmobiliaria: consultas sobre lotes, alquileres y estacionamiento. Sucursales, teléfonos y horarios."
+        description="Contactá con Propar Inmobiliaria: consultas sobre lotes y loteamientos. Sucursales, teléfonos y horarios."
       />
       <div className={layoutStyles.container}>
         <div className={styles.contactoGrid}>

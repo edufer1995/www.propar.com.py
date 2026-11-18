@@ -2,8 +2,7 @@ import { BaseSchema } from '@adonisjs/lucid/schema'
 
 /**
  * Medios de las fracciones cargados desde el admin: galería de fotos y
- * videos (arrays ordenados de upload ids en jsonb). No vienen del ETL —
- * etl:import los preserva al re-importar.
+ * videos (arrays ordenados de upload ids en jsonb).
  */
 export default class extends BaseSchema {
   protected tableName = 'fracciones'

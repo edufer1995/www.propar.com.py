@@ -12,13 +12,12 @@ import { Seo } from '~/components/public/seo'
 import { APIProvider, Map, useMap } from '@vis.gl/react-google-maps'
 
 import PublicFullscreenLayout from '~/layouts/public_fullscreen'
-import { LottiePlayer } from '~/components/ui'
+import { Spinner } from '~/components/ui'
 import { http } from '~/lib/http'
 import { toast } from '~/lib/swal'
 import { texts } from '~/lib/texts'
 import { useQueryState } from '~/hooks/use_query_state'
 
-import { AlquilerInfoWindow, AlquilerMarkers } from '~/components/map/alquiler_markers'
 import { volarA, vueloEnCurso } from '~/components/map/camara'
 import { FraccionMarkers } from '~/components/map/fraccion_markers'
 import { LotesLayer } from '~/components/map/lotes_layer'
@@ -41,7 +40,6 @@ import { ComprarLoteModal } from '~/components/map/comprar_lote_modal'
 import { useZoomBands } from '~/components/map/use_zoom_bands'
 import {
   lotesDelDetalle,
-  type AlquilerMapa,
   type ColorEstado,
   type DetalleFraccion,
   type FiltrosLoteamientos,
@@ -75,13 +73,12 @@ type LoteamientosProps = {
   rangosCuota: RangoCuotaOpcion[]
   filtros: FiltrosLoteamientos
   contadores: { fracciones: number; lotesDisponibles: number }
-  alquileres: AlquilerMapa[]
 }
 
 /** Preferencia guardada del panel de búsqueda (visible | oculto). */
-const CLAVE_PANEL_BUSQUEDA = 'abas:mapa:panel-busqueda'
+const CLAVE_PANEL_BUSQUEDA = 'propar:mapa:panel-busqueda'
 /** Evento propio para que el toggle notifique el cambio en el mismo tab. */
-const EVENTO_PANEL_BUSQUEDA = 'abas:panel-busqueda'
+const EVENTO_PANEL_BUSQUEDA = 'propar:panel-busqueda'
 
 function leerPanelBusqueda(): boolean {
   try {
@@ -123,7 +120,7 @@ function parseSeleccion(valor: string): number[] {
 }
 
 function Pantalla(props: LoteamientosProps) {
-  const { fracciones, colores, rangosCuota, filtros, alquileres } = props
+  const { fracciones, colores, rangosCuota, filtros } = props
   const page = usePage()
   const whatsappVentas = String(page.props.whatsappVentas ?? '')
   const telVentas = String(page.props.telVentas ?? '')
@@ -188,11 +185,6 @@ function Pantalla(props: LoteamientosProps) {
   }, [])
   /** Modal de filtros (lo dispara el botón de la botonera flotante). */
   const [filtrosAbiertos, setFiltrosAbiertos] = useState(false)
-
-  /** Alquileres: visibilidad de markers, popup abierto y su lightbox. */
-  const [verAlquileres, setVerAlquileres] = useState(true)
-  const [alquilerAbiertoId, setAlquilerAbiertoId] = useState<number | null>(null)
-  const [lightboxAlquilerId, setLightboxAlquilerId] = useState<number | null>(null)
 
   /**
    * Cambio de selección: descarta el lote seleccionado si su fracción ya
@@ -364,7 +356,7 @@ function Pantalla(props: LoteamientosProps) {
    */
   const seleccionarLote = useCallback(
     (fml: string) => {
-      /* Toggle, igual que fracciones y alquileres: volver a tocar el lote
+      /* Toggle, igual que las fracciones: volver a tocar el lote
          abierto lo deselecciona (cierra la ficha, saca el resaltado y
          devuelve las cards a su tamaño). La cámara se queda donde está:
          deseleccionar no es motivo para mover el mapa. */
@@ -460,16 +452,6 @@ function Pantalla(props: LoteamientosProps) {
       .map((x) => x.f)
   }, [fracciones, verFracciones, distritosOcultos, busqueda, rango, rangosCuota])
 
-  /** Alquileres visibles: toggle activo + búsqueda por dirección/zona. */
-  const alquileresVisibles = useMemo(() => {
-    if (!verAlquileres) return []
-    const texto = normalizar(busqueda.trim())
-    if (!texto) return alquileres
-    return alquileres.filter((a) =>
-      normalizar(`${a.direccion ?? ''} ${a.ubicacion ?? ''}`).includes(texto)
-    )
-  }, [alquileres, verAlquileres, busqueda])
-
   /**
    * Encuadra la cámara en las fracciones que pasan los filtros. Es lo
    * único que el tipeo no puede hacer solo (el texto ya filtra en vivo),
@@ -556,24 +538,6 @@ function Pantalla(props: LoteamientosProps) {
       ? (detalles[lightboxCodigo] as { estado: 'ok'; detalle: DetalleFraccion }).detalle
       : null
 
-  const alquilerAbierto = alquileres.find((a) => a.id === alquilerAbiertoId) ?? null
-  const lightboxAlquiler = alquileres.find((a) => a.id === lightboxAlquilerId) ?? null
-
-  /** Click en marker o card de alquiler: vuelo + popup con su ficha.
-      Toggle: destildar la card (o re-click del marker) cierra la ficha. */
-  const seleccionarAlquiler = useCallback(
-    (id: number) => {
-      if (alquilerAbiertoId === id) {
-        setAlquilerAbiertoId(null)
-        return
-      }
-      setAlquilerAbiertoId(id)
-      const alquiler = alquileres.find((a) => a.id === id)
-      if (map && alquiler) volarA(map, alquiler.centro, 17, { offsetYPx: -175 })
-    },
-    [map, alquileres, alquilerAbiertoId]
-  )
-
   /**
    * Ficha de lote abierta: la tira de fracciones y el carrusel de lotes
    * se achican para dejarle la pantalla al lote.
@@ -590,7 +554,6 @@ function Pantalla(props: LoteamientosProps) {
     setRango('')
     setDistritosOcultos(new Set())
     setVerFracciones(true)
-    setVerAlquileres(true)
     aplicarEstadosOcultos(new Set())
   }, [aplicarEstadosOcultos])
 
@@ -606,9 +569,7 @@ function Pantalla(props: LoteamientosProps) {
     qs.aplicar({ fraccion: null })
     cerrarFichaLote()
     setModalCompra(false)
-    setAlquilerAbiertoId(null)
     setLightboxCodigo(null)
-    setLightboxAlquilerId(null)
     setVerCardsLote(true)
     setFiltrosAbiertos(false)
     limpiarFiltros()
@@ -622,8 +583,6 @@ function Pantalla(props: LoteamientosProps) {
     distritosOcultos,
     estadosOcultos,
     verFracciones,
-    verAlquileres,
-    hayAlquileres: alquileres.length > 0,
   })
 
   const reintentar = useCallback(() => {
@@ -653,24 +612,6 @@ function Pantalla(props: LoteamientosProps) {
             seleccionadas={seleccion}
             onSelect={alternarFraccion}
           />
-
-          {verAlquileres && (
-            <AlquilerMarkers
-              alquileres={alquileres}
-              seleccionadoId={alquilerAbiertoId}
-              onSelect={seleccionarAlquiler}
-            />
-          )}
-
-          {alquilerAbierto && verAlquileres && (
-            <AlquilerInfoWindow
-              alquiler={alquilerAbierto}
-              whatsapp={whatsappVentas}
-              tel={telVentas}
-              onVerFotos={() => setLightboxAlquilerId(alquilerAbierto.id)}
-              onClose={() => setAlquilerAbiertoId(null)}
-            />
-          )}
 
           <LotesLayer
             detalles={detallesOk}
@@ -709,7 +650,7 @@ function Pantalla(props: LoteamientosProps) {
       {/* Estado del detalle (loading / error con reintento) */}
       {cargando && (
         <div className={styles.detalleEstado} role="status">
-          <LottiePlayer src="/lotties/spinner-abas.json" size={96} />
+          <Spinner />
           Cargando lotes...
         </div>
       )}
@@ -723,16 +664,14 @@ function Pantalla(props: LoteamientosProps) {
       )}
 
       {/* Tira de fracciones: centrada verticalmente hasta la primera
-          selección (fracción o alquiler); con algo abierto en el mapa
+          selección de fracción; con algo abierto en el mapa
           sube arriba en modo compacto (transición). El toggle de
           MapControls pliega todo el panel para despejar el mapa. */}
       {verPanelBusqueda && (
         <div
           className={[
             styles.zonaFracciones,
-            seleccion.length === 0 && alquilerAbiertoId === null
-              ? styles.zonaFraccionesCentrada
-              : '',
+            seleccion.length === 0 ? styles.zonaFraccionesCentrada : '',
             fichaLoteAbierta ? styles.zonaFraccionesMini : '',
           ]
             .filter(Boolean)
@@ -746,10 +685,6 @@ function Pantalla(props: LoteamientosProps) {
             onSelect={alternarFraccion}
             onVerMedios={abrirLightbox}
             onLimpiarFiltros={limpiarFiltros}
-            alquileres={alquileresVisibles}
-            alquilerSeleccionadoId={alquilerAbiertoId}
-            onSelectAlquiler={seleccionarAlquiler}
-            onVerFotosAlquiler={setLightboxAlquilerId}
           />
 
           <BuscadorBarra
@@ -793,12 +728,6 @@ function Pantalla(props: LoteamientosProps) {
           /* Al ocultar, la selección del mapa se limpia también. */
           if (verFracciones && seleccion.length > 0) qs.aplicar({ fraccion: null })
           setVerFracciones((v) => !v)
-        }}
-        totalAlquileres={alquileres.length}
-        verAlquileres={verAlquileres}
-        onToggleAlquileres={() => {
-          setVerAlquileres((v) => !v)
-          setAlquilerAbiertoId(null)
         }}
         onLimpiar={limpiarFiltros}
       />
@@ -846,14 +775,6 @@ function Pantalla(props: LoteamientosProps) {
           onClose={() => setLightboxCodigo(null)}
         />
       )}
-
-      {lightboxAlquiler && (
-        <LightboxMedios
-          titulo={lightboxAlquiler.direccion ?? 'Alquiler'}
-          medios={{ fotos: lightboxAlquiler.imagenes, videos: [] }}
-          onClose={() => setLightboxAlquilerId(null)}
-        />
-      )}
     </>
   )
 }
@@ -864,7 +785,7 @@ function Pantalla(props: LoteamientosProps) {
  * client-side (Google Maps toca window/DOM).
  */
 function PantallaEstatica(props: LoteamientosProps) {
-  const { fracciones, alquileres } = props
+  const { fracciones } = props
   return (
     <>
       <div className={styles.mapa} aria-hidden />
@@ -875,7 +796,6 @@ function PantallaEstatica(props: LoteamientosProps) {
           ultimaSeleccionada={null}
           onSelect={() => {}}
           onVerMedios={() => {}}
-          alquileres={alquileres}
         />
       </div>
     </>
@@ -911,7 +831,7 @@ export default function Loteamientos(props: LoteamientosProps) {
     <>
       <Seo
         title="Loteamientos en el mapa"
-        description="Loteamientos y alquileres de ABAS en un mapa interactivo: buscá tu lote por distrito y rango de cuota o encontrá alquileres disponibles, con precios actualizados."
+        description="Loteamientos de Propar en un mapa interactivo: buscá tu lote por distrito y rango de cuota, con precios y disponibilidad actualizados."
       />
       {montado && mapsApiKey ? (
         <APIProvider apiKey={mapsApiKey} libraries={['marker']}>

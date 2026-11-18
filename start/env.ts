@@ -30,14 +30,11 @@ export default await Env.create(new URL('../', import.meta.url), {
   DB_USER: Env.schema.string(),
   DB_PASSWORD: Env.schema.string(),
   DB_DATABASE: Env.schema.string(),
-  // Base con el restore del dump viejo; solo la usa `node ace etl:import`
-  DB_DATABASE_STAGING: Env.schema.string.optional(),
   DB_SSL: Env.schema.boolean.optional(),
   DB_SSL_STRICT: Env.schema.boolean.optional(),
 
-  // ERP — fake por defecto (dataset inventado); odoo = Odoo de Propar;
-  // oracle = vistas Oracle heredadas de Abas. Cada driver exige sus variables.
-  ERP_DRIVER: Env.schema.enum(['fake', 'odoo', 'oracle'] as const),
+  // ERP — fake = dataset inventado (desarrollo y tests); odoo = Odoo de Propar.
+  ERP_DRIVER: Env.schema.enum(['fake', 'odoo'] as const),
 
   // Odoo (ERP_DRIVER=odoo). La API key va SOLO en el .env del servidor.
   ODOO_URL: Env.schema.string.optional({ format: 'url', tld: false }),
@@ -45,12 +42,6 @@ export default await Env.create(new URL('../', import.meta.url), {
   ODOO_LOGIN: Env.schema.string.optional(),
   ODOO_API_KEY: Env.schema.string.optional(),
   ODOO_TIMEOUT_MS: Env.schema.number.optional(),
-
-  ORACLE_HOST: Env.schema.string.optional({ format: 'host' }),
-  ORACLE_PORT: Env.schema.number.optional(),
-  ORACLE_USER: Env.schema.string.optional(),
-  ORACLE_PASSWORD: Env.schema.string.optional(),
-  ORACLE_DB_NAME: Env.schema.string.optional(),
 
   // SMTP
   SMTP_HOST: Env.schema.string({ format: 'host' }),

@@ -20,17 +20,12 @@ import { NIVEL_ADMINISTRADOR, NIVEL_VENDEDOR } from '#middleware/role_middleware
 */
 router.get('/', [controllers.public.Home, 'index']).as('home')
 router.get('quienes-somos', [controllers.public.QuienesSomos, 'index']).as('public.quienesSomos')
-router.get('parking', [controllers.public.Parking, 'index']).as('public.parking')
-router.get('abas-guarda', [controllers.public.AbasGuarda, 'index']).as('public.abasGuarda')
 router.get('contacto', [controllers.public.Contacto, 'show']).as('public.contacto.show')
 router.post('contacto', [controllers.public.Contacto, 'store']).as('public.contacto.store')
 
 /*
 |--------------------------------------------------------------------------
-| SEO técnico (Etapa 6): robots.txt + sitemap.xml. Nota: las URLs públicas
-| del sitio viejo coinciden con las nuevas salvo una excepción:
-| /alquileres → 404 (decisión del cliente: los alquileres viven dentro del
-| mapa, sin redirect).
+| SEO técnico: robots.txt + sitemap.xml.
 |--------------------------------------------------------------------------
 */
 router.get('robots.txt', [controllers.public.Seo, 'robots']).as('public.robots')
@@ -38,7 +33,7 @@ router.get('sitemap.xml', [controllers.public.Seo, 'sitemap']).as('public.sitema
 
 /*
 |--------------------------------------------------------------------------
-| Loteamientos: pantalla del mapa (lotes + alquileres) + endpoints JSON del
+| Loteamientos: pantalla del mapa de lotes + endpoints JSON del
 | detalle de fracción y la solicitud de compra. /propiedades (el nombre que
 | tuvo la sección durante el rediseño) redirige 301 conservando la query.
 |--------------------------------------------------------------------------
@@ -118,7 +113,7 @@ router
 |     sensibles: Leads (datos personales de interesados), Usuarios del
 |     admin y Usuarios App.
 |   · Nivel 2 (Vendedor)       → gestión de contenido del sitio (carruseles,
-|     alquileres, planos, institucional, etc.), sin secciones sensibles.
+|     planos, institucional, etc.), sin secciones sensibles.
 |   · Niveles 3 y 4 (Cargar / Cargar-Transferir contactos) → roles
 |     operativos de la app móvil: en el admin web solo dashboard y perfil.
 |
@@ -238,26 +233,6 @@ router
     |----------------------------------------------------------------------
     */
 
-        // Alquileres (motor + MapPicker + galería de fotos)
-        router.get('alquileres', [controllers.admin.Alquileres, 'index']).as('app.alquileres.index')
-        router
-          .get('alquileres/export', [controllers.admin.Alquileres, 'export'])
-          .as('app.alquileres.export')
-        router
-          .post('alquileres', [controllers.admin.Alquileres, 'store'])
-          .as('app.alquileres.store')
-        router
-          .put('alquileres/:id', [controllers.admin.Alquileres, 'update'])
-          .where('id', router.matchers.number())
-          .as('app.alquileres.update')
-        router
-          .delete('alquileres/:id', [controllers.admin.Alquileres, 'destroy'])
-          .where('id', router.matchers.number())
-          .as('app.alquileres.destroy')
-        router
-          .post('alquileres/destroy-masivo', [controllers.admin.Alquileres, 'destroyMasivo'])
-          .as('app.alquileres.destroyMasivo')
-
         // Fracciones (solo medios: fotos + videos del mapa; nacen del ETL,
         // sin store/destroy a propósito)
         router.get('fracciones', [controllers.admin.Fracciones, 'index']).as('app.fracciones.index')
@@ -305,65 +280,6 @@ router
           .where('id', router.matchers.number())
           .as('app.lotesDistritos.destroy')
 
-        // Listas simples de /parking (motor CRUD)
-        router.get('ofrecemos', [controllers.admin.Ofrecemos, 'index']).as('app.ofrecemos.index')
-        router
-          .get('ofrecemos/export', [controllers.admin.Ofrecemos, 'export'])
-          .as('app.ofrecemos.export')
-        router.post('ofrecemos', [controllers.admin.Ofrecemos, 'store']).as('app.ofrecemos.store')
-        router
-          .put('ofrecemos/:id', [controllers.admin.Ofrecemos, 'update'])
-          .where('id', router.matchers.number())
-          .as('app.ofrecemos.update')
-        router
-          .delete('ofrecemos/:id', [controllers.admin.Ofrecemos, 'destroy'])
-          .where('id', router.matchers.number())
-          .as('app.ofrecemos.destroy')
-        router
-          .post('ofrecemos/destroy-masivo', [controllers.admin.Ofrecemos, 'destroyMasivo'])
-          .as('app.ofrecemos.destroyMasivo')
-
-        router.get('horarios', [controllers.admin.Horarios, 'index']).as('app.horarios.index')
-        router
-          .get('horarios/export', [controllers.admin.Horarios, 'export'])
-          .as('app.horarios.export')
-        router.post('horarios', [controllers.admin.Horarios, 'store']).as('app.horarios.store')
-        router
-          .put('horarios/:id', [controllers.admin.Horarios, 'update'])
-          .where('id', router.matchers.number())
-          .as('app.horarios.update')
-        router
-          .delete('horarios/:id', [controllers.admin.Horarios, 'destroy'])
-          .where('id', router.matchers.number())
-          .as('app.horarios.destroy')
-        router
-          .post('horarios/destroy-masivo', [controllers.admin.Horarios, 'destroyMasivo'])
-          .as('app.horarios.destroyMasivo')
-
-        router
-          .get('direccion-contacto', [controllers.admin.DireccionContacto, 'index'])
-          .as('app.direccionContacto.index')
-        router
-          .get('direccion-contacto/export', [controllers.admin.DireccionContacto, 'export'])
-          .as('app.direccionContacto.export')
-        router
-          .post('direccion-contacto', [controllers.admin.DireccionContacto, 'store'])
-          .as('app.direccionContacto.store')
-        router
-          .put('direccion-contacto/:id', [controllers.admin.DireccionContacto, 'update'])
-          .where('id', router.matchers.number())
-          .as('app.direccionContacto.update')
-        router
-          .delete('direccion-contacto/:id', [controllers.admin.DireccionContacto, 'destroy'])
-          .where('id', router.matchers.number())
-          .as('app.direccionContacto.destroy')
-        router
-          .post('direccion-contacto/destroy-masivo', [
-            controllers.admin.DireccionContacto,
-            'destroyMasivo',
-          ])
-          .as('app.direccionContacto.destroyMasivo')
-
         // Singletons institucionales (GET show + POST update)
         router
           .get('quienes-somos', [controllers.admin.singletons.QuienesSomos, 'show'])
@@ -391,10 +307,6 @@ router
         router
           .post('producto', [controllers.admin.singletons.Producto, 'update'])
           .as('app.producto.update')
-        router.get('parking', [controllers.admin.singletons.Parking, 'show']).as('app.parking.show')
-        router
-          .post('parking', [controllers.admin.singletons.Parking, 'update'])
-          .as('app.parking.update')
       })
       .use(middleware.role({ nivelMinimo: NIVEL_VENDEDOR }))
 

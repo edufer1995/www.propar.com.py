@@ -8,7 +8,7 @@
 | DTO del index (pdfUrl + pdfNombre), rechazo de un upload de otra spec,
 | y que quitar el PDF borre el upload (fila + archivo).
 |
-| Corren contra abas_v2: crean filas propias con un prefijo único y las
+| Corren contra la base de desarrollo: crean filas propias con un prefijo único y las
 | borran al final — nunca truncan tablas.
 |
 */

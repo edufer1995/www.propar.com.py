@@ -3,7 +3,7 @@ import { BaseSchema } from '@adonisjs/lucid/schema'
 /**
  * Enlace propio del slide (ruta interna o http(s)): el botón del slide
  * deja de depender solo de una fracción, para slides que no son de
- * loteamientos (ej. Abas Guarda). Nullable: los slides existentes siguen
+ * loteamientos (ej. una página de promoción). Nullable: los slides existentes siguen
  * con su "Ver lotes" de siempre.
  */
 export default class extends BaseSchema {

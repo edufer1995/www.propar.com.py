@@ -76,21 +76,6 @@ export type OpcionDistrito = {
   nombre: string
 }
 
-/** Alquiler con ubicación (marker naranja del mapa + popup + lightbox). */
-export type AlquilerMapa = {
-  id: number
-  direccion: string | null
-  ubicacion: string | null
-  precioMensual: number | null
-  precioGarantia: number | null
-  habitaciones: number | null
-  banos: number | null
-  cocinas: number | null
-  centro: PuntoLatLng
-  /** URLs de la galería (el ABM ya la carga) */
-  imagenes: string[]
-}
-
 export type ColorEstado = {
   estado: string
   color: string

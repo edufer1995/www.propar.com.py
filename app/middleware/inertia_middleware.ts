@@ -4,9 +4,9 @@ import type { NextFn } from '@adonisjs/core/types/http'
 import UserTransformer from '#transformers/user_transformer'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
-/** Defaults del sitio viejo si no hay env (número de ventas / central). */
-const WHATSAPP_VENTAS_DEFAULT = '+59521444061'
-const TEL_VENTAS_DEFAULT = '+59521444061'
+/** Defaults si no hay env: el WhatsApp de ventas de la web actual de Propar. */
+const WHATSAPP_VENTAS_DEFAULT = '+595976522694'
+const TEL_VENTAS_DEFAULT = '+595976522694'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   share(ctx: HttpContext) {
@@ -33,6 +33,8 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
        */
       whatsappVentas: ctx.inertia.always(env.get('WHATSAPP_VENTAS', WHATSAPP_VENTAS_DEFAULT)),
       telVentas: ctx.inertia.always(env.get('TEL_VENTAS', TEL_VENTAS_DEFAULT)),
+      /** Correo de contacto visible en el pie (el mismo que recibe las consultas). */
+      contactoEmail: ctx.inertia.always(env.get('CONTACTO_EMAIL')),
       /** Origen canónico del sitio (og:url y canonical de las páginas públicas). */
       appUrl: ctx.inertia.always(env.get('APP_URL')),
       /** Config pública para el frontend (mapa de loteamientos). */
