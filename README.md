@@ -55,6 +55,7 @@ npm run dev                  # http://localhost:3334
 | `npm run lint` / `npm run format`       | ESLint / Prettier                              |
 | `node ace erp:verificar`                | Prueba la conexión con el ERP (solo lectura)   |
 | `node ace erp:verificar --fraccion=234` | Detalle de los lotes de una fracción en el ERP |
+| `node ace admin:inicial`                | Crea el primer admin desde `ADMIN_INICIAL_*`   |
 | `npm run build`                         | Build de producción (cliente + SSR + backend)  |
 
 ## Seguridad
