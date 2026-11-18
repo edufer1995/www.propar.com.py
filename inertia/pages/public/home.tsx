@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactElement } from 'react'
 import { Seo } from '~/components/public/seo'
 import { Link } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
 import { Clock, FileText, Maximize2, MapPin, Phone } from 'lucide-react'
 import PublicLayout, { type PiePagina } from '~/layouts/public'
 import { IconoRed } from '~/components/public/icons'
@@ -11,7 +12,9 @@ import { SearchBox } from '~/components/public/search_box'
 import { useCarousel } from '~/components/public/use_carousel'
 import { HeroCarousel, type SlideCarrusel } from '~/components/public/hero_carousel'
 import { LightboxMedios } from '~/components/map/lightbox_medios'
+import { BandaAccion } from '~/components/public/propar'
 import styles from '~/components/public/public.module.css'
+import pr from '~/components/public/propar.module.css'
 import layoutStyles from '~/layouts/public.module.css'
 
 type Promocion = {
@@ -90,6 +93,8 @@ export default function Home({
   } = useCarousel({ loop: true, align: 'start' }, 7500)
   const [sucursalId, setSucursalId] = useState<number | null>(piePagina.sucursales[0]?.id ?? null)
   const sucursal = piePagina.sucursales.find((s) => s.id === sucursalId)
+  const { props } = usePage()
+  const linkWhatsApp = `https://wa.me/${String(props.whatsappVentas ?? '+595976522694').replace(/\D/g, '')}?text=${encodeURIComponent('Hola Propar, vengo del sitio web y quisiera más información.')}`
 
   /** Red cuya imagen está abierta en el lightbox (solo las que cargaron una). */
   const [redAmpliadaId, setRedAmpliadaId] = useState<number | null>(null)
@@ -141,8 +146,8 @@ export default function Home({
             ENTERO en área vertical 4:5 (el formato del material real). */}
         {promociones.length > 0 && (
           <Seccion
-            titulo="Promociones"
-            subtitulo="Aprovechá los beneficios vigentes"
+            eyebrow="Promociones"
+            titulo="Aprovechá los beneficios vigentes"
             onPrev={promosPrev}
             onNext={promosNext}
           >
@@ -206,8 +211,8 @@ export default function Home({
         {/* (d) Lotes por distrito: carrusel (antes era una grilla de tiles) */}
         {distritos.length > 0 && (
           <Seccion
-            titulo="Lotes por distrito"
-            subtitulo="Elegí la ciudad donde querés vivir"
+            eyebrow="Lotes por distrito"
+            titulo="Elegí la ciudad donde querés vivir"
             onPrev={distritosPrev}
             onNext={distritosNext}
           >
@@ -231,9 +236,11 @@ export default function Home({
                             {d.lotesLibres} {d.lotesLibres === 1 ? 'lote libre' : 'lotes libres'}
                           </span>
                         </div>
-                        <span className={styles.distritoCuota}>
-                          Cuotas desde {formatGs(d.cuotaMinima)}
-                        </span>
+                        {d.cuotaMinima > 0 && (
+                          <span className={styles.distritoCuota}>
+                            Cuotas desde <b>{formatGs(d.cuotaMinima)}</b>
+                          </span>
+                        )}
                       </div>
                     </Link>
                   </div>
@@ -248,8 +255,9 @@ export default function Home({
             marca cuando la red no tiene imagen. */}
         {piePagina.redes.length > 0 && (
           <Seccion
+            eyebrow="Redes"
             titulo="Seguinos en redes"
-            subtitulo="Novedades, lanzamientos y promos al día"
+            subtitulo="Novedades, lanzamientos y promos al día."
             onPrev={redesPrev}
             onNext={redesNext}
           >
@@ -313,84 +321,97 @@ export default function Home({
           </Seccion>
         )}
 
-        {/* (f) Sucursales con selector */}
+        {/* (f) Sucursales: lista a la izquierda, ficha con mapa a la derecha */}
         {piePagina.sucursales.length > 0 && (
-          <Seccion titulo="Sucursales" subtitulo="Visitanos en la más cercana">
+          <Seccion eyebrow="Sucursales" titulo="Visitanos en la más cercana">
             <div className={styles.sucursales}>
-              <div className={styles.sucursalPanel}>
-                <label style={{ fontWeight: 600, fontSize: 14 }} htmlFor="selector-sucursal">
-                  Elegí una sucursal
-                </label>
-                <select
-                  id="selector-sucursal"
-                  value={sucursalId ?? ''}
-                  onChange={(e) => setSucursalId(Number(e.target.value))}
-                  style={{
-                    minHeight: 'var(--tap-target)',
-                    padding: '0 var(--space-3)',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--border)',
-                    background: 'var(--bg)',
-                  }}
-                >
-                  {piePagina.sucursales.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.titulo}
-                    </option>
-                  ))}
-                </select>
+              <div className={styles.sucursalLista} role="tablist" aria-label="Sucursales">
+                {piePagina.sucursales.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={s.id === sucursal?.id}
+                    aria-controls="ficha-sucursal"
+                    className={styles.sucursalBoton}
+                    onClick={() => setSucursalId(s.id)}
+                  >
+                    <b>{s.titulo}</b>
+                    {s.horarios && <span>{s.horarios}</span>}
+                  </button>
+                ))}
+              </div>
 
-                {sucursal && (
+              {sucursal && (
+                <div className={styles.sucursalFicha} id="ficha-sucursal" role="tabpanel">
+                  <div className={styles.sucursalMapa}>
+                    {sucursal.coordenadas && (
+                      <iframe
+                        title={`Mapa de la sucursal ${sucursal.titulo}`}
+                        src={`https://maps.google.com/maps?q=${sucursal.coordenadas.lat},${sucursal.coordenadas.lng}&z=15&output=embed`}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        allowFullScreen
+                      />
+                    )}
+                  </div>
                   <div className={styles.sucursalInfo}>
-                    <strong>{sucursal.titulo}</strong>
+                    <h3>{sucursal.titulo}</h3>
                     {sucursal.horarios && (
-                      <div>
-                        <Clock size={15} /> {sucursal.horarios}
-                      </div>
+                      <p>
+                        <Clock size={16} /> {sucursal.horarios}
+                      </p>
                     )}
                     {sucursal.telefonos && (
-                      <div>
-                        <Phone size={15} />{' '}
+                      <p>
+                        <Phone size={16} />
                         <a href={`tel:${sucursal.telefonos.replace(/\s/g, '')}`}>
                           {sucursal.telefonos}
                         </a>
-                      </div>
+                      </p>
                     )}
-                    {sucursal.coordenadas && (
-                      <div>
-                        <MapPin size={15} />{' '}
+                    <div className={styles.sucursalAcciones}>
+                      {sucursal.coordenadas && (
                         <a
+                          className={`${pr.btn} ${pr.btnVerde}`}
                           href={`https://www.google.com/maps/dir/?api=1&destination=${sucursal.coordenadas.lat},${sucursal.coordenadas.lng}`}
                           target="_blank"
                           rel="noreferrer"
                         >
-                          Cómo llegar
+                          <MapPin size={16} /> Cómo llegar
                         </a>
-                      </div>
-                    )}
+                      )}
+                      <a
+                        className={`${pr.btn} ${pr.btnBorde}`}
+                        href={linkWhatsApp}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Escribir por WhatsApp
+                      </a>
+                    </div>
                   </div>
-                )}
-              </div>
-
-              <div className={styles.sucursalMapa}>
-                {sucursal?.coordenadas ? (
-                  <iframe
-                    title={`Mapa — ${sucursal.titulo}`}
-                    src={`https://maps.google.com/maps?q=${sucursal.coordenadas.lat},${sucursal.coordenadas.lng}&z=15&output=embed`}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    allowFullScreen
-                  />
-                ) : (
-                  <div className={styles.galeriaVacia}>Sin ubicación cargada</div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </Seccion>
         )}
       </div>
 
-      {/* (g) Imagen de una red a pantalla completa (mismo lightbox que el
+      {/* (g) Banda marrón: Deseo vender */}
+      <div style={{ marginTop: 'var(--space-8)' }}>
+        <BandaAccion
+          titulo="¿Querés vender tu terreno?"
+          texto="Contanos dónde está, sus medidas y el precio. Un asesor de Propar te contacta para evaluarlo."
+          accion={
+            <Link route="public.vender.show" className={`${pr.btn} ${pr.btnBlanco}`}>
+              Deseo vender
+            </Link>
+          }
+        />
+      </div>
+
+      {/* (h) Imagen de una red a pantalla completa (mismo lightbox que el
           mapa: una sola foto, sin flechas). */}
       {redAmpliada?.imagenUrl && (
         <LightboxMedios
@@ -409,7 +430,7 @@ export default function Home({
         />
       )}
 
-      {/* (h) Promoción destacada: modal de bienvenida */}
+      {/* (i) Promoción destacada: modal de bienvenida */}
       {promoModal && (
         <Modal
           open={promoAbierta}

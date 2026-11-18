@@ -20,6 +20,7 @@ declare module '@adonisjs/inertia/types' {
     'admin/recursos/carruseles': ExtractProps<(typeof import('../../inertia/pages/admin/recursos/carruseles.tsx'))['default']>
     'admin/recursos/fracciones': ExtractProps<(typeof import('../../inertia/pages/admin/recursos/fracciones.tsx'))['default']>
     'admin/recursos/leads': ExtractProps<(typeof import('../../inertia/pages/admin/recursos/leads.tsx'))['default']>
+    'admin/recursos/preguntas_frecuentes': ExtractProps<(typeof import('../../inertia/pages/admin/recursos/preguntas_frecuentes.tsx'))['default']>
     'admin/recursos/promociones': ExtractProps<(typeof import('../../inertia/pages/admin/recursos/promociones.tsx'))['default']>
     'admin/recursos/redes_sociales': ExtractProps<(typeof import('../../inertia/pages/admin/recursos/redes_sociales.tsx'))['default']>
     'admin/recursos/sucursales': ExtractProps<(typeof import('../../inertia/pages/admin/recursos/sucursales.tsx'))['default']>
@@ -36,8 +37,10 @@ declare module '@adonisjs/inertia/types' {
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.tsx'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.tsx'))['default']>
     'public/contacto': ExtractProps<(typeof import('../../inertia/pages/public/contacto.tsx'))['default']>
+    'public/deseo_vender': ExtractProps<(typeof import('../../inertia/pages/public/deseo_vender.tsx'))['default']>
     'public/home': ExtractProps<(typeof import('../../inertia/pages/public/home.tsx'))['default']>
     'public/loteamientos': ExtractProps<(typeof import('../../inertia/pages/public/loteamientos.tsx'))['default']>
+    'public/preguntas_frecuentes': ExtractProps<(typeof import('../../inertia/pages/public/preguntas_frecuentes.tsx'))['default']>
     'public/quienes_somos': ExtractProps<(typeof import('../../inertia/pages/public/quienes_somos.tsx'))['default']>
     'styleguide': ExtractProps<(typeof import('../../inertia/pages/styleguide.tsx'))['default']>
   }

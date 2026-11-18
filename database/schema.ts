@@ -269,6 +269,36 @@ export class PasswordResetTokenSchema extends BaseModel {
   declare userId: number
 }
 
+export class PreguntasFrecuenteSchema extends BaseModel {
+  static $columns = [
+    'activo',
+    'categoria',
+    'createdAt',
+    'id',
+    'orden',
+    'pregunta',
+    'respuesta',
+    'updatedAt',
+  ] as const
+  $columns = PreguntasFrecuenteSchema.$columns
+  @column()
+  declare activo: boolean
+  @column()
+  declare categoria: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare orden: number
+  @column()
+  declare pregunta: string
+  @column()
+  declare respuesta: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class ProductoSchema extends BaseModel {
   static $columns = [
     'createdAt',

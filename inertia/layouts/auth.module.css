@@ -8,8 +8,8 @@
   justify-content: center;
   padding: var(--space-5) var(--space-4);
   background:
-    radial-gradient(1100px 500px at 85% -10%, color-mix(in srgb, var(--brand-blue) 16%, transparent), transparent 70%),
-    radial-gradient(900px 480px at -10% 110%, color-mix(in srgb, var(--brand-green) 13%, transparent), transparent 70%),
+    radial-gradient(1100px 500px at 85% -10%, color-mix(in srgb, var(--brand-verde) 16%, transparent), transparent 70%),
+    radial-gradient(900px 480px at -10% 110%, color-mix(in srgb, var(--brand-marron) 13%, transparent), transparent 70%),
     var(--bg);
 }
 

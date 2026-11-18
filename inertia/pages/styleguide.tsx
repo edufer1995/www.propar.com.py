@@ -63,11 +63,11 @@ export default function Styleguide() {
         <Section title="Paleta y degradados">
           <Row>
             {[
-              '--brand-blue',
-              '--brand-green',
-              '--brand-sky',
-              '--brand-gray',
-              '--brand-teal-dark',
+              '--brand-verde',
+              '--brand-marron',
+              '--brand-tinte',
+              '--brand-gris',
+              '--brand-tinta',
             ].map((v) => (
               <div key={v} style={{ textAlign: 'center', fontSize: 12 }}>
                 <div

@@ -9,6 +9,7 @@
 */
 
 import vine from '@vinejs/vine'
+import { CATEGORIAS_PREGUNTA } from '#validators/preguntas'
 
 /**
  * Solo rutas internas ("/algo") o URLs http(s) absolutas: el valor termina
@@ -75,4 +76,12 @@ export const usuarioAppValidator = vine.create({
   nombres: vine.string().trim().minLength(3).maxLength(120),
   documento: vine.string().trim().minLength(4).maxLength(30),
   correo: vine.string().trim().email().maxLength(254),
+})
+
+export const preguntaFrecuenteValidator = vine.create({
+  categoria: vine.enum(CATEGORIAS_PREGUNTA),
+  pregunta: vine.string().trim().minLength(5).maxLength(255),
+  respuesta: vine.string().trim().minLength(2).maxLength(3000),
+  orden: vine.number().withoutDecimals().min(0).max(9999),
+  activo: vine.boolean(),
 })

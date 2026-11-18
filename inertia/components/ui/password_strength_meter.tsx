@@ -23,7 +23,7 @@ const NIVELES = [
   { label: 'Muy débil', color: 'var(--danger)' },
   { label: 'Muy débil', color: 'var(--danger)' },
   { label: 'Débil', color: 'var(--warning)' },
-  { label: 'Aceptable', color: 'var(--brand-blue)' },
+  { label: 'Aceptable', color: 'var(--brand-verde)' },
   { label: 'Fuerte', color: 'var(--success)' },
 ] as const
 

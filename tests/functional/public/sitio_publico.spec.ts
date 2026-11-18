@@ -33,6 +33,8 @@ test.group('Sitio público — páginas', () => {
       { url: '/quienes-somos', componente: 'public/quienes_somos' },
       { url: '/contacto', componente: 'public/contacto' },
       { url: '/loteamientos', componente: 'public/loteamientos' },
+      { url: '/preguntas-frecuentes', componente: 'public/preguntas_frecuentes' },
+      { url: '/deseo-vender', componente: 'public/deseo_vender' },
     ])
     .run(async ({ client }, { url, componente }) => {
       const respuesta = await client.get(url).withInertia()

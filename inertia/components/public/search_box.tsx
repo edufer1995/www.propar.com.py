@@ -41,8 +41,9 @@ export function SearchBox({
   return (
     <div className={`${layoutStyles.container} ${styles.buscador}`}>
       <form className={styles.buscadorCard} onSubmit={buscar} role="search">
+        <h2>¿Qué estás buscando?</h2>
         <InputField
-          label="¿Qué estás buscando?"
+          label="Loteamiento o zona"
           name="texto"
           placeholder="Nombre del loteamiento o de la zona"
           autoComplete="off"
@@ -75,8 +76,8 @@ export function SearchBox({
             </option>
           ))}
         </SelectField>
-        <Button type="submit" variant="accent">
-          Buscar
+        <Button type="submit" variant="primary">
+          Buscar lotes
         </Button>
       </form>
     </div>

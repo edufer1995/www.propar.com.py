@@ -1,4 +1,4 @@
-/* Layout público: navbar sticky translúcida, footer verde oscuro, FAB. */
+/* Layout público (maqueta Propar): barra verde, header blanco sticky, pie oscuro, FAB. */
 
 .page {
   min-height: 100dvh;
@@ -9,28 +9,45 @@
 
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1160px;
   margin: 0 auto;
   padding: 0 var(--space-4);
 }
 
-/* ===== Navbar ===== */
+/* ===== Barra superior verde ===== */
+.topbar {
+  background: var(--brand-verde);
+  color: #fff;
+  font-size: 0.82rem;
+}
+.topbarInner {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: 7px;
+  flex-wrap: wrap;
+}
+.topbarExtra {
+  display: none;
+}
+@media (min-width: 900px) {
+  .topbarExtra { display: inline; }
+}
+
+/* ===== Header ===== */
 .navbar {
   position: sticky;
   top: 0;
   z-index: 200;
-  background: color-mix(in srgb, var(--bg) 84%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  box-shadow: 0 1px 0 var(--border);
 }
 
 .navbarInner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  min-height: 64px;
+  gap: var(--space-5);
+  min-height: 68px;
 }
 
 .brand {
@@ -42,69 +59,64 @@
 
 .brandLogo {
   display: block;
-  height: 40px;
+  height: 44px;
   width: auto;
 }
 
 .navLinks {
   display: none;
+  flex: 1;
+  justify-content: center;
   align-items: center;
-  gap: var(--space-2);
+  gap: 22px;
 }
 
 .navLink {
   display: inline-flex;
   align-items: center;
   min-height: var(--tap-target);
-  padding: 0 var(--space-3);
-  border-radius: var(--radius-full);
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 14px;
+  font-size: 0.95rem;
   color: var(--text);
 }
 .navLink:hover {
   text-decoration: none;
-  background: var(--surface-2);
+  color: var(--primary);
 }
 .navLinkActive {
   color: var(--primary);
-  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  font-weight: 700;
+  box-shadow: inset 0 -2px 0 var(--primary);
 }
 
 .navCta {
-  display: inline-flex;
+  display: none;
   align-items: center;
   min-height: var(--tap-target);
-  padding: 0 var(--space-4);
-  border-radius: var(--radius-full);
-  background: var(--grad-accent);
-  color: var(--accent-contrast);
-  font-family: var(--font-display);
+  padding: 0 20px;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: var(--primary-contrast);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 1rem;
+  white-space: nowrap;
 }
-.navCta:hover { text-decoration: none; filter: brightness(1.06); }
-
-.navActions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
-}
+.navCta:hover { text-decoration: none; background: var(--primary-hover); }
 
 .hamburger {
+  margin-left: auto;
   min-width: var(--tap-target);
   min-height: var(--tap-target);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-full);
-  color: var(--text);
+  color: var(--primary);
 }
 .hamburger:hover { background: var(--surface-2); }
 
 @media (min-width: 900px) {
   .navLinks { display: flex; }
+  .navCta { display: inline-flex; }
   .hamburger { display: none; }
 }
 
@@ -147,7 +159,6 @@
   min-height: var(--tap-target);
   padding: 0 var(--space-3);
   border-radius: var(--radius-md);
-  font-family: var(--font-display);
   font-weight: 600;
   font-size: 16px;
   color: var(--text);
@@ -167,98 +178,59 @@
 /* ===== Footer ===== */
 .footer {
   margin-top: var(--space-8);
-  background: var(--brand-teal-dark);
-  color: #d8e6e4;
+  background: var(--brand-tinta);
+  color: #e9ecef;
+  font-size: 0.92rem;
 }
 
-.footerCta {
-  background: var(--grad-accent);
-  color: var(--accent-contrast);
-}
-.footerCtaInner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-  /* Los 16px laterales replican los de .container, que esta clase pisa. */
-  padding: var(--space-5) var(--space-4);
-  text-align: center;
-}
-.footerCtaInner h2 {
-  color: #fff;
-  font-size: 22px;
-}
-.footerCtaBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: var(--tap-target);
-  padding: 0 var(--space-5);
-  border-radius: var(--radius-full);
-  background: #fff;
-  color: var(--brand-teal-dark);
-  font-family: var(--font-display);
-  font-weight: 700;
-}
-.footerCtaBtn:hover { text-decoration: none; filter: brightness(0.96); }
-
-@media (min-width: 768px) {
-  .footerCtaInner { flex-direction: row; justify-content: space-between; text-align: left; }
-}
-
-/* Ojo con el padding: esta clase va junto a .container en el mismo div y,
-   al declararse después con igual especificidad, le pisa el `padding: 0
-   var(--space-4)`. Sin los 16px laterales las columnas quedaban pegadas
-   al borde, desalineadas del resto del sitio. */
+/* Ojo con el padding: esta clase va junto a .container en el mismo div y
+   le pisa el `padding: 0 var(--space-4)`; por eso repite los 16px. */
 .footerCols {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-6);
-  padding: var(--space-7) var(--space-4) var(--space-6);
+  gap: 28px;
+  padding: 48px var(--space-4) 28px;
 }
-@media (min-width: 768px) {
-  .footerCols { grid-template-columns: 1.2fr 1fr 1fr; }
+@media (min-width: 600px) {
+  .footerCols { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 900px) {
+  .footerCols { grid-template-columns: 1.3fr 1fr 1fr 1fr; }
 }
 
-/* Fondo teal oscuro: el logo a color no contrasta, se pasa a blanco pleno. */
 .footerLogo {
   display: block;
-  height: 42px;
+  height: 44px;
   width: auto;
-  filter: brightness(0) invert(1);
-  opacity: 0.92;
+  margin-bottom: 12px;
 }
-.footerText { font-size: 14px; color: #b7cdca; margin-top: var(--space-2); }
+.footerText { color: #ced4da; max-width: 32ch; }
 
 .footerTitle {
-  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  font-size: 1rem;
   color: #fff;
-  margin-bottom: var(--space-3);
+  margin-bottom: 10px;
 }
 
 .footerList {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  font-size: 14px;
+  gap: 6px;
 }
 .footerList a {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  color: #d8e6e4;
+  color: #e9ecef;
   min-height: 32px;
 }
 .footerList a:hover { color: #fff; }
 
 .footerSucursal { display: flex; flex-direction: column; }
-.footerSucursal strong { color: #fff; font-size: 14px; }
-.footerSucursal span { color: #b7cdca; font-size: 13px; }
+.footerSucursal strong { color: #fff; font-weight: 600; }
+.footerSucursal span { color: #adb5bd; font-size: 13px; }
 
 .footerSocial {
   display: flex;
@@ -287,11 +259,10 @@
 }
 
 .footerBottom {
-  border-top: 1px solid rgb(255 255 255 / 0.12);
+  border-top: 1px solid #3a3f44;
   padding: var(--space-4) 0;
-  text-align: center;
-  font-size: 13px;
-  color: #9fbab7;
+  font-size: 0.8rem;
+  color: #adb5bd;
 }
 
 /* ===== Botón flotante de WhatsApp ===== */
@@ -354,5 +325,3 @@
   .whatsappFab::before,
   .whatsappFab svg { animation: none; }
 }
-/* En /alquileres la barra de filtros vive abajo: el FAB sube. */
-.whatsappFabRaised { bottom: 84px; }

@@ -200,7 +200,7 @@
 .badgeOk { background: color-mix(in srgb, var(--success) 15%, transparent); color: var(--success); }
 .badgeOff { background: var(--surface-2); color: var(--text-muted); }
 .badgeInfo { background: color-mix(in srgb, var(--primary) 14%, transparent); color: var(--primary); }
-.badgeAccent { background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--brand-green-dark); }
+.badgeAccent { background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--brand-marron-osc); }
 .badgeWarn { background: color-mix(in srgb, var(--warning) 15%, transparent); color: var(--warning); }
 
 /* Miniatura de imagen en la tabla */

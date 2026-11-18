@@ -17,6 +17,7 @@ export const controllers = {
     Leads: () => import('#controllers/admin/leads_controller'),
     LotesDistritos: () => import('#controllers/admin/lotes_distritos_controller'),
     Planos: () => import('#controllers/admin/planos_controller'),
+    PreguntasFrecuentes: () => import('#controllers/admin/preguntas_frecuentes_controller'),
     Promociones: () => import('#controllers/admin/promociones_controller'),
     RedesSociales: () => import('#controllers/admin/redes_sociales_controller'),
     singletons: {
@@ -44,8 +45,10 @@ export const controllers = {
   },
   public: {
     Contacto: () => import('#controllers/public/contacto_controller'),
+    DeseoVender: () => import('#controllers/public/deseo_vender_controller'),
     Home: () => import('#controllers/public/home_controller'),
     Loteamientos: () => import('#controllers/public/loteamientos_controller'),
+    PreguntasFrecuentes: () => import('#controllers/public/preguntas_frecuentes_controller'),
     QuienesSomos: () => import('#controllers/public/quienes_somos_controller'),
     Seo: () => import('#controllers/public/seo_controller'),
   },

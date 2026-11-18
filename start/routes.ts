@@ -22,6 +22,11 @@ router.get('/', [controllers.public.Home, 'index']).as('home')
 router.get('quienes-somos', [controllers.public.QuienesSomos, 'index']).as('public.quienesSomos')
 router.get('contacto', [controllers.public.Contacto, 'show']).as('public.contacto.show')
 router.post('contacto', [controllers.public.Contacto, 'store']).as('public.contacto.store')
+router
+  .get('preguntas-frecuentes', [controllers.public.PreguntasFrecuentes, 'index'])
+  .as('public.preguntas')
+router.get('deseo-vender', [controllers.public.DeseoVender, 'show']).as('public.vender.show')
+router.post('deseo-vender', [controllers.public.DeseoVender, 'store']).as('public.vender.store')
 
 /*
 |--------------------------------------------------------------------------
@@ -162,6 +167,31 @@ router
         router
           .post('sucursales/destroy-masivo', [controllers.admin.Sucursales, 'destroyMasivo'])
           .as('app.sucursales.destroyMasivo')
+
+        // Preguntas frecuentes
+        router
+          .get('preguntas', [controllers.admin.PreguntasFrecuentes, 'index'])
+          .as('app.preguntas.index')
+        router
+          .get('preguntas/export', [controllers.admin.PreguntasFrecuentes, 'export'])
+          .as('app.preguntas.export')
+        router
+          .post('preguntas', [controllers.admin.PreguntasFrecuentes, 'store'])
+          .as('app.preguntas.store')
+        router
+          .put('preguntas/:id', [controllers.admin.PreguntasFrecuentes, 'update'])
+          .where('id', router.matchers.number())
+          .as('app.preguntas.update')
+        router
+          .delete('preguntas/:id', [controllers.admin.PreguntasFrecuentes, 'destroy'])
+          .where('id', router.matchers.number())
+          .as('app.preguntas.destroy')
+        router
+          .post('preguntas/destroy-masivo', [
+            controllers.admin.PreguntasFrecuentes,
+            'destroyMasivo',
+          ])
+          .as('app.preguntas.destroyMasivo')
 
         // Carruseles
         router.get('carruseles', [controllers.admin.Carruseles, 'index']).as('app.carruseles.index')
