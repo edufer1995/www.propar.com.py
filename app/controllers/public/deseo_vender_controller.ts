@@ -25,7 +25,7 @@ export default class DeseoVenderController {
     try {
       await venderLimiter.consume(`vender_${request.ip()}`)
     } catch {
-      session.flash('error', 'Demasiados envíos seguidos. Esperá un minuto y volvé a intentar.')
+      session.flash('error', 'Demasiados envíos seguidos. Espera un minuto y vuelve a intentarlo.')
       return response.redirect().back()
     }
 

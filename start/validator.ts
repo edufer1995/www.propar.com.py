@@ -47,14 +47,14 @@ vine.messagesProvider = new SimpleMessagesProvider(
     'password.confirmed': 'Las contraseñas no coinciden',
 
     // Formulario de contacto público
-    'nombre.required': 'Ingresá tu nombre',
-    'apellido.required': 'Ingresá tu apellido',
-    'telefono.required': 'Ingresá un teléfono',
-    'correo.required': 'Ingresá tu correo',
-    'correo.email': 'Ingresá un correo electrónico válido',
-    'asunto.required': 'Seleccioná un asunto',
-    'asunto.enum': 'Seleccioná un asunto válido',
-    'consulta.required': 'Ingresá tu consulta',
+    'nombre.required': 'Ingresa tu nombre',
+    'apellido.required': 'Ingresa tu apellido',
+    'telefono.required': 'Ingresa un teléfono',
+    'correo.required': 'Ingresa tu correo',
+    'correo.email': 'Ingresa un correo electrónico válido',
+    'asunto.required': 'Selecciona un asunto',
+    'asunto.enum': 'Selecciona un asunto válido',
+    'consulta.required': 'Ingresa tu consulta',
   },
   {
     username: 'usuario',

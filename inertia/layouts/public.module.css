@@ -31,7 +31,9 @@
   display: none;
 }
 @media (min-width: 900px) {
-  .topbarExtra { display: inline; }
+  .topbarExtra {
+    display: inline;
+  }
 }
 
 /* ===== Header ===== */
@@ -55,7 +57,9 @@
   align-items: center;
   text-decoration: none;
 }
-.brand:hover { text-decoration: none; }
+.brand:hover {
+  text-decoration: none;
+}
 
 .brandLogo {
   display: block;
@@ -100,7 +104,10 @@
   font-size: 1rem;
   white-space: nowrap;
 }
-.navCta:hover { text-decoration: none; background: var(--primary-hover); }
+.navCta:hover {
+  text-decoration: none;
+  background: var(--primary-hover);
+}
 
 .hamburger {
   margin-left: auto;
@@ -112,12 +119,20 @@
   border-radius: var(--radius-full);
   color: var(--primary);
 }
-.hamburger:hover { background: var(--surface-2); }
+.hamburger:hover {
+  background: var(--surface-2);
+}
 
 @media (min-width: 900px) {
-  .navLinks { display: flex; }
-  .navCta { display: inline-flex; }
-  .hamburger { display: none; }
+  .navLinks {
+    display: flex;
+  }
+  .navCta {
+    display: inline-flex;
+  }
+  .hamburger {
+    display: none;
+  }
 }
 
 /* ===== Drawer mobile ===== */
@@ -163,17 +178,31 @@
   font-size: 16px;
   color: var(--text);
 }
-.drawerLink:hover { text-decoration: none; background: var(--surface-2); }
+.drawerLink:hover {
+  text-decoration: none;
+  background: var(--surface-2);
+}
 .drawerLinkActive {
   color: var(--primary);
   background: color-mix(in srgb, var(--primary) 12%, transparent);
 }
 
-@keyframes fadeIn { from { opacity: 0; } }
-@keyframes drawerIn { from { transform: translateX(30px); opacity: 0; } }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes drawerIn {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+}
 
 /* ===== Contenido ===== */
-.main { flex: 1; }
+.main {
+  flex: 1;
+}
 
 /* ===== Footer ===== */
 .footer {
@@ -192,10 +221,14 @@
   padding: 48px var(--space-4) 28px;
 }
 @media (min-width: 600px) {
-  .footerCols { grid-template-columns: 1fr 1fr; }
+  .footerCols {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 @media (min-width: 900px) {
-  .footerCols { grid-template-columns: 1.3fr 1fr 1fr 1fr; }
+  .footerCols {
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  }
 }
 
 .footerLogo {
@@ -204,7 +237,16 @@
   width: auto;
   margin-bottom: 12px;
 }
-.footerText { color: #ced4da; max-width: 32ch; }
+.footerText {
+  color: #ced4da;
+  max-width: 32ch;
+}
+.footerLema {
+  display: block;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
 
 .footerTitle {
   font-weight: 700;
@@ -226,11 +268,22 @@
   color: #e9ecef;
   min-height: 32px;
 }
-.footerList a:hover { color: #fff; }
+.footerList a:hover {
+  color: #fff;
+}
 
-.footerSucursal { display: flex; flex-direction: column; }
-.footerSucursal strong { color: #fff; font-weight: 600; }
-.footerSucursal span { color: #adb5bd; font-size: 13px; }
+.footerSucursal {
+  display: flex;
+  flex-direction: column;
+}
+.footerSucursal strong {
+  color: #fff;
+  font-weight: 600;
+}
+.footerSucursal span {
+  color: #adb5bd;
+  font-size: 13px;
+}
 
 .footerSocial {
   display: flex;
@@ -248,7 +301,9 @@
   background: rgb(255 255 255 / 0.1);
   color: #fff;
 }
-.footerSocial a:hover { background: rgb(255 255 255 / 0.22); }
+.footerSocial a:hover {
+  background: rgb(255 255 255 / 0.22);
+}
 /* Icono personalizado subido desde el ABM: tamaño fijo igual al SVG por
    defecto; el radio evita esquinas duras de PNGs cuadrados sobre el círculo. */
 .footerSocialIcono {
@@ -301,27 +356,53 @@
   transform-origin: center 70%;
 }
 
-.whatsappFab:hover { transform: scale(1.06); text-decoration: none; }
+.whatsappFab:hover {
+  transform: scale(1.06);
+  text-decoration: none;
+}
 /* Con el puntero encima no hace falta llamar la atención. */
 .whatsappFab:hover::before,
-.whatsappFab:hover svg { animation-play-state: paused; }
+.whatsappFab:hover svg {
+  animation-play-state: paused;
+}
 
 @keyframes whatsappOnda {
-  0% { opacity: 0.55; transform: scale(1); }
+  0% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
   /* La onda ocupa el primer tercio del ciclo; el resto es la pausa. */
-  35%, 100% { opacity: 0; transform: scale(1.7); }
+  35%,
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
 }
 
 @keyframes whatsappSaludo {
-  0%, 60%, 100% { transform: rotate(0deg); }
-  68% { transform: rotate(-12deg); }
-  76% { transform: rotate(10deg); }
-  84% { transform: rotate(-6deg); }
-  92% { transform: rotate(3deg); }
+  0%,
+  60%,
+  100% {
+    transform: rotate(0deg);
+  }
+  68% {
+    transform: rotate(-12deg);
+  }
+  76% {
+    transform: rotate(10deg);
+  }
+  84% {
+    transform: rotate(-6deg);
+  }
+  92% {
+    transform: rotate(3deg);
+  }
 }
 
 /* Movimiento en bucle: se apaga con "reducir movimiento" del SO. */
 @media (prefers-reduced-motion: reduce) {
   .whatsappFab::before,
-  .whatsappFab svg { animation: none; }
+  .whatsappFab svg {
+    animation: none;
+  }
 }

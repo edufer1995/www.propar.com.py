@@ -21,6 +21,7 @@ export type PiePagina = {
     id: number
     titulo: string
     coordenadas: { lat: number; lng: number } | null
+    direccion: string | null
     horarios: string | null
     telefonos: string | null
   }[]
@@ -41,6 +42,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   const pathname = url.split('?')[0]
 
   const piePagina = (props as { piePagina?: PiePagina }).piePagina
+  const sucursalPrincipal = piePagina?.sucursales[0]
   const whatsappVentas = String(props.whatsappVentas ?? '+595976522694')
   const telVentas = String(props.telVentas ?? '+595976522694')
   const contactoEmail = String(props.contactoEmail ?? '')
@@ -60,7 +62,13 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
       <div className={styles.topbar}>
         <div className={`${styles.container} ${styles.topbarInner}`}>
           <span>Lotes en cuotas en todo el Paraguay desde 1986</span>
-          <span className={styles.topbarExtra}>Lunes a viernes · Asunción 8:00 a 18:00</span>
+          {/* Horario de la primera sucursal activa (la casa central), editable
+              desde el admin en Sucursales. */}
+          {sucursalPrincipal?.horarios && (
+            <span className={styles.topbarExtra}>
+              {sucursalPrincipal.titulo} · {sucursalPrincipal.horarios}
+            </span>
+          )}
         </div>
       </div>
       <SiteHeader className={styles.navbar} />
@@ -76,6 +84,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
               className={styles.footerLogo}
             />
             <p className={styles.footerText}>
+              <strong className={styles.footerLema}>El camino a la casa propia.</strong>
               Desarrollo y venta de loteamientos en el Paraguay desde 1986.
             </p>
             {piePagina && piePagina.redes.length > 0 && (
@@ -145,6 +154,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
               {(piePagina?.sucursales ?? []).map((s) => (
                 <li key={s.id} className={styles.footerSucursal}>
                   <strong>{s.titulo}</strong>
+                  {s.direccion && <span>{s.direccion}</span>}
                   {s.telefonos && <span>{s.telefonos}</span>}
                 </li>
               ))}
@@ -164,8 +174,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
         target="_blank"
         rel="noreferrer"
         className={styles.whatsappFab}
-        aria-label="Escribinos por WhatsApp"
-        title="Escribinos por WhatsApp"
+        aria-label="Escríbenos por WhatsApp"
+        title="Escríbenos por WhatsApp"
       >
         <IconoWhatsApp size={30} />
       </a>

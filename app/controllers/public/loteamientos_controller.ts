@@ -121,7 +121,7 @@ export default class LoteamientosController {
     try {
       await comprarLimiter.consume(clave)
     } catch {
-      const mensaje = 'Demasiadas solicitudes seguidas. Esperá un minuto y volvé a intentar.'
+      const mensaje = 'Demasiadas solicitudes seguidas. Espera un minuto y vuelve a intentarlo.'
       if (this.#esInertia(ctx)) {
         session.flash('error', mensaje)
         return response.redirect().back()
@@ -146,7 +146,7 @@ export default class LoteamientosController {
     if (claveEstado(lote.estado) !== 'LIBRE') {
       throw new vineErrors.E_VALIDATION_ERROR([
         {
-          message: 'El lote ya no está disponible. Actualizá el mapa para ver el estado actual.',
+          message: 'El lote ya no está disponible. Actualiza el mapa para ver el estado actual.',
           field: 'lote',
           rule: 'erp.disponible',
         },

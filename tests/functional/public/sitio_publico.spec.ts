@@ -116,7 +116,7 @@ test.group('Sitio público — contacto', (group) => {
     respuesta.assertStatus(200)
 
     const props = respuesta.inertiaProps as { errors: Record<string, string> }
-    assert.equal(props.errors.correo, 'Ingresá un correo electrónico válido')
+    assert.equal(props.errors.correo, 'Ingresa un correo electrónico válido')
     assert.include(props.errors.nombre, 'al menos 3 caracteres')
 
     const lead = await Lead.findBy('email', 'no-es-un-mail')

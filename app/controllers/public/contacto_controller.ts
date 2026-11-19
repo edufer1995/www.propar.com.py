@@ -41,7 +41,10 @@ export default class ContactoController {
     try {
       await contactoLimiter.consume(clave)
     } catch {
-      session.flash('error', 'Demasiadas consultas seguidas. Esperá un minuto y volvé a intentar.')
+      session.flash(
+        'error',
+        'Demasiadas consultas seguidas. Espera un minuto y vuelve a intentarlo.'
+      )
       return response.redirect().back()
     }
 

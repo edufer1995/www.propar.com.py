@@ -751,6 +751,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/planos_controller').default['store']>>>
     }
   }
+  'app.planos.previsualizarKmz': {
+    methods: ["POST"]
+    pattern: '/app/planos/previsualizar-kmz'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/admin/planos_controller').default['previsualizarKmz']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/admin/planos_controller').default['previsualizarKmz']>>>
+    }
+  }
   'app.planos.update': {
     methods: ["PUT"]
     pattern: '/app/planos/:id'

@@ -13,9 +13,17 @@
   gap: var(--space-3);
 }
 
-.encabezadoTextos { flex: 1; min-width: 200px; }
-.titulo { font-size: 24px; }
-.descripcion { color: var(--text-muted); font-size: 14px; }
+.encabezadoTextos {
+  flex: 1;
+  min-width: 200px;
+}
+.titulo {
+  font-size: 24px;
+}
+.descripcion {
+  color: var(--text-muted);
+  font-size: 14px;
+}
 
 /* Form del modal */
 .form {
@@ -31,7 +39,9 @@
 }
 
 @media (max-width: 767px) {
-  .formFilaDoble { grid-template-columns: 1fr; }
+  .formFilaDoble {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Form de página completa (singletons institucionales) */
@@ -165,7 +175,10 @@
   background: var(--grad-primary);
   transition: width 0.15s ease;
 }
-.progresoTexto { font-size: 13px; color: var(--text-muted); }
+.progresoTexto {
+  font-size: 13px;
+  color: var(--text-muted);
+}
 
 /* Galería múltiple */
 .galeria {
@@ -197,11 +210,26 @@
   font-size: 12px;
   font-weight: 700;
 }
-.badgeOk { background: color-mix(in srgb, var(--success) 15%, transparent); color: var(--success); }
-.badgeOff { background: var(--surface-2); color: var(--text-muted); }
-.badgeInfo { background: color-mix(in srgb, var(--primary) 14%, transparent); color: var(--primary); }
-.badgeAccent { background: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--brand-marron-osc); }
-.badgeWarn { background: color-mix(in srgb, var(--warning) 15%, transparent); color: var(--warning); }
+.badgeOk {
+  background: color-mix(in srgb, var(--success) 15%, transparent);
+  color: var(--success);
+}
+.badgeOff {
+  background: var(--surface-2);
+  color: var(--text-muted);
+}
+.badgeInfo {
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  color: var(--primary);
+}
+.badgeAccent {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--brand-marron-osc);
+}
+.badgeWarn {
+  background: color-mix(in srgb, var(--warning) 15%, transparent);
+  color: var(--warning);
+}
 
 /* Miniatura de imagen en la tabla */
 .miniatura {
@@ -213,7 +241,9 @@
   display: block;
   background: var(--surface-2);
 }
-.miniaturaCuadrada { width: 36px; }
+.miniaturaCuadrada {
+  width: 36px;
+}
 
 /* Botones icono chicos (controles de la galería) */
 .btnIcono {
@@ -228,5 +258,40 @@
   color: var(--text-muted);
   cursor: pointer;
 }
-.btnIcono:hover:not(:disabled) { background: var(--surface-2); color: var(--text); }
-.btnIcono:disabled { opacity: 0.45; cursor: not-allowed; }
+.btnIcono:hover:not(:disabled) {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.btnIcono:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* KmzUploader: errores y avisos del plano */
+.kmzMensaje {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.kmzLista {
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  padding: var(--space-2) var(--space-3);
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.kmzLista ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+
+.formatoPlano {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}

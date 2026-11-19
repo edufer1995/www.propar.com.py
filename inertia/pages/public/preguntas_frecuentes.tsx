@@ -33,7 +33,7 @@ export default function PreguntasFrecuentes({ preguntas, categorias }: Props) {
           {preguntas.length === 0 ? (
             <EmptyState
               title="Todavía no hay preguntas cargadas"
-              body="Escribinos y un asesor te responde."
+              body="Escríbenos y un asesor te responde."
             />
           ) : (
             <>
@@ -75,7 +75,7 @@ export default function PreguntasFrecuentes({ preguntas, categorias }: Props) {
 
       <BandaAccion
         titulo="¿No encontraste tu respuesta?"
-        texto="Escribinos y un asesor te responde."
+        texto="Escríbenos y un asesor te responde."
         accion={
           <Link route="public.contacto.show" className={`${s.btn} ${s.btnBlanco}`}>
             Ir a contacto

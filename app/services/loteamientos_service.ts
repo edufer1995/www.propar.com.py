@@ -66,6 +66,8 @@ export interface PropiedadesLote {
   cuotas: number | null
   importeCuota: number | null
   precioCredito: number | null
+  /** Precio al contado; null si el ERP no tiene lista de precios vigente */
+  precioContado: number | null
   centro: PuntoLatLng | null
 }
 
@@ -324,6 +326,7 @@ export default class LoteamientosService {
           cuotas: erp?.cantidadCuotas ?? null,
           importeCuota: erp?.importeCuota ?? null,
           precioCredito: erp?.precioCredito ?? null,
+          precioContado: erp?.precioContado ? erp.precioContado : null,
           centro: centroDe(lote.coorde_centro),
         },
         geometry: { type: 'Polygon', coordinates: anillos },

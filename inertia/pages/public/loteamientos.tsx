@@ -831,7 +831,7 @@ export default function Loteamientos(props: LoteamientosProps) {
     <>
       <Seo
         title="Loteamientos en el mapa"
-        description="Loteamientos de Propar en un mapa interactivo: buscá tu lote por distrito y rango de cuota, con precios y disponibilidad actualizados."
+        description="Loteamientos de Propar en un mapa interactivo: busca tu lote por distrito y rango de cuota, con precios y disponibilidad actualizados."
       />
       {montado && mapsApiKey ? (
         <APIProvider apiKey={mapsApiKey} libraries={['marker']}>

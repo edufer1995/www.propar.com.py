@@ -4,8 +4,9 @@
 |--------------------------------------------------------------------------
 |
 | Lista con el motor de tabla (búsqueda/orden/paginación/export server-
-| side). El alta es una importación: descripcion + codigo + 3 .geojson
-| (fracción/manzanas/lotes) validados en cliente, con previsualización en
+| side). El alta es una importación: descripcion + codigo + un .kmz/.kml
+| (revisado en el server) o 3 .geojson (fracción/manzanas/lotes) validados
+| en cliente, con previsualización en
 | el PlanoViewer ANTES de guardar. Editar solo toca descripción/estado
 | (re-dibujar el plano = eliminar y volver a crear). Eliminar borra en
 | cascada manzanas y lotes (la confirmación dice cuántos).
@@ -21,6 +22,7 @@ import { Button, InputField, Modal, ToggleField } from '~/components/ui'
 import { BadgeActivo } from '~/components/crud/resource_page'
 import { DataTable, type MetaTabla } from '~/components/datatable/data_table'
 import { GeojsonUploader, type ArchivoPlano } from '~/components/crud/geojson_uploader'
+import { KmzUploader, type ArchivoKmz } from '~/components/crud/kmz_uploader'
 import { PlanoViewer, type GeojsonPlano } from '~/components/planos/plano_viewer'
 import { geojsonDePreview } from '~/lib/geojson_plano'
 import { useTouchedFields } from '~/hooks/use_touched_fields'
@@ -66,12 +68,14 @@ function CrearPlanoModal({ onClose }: { onClose: () => void }) {
   const [fraccion, setFraccion] = useState<ArchivoPlano | null>(null)
   const [manzanas, setManzanas] = useState<ArchivoPlano | null>(null)
   const [lotes, setLotes] = useState<ArchivoPlano | null>(null)
+  const [formato, setFormato] = useState<'kmz' | 'geojson'>('kmz')
+  const [kmz, setKmz] = useState<ArchivoKmz | null>(null)
   const [preview, setPreview] = useState(false)
   const [enviando, setEnviando] = useState(false)
   const [enviado, setEnviado] = useState(false)
   const { touch, isTouched } = useTouchedFields<string>()
 
-  const dirty = Boolean(descripcion || codigo || fraccion || manzanas || lotes)
+  const dirty = Boolean(descripcion || codigo || fraccion || manzanas || lotes || kmz)
   const { confirmarCierre } = useUnsavedChanges(dirty)
 
   /** Consistencia entre archivos (espejo del server) */
@@ -84,6 +88,12 @@ function CrearPlanoModal({ onClose }: { onClose: () => void }) {
     if (!Number.isInteger(n) || n < 1 || n > 999) {
       errores.codigo = 'El código debe ser un entero entre 1 y 999'
     }
+    if (formato === 'kmz') {
+      if (!kmz) errores.archivoKmz = 'Subí el archivo .kmz o .kml del plano'
+      else if (!kmz.revision.ok) errores.archivoKmz = 'Corregí los problemas del plano'
+      return errores
+    }
+
     if (!fraccion) errores.archivoFraccion = 'Subí el archivo de fracción'
     if (!manzanas) errores.archivoManzanas = 'Subí el archivo de manzanas'
     if (!lotes) errores.archivoLotes = 'Subí el archivo de lotes'
@@ -96,10 +106,13 @@ function CrearPlanoModal({ onClose }: { onClose: () => void }) {
       }
     }
     return errores
-  }, [descripcion, codigo, fraccion, manzanas, lotes])
+  }, [descripcion, codigo, formato, kmz, fraccion, manzanas, lotes])
 
   const esValido = Object.keys(erroresCliente).length === 0
-  const puedePrevisualizar = Boolean(fraccion && manzanas && lotes)
+  const puedePrevisualizar =
+    formato === 'kmz'
+      ? Boolean(kmz && kmz.revision.resumen.lotes > 0)
+      : Boolean(fraccion && manzanas && lotes)
 
   const errorDe = (campo: string): string | undefined => {
     const servidor = primerError(erroresServer[campo])
@@ -113,13 +126,20 @@ function CrearPlanoModal({ onClose }: { onClose: () => void }) {
 
     router.post(
       BASE_URL,
-      {
-        descripcion: descripcion.trim(),
-        codigo: Number(codigo),
-        archivoFraccion: fraccion!.archivo,
-        archivoManzanas: manzanas!.archivo,
-        archivoLotes: lotes!.archivo,
-      } as unknown as Record<string, never>,
+      (formato === 'kmz'
+        ? {
+            descripcion: descripcion.trim(),
+            codigo: Number(codigo),
+            formato: 'kmz',
+            archivoKmz: kmz!.archivo,
+          }
+        : {
+            descripcion: descripcion.trim(),
+            codigo: Number(codigo),
+            archivoFraccion: fraccion!.archivo,
+            archivoManzanas: manzanas!.archivo,
+            archivoLotes: lotes!.archivo,
+          }) as unknown as Record<string, never>,
       {
         forceFormData: true,
         preserveScroll: true,
@@ -179,10 +199,39 @@ function CrearPlanoModal({ onClose }: { onClose: () => void }) {
             enviar()
           }}
         >
+          <div className={styles.formatoPlano} role="group" aria-label="Formato del plano">
+            <Button
+              type="button"
+              variant={formato === 'kmz' ? 'primary' : 'secondary'}
+              aria-pressed={formato === 'kmz'}
+              onClick={() => setFormato('kmz')}
+            >
+              Un archivo KMZ / KML
+            </Button>
+            <Button
+              type="button"
+              variant={formato === 'geojson' ? 'primary' : 'secondary'}
+              aria-pressed={formato === 'geojson'}
+              onClick={() => setFormato('geojson')}
+            >
+              3 archivos GeoJSON
+            </Button>
+          </div>
+
           <p className={styles.avisoForm}>
-            Los 3 archivos .geojson salen del plano del agrimensor: polígonos con{' '}
-            <code>properties.MZ</code> (manzanas y lotes) y <code>properties.LT</code> (lotes). Nada
-            se guarda hasta apretar “Importar”.
+            {formato === 'kmz' ? (
+              <>
+                El KMZ/KML del agrimensor, con las capas POLIGONO (contorno), MAN y MAN_TEXT
+                (manzanas y sus números), LOTE y LOTE_TEXT (lotes y sus números). Al elegirlo se
+                revisa y se muestra qué hay que corregir. Nada se guarda hasta apretar “Importar”.
+              </>
+            ) : (
+              <>
+                Los 3 archivos .geojson salen del plano del agrimensor: polígonos con{' '}
+                <code>properties.MZ</code> (manzanas y lotes) y <code>properties.LT</code> (lotes).
+                Nada se guarda hasta apretar “Importar”.
+              </>
+            )}
           </p>
 
           <div className={styles.formFilaDoble}>
@@ -210,34 +259,51 @@ function CrearPlanoModal({ onClose }: { onClose: () => void }) {
             />
           </div>
 
-          <GeojsonUploader
-            etiqueta="Archivo de fracción"
-            tipo="fraccion"
-            hint="1 polígono con el contorno de la fracción · máx 2 MB"
-            valor={fraccion}
-            onChange={setFraccion}
-            error={errorDe('archivoFraccion')}
-          />
-          <GeojsonUploader
-            etiqueta="Archivo de manzanas"
-            tipo="manzanas"
-            hint="Un polígono por manzana, con properties.MZ · máx 2 MB"
-            valor={manzanas}
-            onChange={setManzanas}
-            error={errorDe('archivoManzanas')}
-          />
-          <GeojsonUploader
-            etiqueta="Archivo de lotes"
-            tipo="lotes"
-            hint="Un polígono por lote, con properties.MZ y properties.LT · máx 2 MB"
-            valor={lotes}
-            onChange={setLotes}
-            error={errorDe('archivoLotes')}
-          />
+          {formato === 'kmz' && (
+            <KmzUploader valor={kmz} onChange={setKmz} error={errorDe('archivoKmz')} />
+          )}
+
+          {formato === 'geojson' && (
+            <>
+              <GeojsonUploader
+                etiqueta="Archivo de fracción"
+                tipo="fraccion"
+                hint="1 polígono con el contorno de la fracción · máx 2 MB"
+                valor={fraccion}
+                onChange={setFraccion}
+                error={errorDe('archivoFraccion')}
+              />
+              <GeojsonUploader
+                etiqueta="Archivo de manzanas"
+                tipo="manzanas"
+                hint="Un polígono por manzana, con properties.MZ · máx 2 MB"
+                valor={manzanas}
+                onChange={setManzanas}
+                error={errorDe('archivoManzanas')}
+              />
+              <GeojsonUploader
+                etiqueta="Archivo de lotes"
+                tipo="lotes"
+                hint="Un polígono por lote, con properties.MZ y properties.LT · máx 2 MB"
+                valor={lotes}
+                onChange={setLotes}
+                error={errorDe('archivoLotes')}
+              />
+            </>
+          )}
         </form>
       </Modal>
 
-      {preview && fraccion && manzanas && lotes && (
+      {preview && formato === 'kmz' && kmz && (
+        <PlanoViewer
+          titulo={`Previsualización — ${descripcion.trim() || 'plano sin nombre'}`}
+          subtitulo={`${kmz.revision.resumen.manzanas} manzanas · ${kmz.revision.resumen.lotes} lotes · todavía NO está guardado`}
+          geojson={kmz.revision.geojson}
+          onClose={() => setPreview(false)}
+        />
+      )}
+
+      {preview && formato === 'geojson' && fraccion && manzanas && lotes && (
         <PlanoViewer
           titulo={`Previsualización — ${descripcion.trim() || 'plano sin nombre'}`}
           subtitulo={`${manzanas.features.length} manzanas · ${lotes.features.length} lotes · todavía NO está guardado`}
@@ -378,8 +444,8 @@ export default function Planos(props: { registros: { data: Fila[]; meta: MetaTab
           <div className={styles.encabezadoTextos}>
             <h1 className={styles.titulo}>Planos</h1>
             <p className={styles.descripcion}>
-              Fracciones cartográficas del mapa /loteamientos: se importan desde los .geojson del
-              agrimensor (fracción + manzanas + lotes).
+              Fracciones cartográficas del mapa /loteamientos: se importan desde el KMZ/KML del
+              agrimensor o desde 3 .geojson (fracción + manzanas + lotes).
             </p>
           </div>
           <Button type="button" onClick={() => setCrear(true)}>

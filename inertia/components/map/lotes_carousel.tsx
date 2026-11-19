@@ -64,6 +64,9 @@ function CardLote({
       {!vendido && lote.precioCredito !== null && (
         <span className={styles.cardLoteCredito}>Crédito {formatGs(lote.precioCredito)}</span>
       )}
+      {!vendido && lote.precioContado !== null && (
+        <span className={styles.cardLoteCredito}>Contado {formatGs(lote.precioContado)}</span>
+      )}
     </button>
   )
 }

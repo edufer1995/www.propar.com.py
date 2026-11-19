@@ -101,6 +101,7 @@ export interface ApiDefinition {
       index: typeof routes['app.planos.index']
       export: typeof routes['app.planos.export']
       store: typeof routes['app.planos.store']
+      previsualizarKmz: typeof routes['app.planos.previsualizarKmz']
       update: typeof routes['app.planos.update']
       destroy: typeof routes['app.planos.destroy']
       destroyMasivo: typeof routes['app.planos.destroyMasivo']

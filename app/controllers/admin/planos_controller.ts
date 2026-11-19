@@ -6,6 +6,7 @@ import type { LucidModel, LucidRow, ModelQueryBuilderContract } from '@adonisjs/
 import Fraccion from '#models/fraccion'
 import RecursoController, { type ConfigRecurso } from '#controllers/admin/concerns/recurso_base'
 import PlanosImportService, { errorDePlano } from '#services/planos_import_service'
+import { geojsonDeResultado, leerKml, parsearKmlPlano } from '#services/kmz_plano_service'
 
 export const planoEditarValidator = vine.create({
   descripcion: vine.string().trim().minLength(2).maxLength(255),
@@ -18,6 +19,9 @@ const ARCHIVOS_PLANO = [
   { campo: 'archivoManzanas', nombre: 'manzanas' },
   { campo: 'archivoLotes', nombre: 'lotes' },
 ] as const
+
+/** Un solo .kmz/.kml con todas las capas (como lo exporta el agrimensor) */
+const OPCIONES_KMZ = { size: '10mb', extnames: ['kmz', 'kml'] }
 
 /**
  * Planos de fracciones cartográficas. La lista/edición/eliminación usa
@@ -94,6 +98,32 @@ export default class PlanosController extends RecursoController<Fraccion> {
       throw errorDePlano('codigo', 'El código debe ser un entero entre 1 y 999')
     }
 
+    if (request.input('formato') === 'kmz') {
+      const resultado = await this.leerKmz(ctx)
+      if (resultado.errores.length > 0) {
+        const otros = resultado.errores.length - 1
+        throw errorDePlano(
+          'archivoKmz',
+          otros > 0 ? `${resultado.errores[0]} (y ${otros} problema(s) más)` : resultado.errores[0]
+        )
+      }
+      const importado = await this.importService.guardar(
+        {
+          codigo,
+          descripcion,
+          fraccion: resultado.fraccion!,
+          manzanas: resultado.manzanas,
+          lotes: resultado.lotes,
+        },
+        { manzanas: 'archivoKmz', lotes: 'archivoKmz' }
+      )
+      session.flash(
+        'success',
+        `Plano ${codigo} importado: ${importado.manzanas} manzanas y ${importado.lotes} lotes`
+      )
+      return response.redirect().back()
+    }
+
     const contenidos: Record<string, string> = {}
     for (const { campo, nombre } of ARCHIVOS_PLANO) {
       const archivo = request.file(campo, { size: '2mb', extnames: ['geojson', 'json'] })
@@ -119,6 +149,34 @@ export default class PlanosController extends RecursoController<Fraccion> {
       `Plano ${codigo} importado: ${resultado.manzanas} manzanas y ${resultado.lotes} lotes`
     )
     return response.redirect().back()
+  }
+
+  /**
+   * Revisa un .kmz/.kml sin guardar nada: devuelve errores, avisos, un
+   * resumen y el GeoJSON para el visor, así el admin ve el plano antes
+   * de importarlo.
+   */
+  async previsualizarKmz(ctx: HttpContext) {
+    const resultado = await this.leerKmz(ctx)
+    return ctx.response.ok({
+      ok: resultado.errores.length === 0,
+      errores: resultado.errores,
+      avisos: resultado.avisos,
+      resumen: { manzanas: resultado.manzanas.length, lotes: resultado.lotes.length },
+      geojson: geojsonDeResultado(resultado),
+    })
+  }
+
+  /** Lee y valida el archivoKmz del request (errores de archivo → 422). */
+  private async leerKmz({ request }: HttpContext) {
+    const archivo = request.file('archivoKmz', OPCIONES_KMZ)
+    if (!archivo) throw errorDePlano('archivoKmz', 'Subí el archivo .kmz o .kml del plano')
+    if (!archivo.isValid) {
+      throw errorDePlano('archivoKmz', 'El plano debe ser un archivo .kmz o .kml de hasta 10 MB')
+    }
+    const leido = await leerKml(await readFile(archivo.tmpPath!), archivo.clientName)
+    if ('error' in leido) throw errorDePlano('archivoKmz', leido.error)
+    return parsearKmlPlano(leido.kml)
   }
 
   protected csv() {

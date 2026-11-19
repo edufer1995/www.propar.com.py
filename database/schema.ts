@@ -520,6 +520,7 @@ export class SucursaleSchema extends BaseModel {
   static $columns = [
     'coordenadas',
     'createdAt',
+    'direccion',
     'estado',
     'horarios',
     'id',
@@ -532,6 +533,8 @@ export class SucursaleSchema extends BaseModel {
   declare coordenadas: any | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
+  @column()
+  declare direccion: string | null
   @column()
   declare estado: string | null
   @column()
