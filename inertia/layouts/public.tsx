@@ -164,8 +164,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
         target="_blank"
         rel="noreferrer"
         className={styles.whatsappFab}
-        aria-label="Escribinos por WhatsApp"
-        title="Escribinos por WhatsApp"
+        aria-label="Escríbenos por WhatsApp"
+        title="Escríbenos por WhatsApp"
       >
         <IconoWhatsApp size={30} />
       </a>

@@ -247,7 +247,7 @@ export function FiltrosModal({
           </div>
           {estados.length === 0 ? (
             <p className={styles.filtrosNota}>
-              Seleccioná una fracción en el mapa para ver los estados de sus lotes.
+              Selecciona una fracción en el mapa para ver los estados de sus lotes.
             </p>
           ) : (
             <div className={styles.filtrosLista}>

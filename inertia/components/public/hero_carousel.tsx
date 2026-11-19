@@ -26,7 +26,7 @@ function PortadaPorDefecto() {
           <img src="/img/hero-lote.jpg" alt="" />
         </div>
         <div className={styles.heroTexto}>
-          <h1>Tu lote propio, en cuotas que podés pagar</h1>
+          <h1>Tu lote propio, en cuotas que puedes pagar</h1>
           <p>
             Loteamientos en las zonas de mayor desarrollo del país, con financiación propia y
             atención en nuestras sucursales.

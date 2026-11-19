@@ -57,13 +57,13 @@ export default function Contacto({ asuntos, piePagina }: ContactoProps) {
 
   /** Validación de cliente (UX): inline al salir del campo. */
   const clientErrors: Record<Campo, string | undefined> = {
-    nombre: form.data.nombre.trim().length >= 3 ? undefined : 'Ingresá tu nombre (mínimo 3 letras)',
+    nombre: form.data.nombre.trim().length >= 3 ? undefined : 'Ingresa tu nombre (mínimo 3 letras)',
     apellido:
-      form.data.apellido.trim().length >= 3 ? undefined : 'Ingresá tu apellido (mínimo 3 letras)',
-    telefono: form.data.telefono.trim().length >= 6 ? undefined : 'Ingresá un teléfono válido',
-    correo: /.+@.+\..+/.test(form.data.correo) ? undefined : 'Ingresá un correo válido',
-    asunto: form.data.asunto ? undefined : 'Seleccioná un asunto',
-    consulta: form.data.consulta.trim().length >= 5 ? undefined : 'Contanos tu consulta',
+      form.data.apellido.trim().length >= 3 ? undefined : 'Ingresa tu apellido (mínimo 3 letras)',
+    telefono: form.data.telefono.trim().length >= 6 ? undefined : 'Ingresa un teléfono válido',
+    correo: /.+@.+\..+/.test(form.data.correo) ? undefined : 'Ingresa un correo válido',
+    asunto: form.data.asunto ? undefined : 'Selecciona un asunto',
+    consulta: form.data.consulta.trim().length >= 5 ? undefined : 'Cuéntanos tu consulta',
   }
   const isValid = Object.values(clientErrors).every((e) => !e)
 
@@ -83,14 +83,14 @@ export default function Contacto({ asuntos, piePagina }: ContactoProps) {
     <>
       <Seo
         title="Contacto y sucursales"
-        description="Contactá con Propar Inmobiliaria: consultas sobre lotes y loteamientos. Sucursales, teléfonos y horarios."
+        description="Contacta con Propar Inmobiliaria: consultas sobre lotes y loteamientos. Sucursales, teléfonos y horarios."
       />
       <div className={layoutStyles.container}>
         <div className={styles.contactoGrid}>
           <div>
             <h1 style={{ fontSize: 30 }}>Contacto</h1>
             <p style={{ color: 'var(--text-muted)', marginTop: 'var(--space-2)' }}>
-              Dejanos tus consultas o sugerencias: nuestro equipo se comunicará con vos a la
+              Déjanos tus consultas o sugerencias: nuestro equipo se comunicará contigo a la
               brevedad posible.
             </p>
 
@@ -196,7 +196,7 @@ export default function Contacto({ asuntos, piePagina }: ContactoProps) {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
             <div>
-              <h2 style={{ fontSize: 22 }}>Dónde podés encontrarnos</h2>
+              <h2 style={{ fontSize: 22 }}>Dónde puedes encontrarnos</h2>
               <div className={styles.sucursalesGrid} style={{ marginTop: 'var(--space-4)' }}>
                 {piePagina.sucursales.map((s, i) => (
                   <div key={s.id} className={styles.sucursalCard}>

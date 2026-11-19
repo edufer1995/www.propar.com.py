@@ -147,7 +147,7 @@ export default function Home({
         {promociones.length > 0 && (
           <Seccion
             eyebrow="Promociones"
-            titulo="Aprovechá los beneficios vigentes"
+            titulo="Aprovecha los beneficios vigentes"
             onPrev={promosPrev}
             onNext={promosNext}
           >
@@ -212,7 +212,7 @@ export default function Home({
         {distritos.length > 0 && (
           <Seccion
             eyebrow="Lotes por distrito"
-            titulo="Elegí la ciudad donde querés vivir"
+            titulo="Elige la ciudad donde quieres vivir"
             onPrev={distritosPrev}
             onNext={distritosNext}
           >
@@ -256,7 +256,7 @@ export default function Home({
         {piePagina.redes.length > 0 && (
           <Seccion
             eyebrow="Redes"
-            titulo="Seguinos en redes"
+            titulo="Síguenos en redes"
             subtitulo="Novedades, lanzamientos y promos al día."
             onPrev={redesPrev}
             onNext={redesNext}
@@ -323,7 +323,7 @@ export default function Home({
 
         {/* (f) Sucursales: lista a la izquierda, ficha con mapa a la derecha */}
         {piePagina.sucursales.length > 0 && (
-          <Seccion eyebrow="Sucursales" titulo="Visitanos en la más cercana">
+          <Seccion eyebrow="Sucursales" titulo="Visítanos en la más cercana">
             <div className={styles.sucursales}>
               <div className={styles.sucursalLista} role="tablist" aria-label="Sucursales">
                 {piePagina.sucursales.map((s) => (
@@ -401,8 +401,8 @@ export default function Home({
       {/* (g) Banda marrón: Deseo vender */}
       <div style={{ marginTop: 'var(--space-8)' }}>
         <BandaAccion
-          titulo="¿Querés vender tu terreno?"
-          texto="Contanos dónde está, sus medidas y el precio. Un asesor de Propar te contacta para evaluarlo."
+          titulo="¿Quieres vender tu terreno?"
+          texto="Cuéntanos dónde está, sus medidas y el precio. Un asesor de Propar te contacta para evaluarlo."
           accion={
             <Link route="public.vender.show" className={`${pr.btn} ${pr.btnBlanco}`}>
               Deseo vender
