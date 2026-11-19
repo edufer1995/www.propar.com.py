@@ -17,6 +17,7 @@ import Fraccion from '#models/fraccion'
 import Lote from '#models/lote'
 import Manzana from '#models/manzana'
 import User from '#models/user'
+import { kmlSintetico } from '#tests/helpers/kml_sintetico'
 
 /** Anillo cuadrado chico alrededor de un punto (cerrado) */
 function anillo(lat: number, lng: number, delta = 0.0005): [number, number][] {
@@ -63,6 +64,7 @@ test.group('Admin / planos (importación GeoJSON)', (group) => {
   const CODIGO = 990
   const CODIGO_INVALIDO = 991
   const CODIGO_CASCADA = 992
+  const CODIGO_KMZ = 993
 
   group.setup(async () => {
     usuario = await User.create({
@@ -74,7 +76,9 @@ test.group('Admin / planos (importación GeoJSON)', (group) => {
     })
 
     return async () => {
-      await Fraccion.query().whereIn('codigo', [CODIGO, CODIGO_INVALIDO, CODIGO_CASCADA]).delete()
+      await Fraccion.query()
+        .whereIn('codigo', [CODIGO, CODIGO_INVALIDO, CODIGO_CASCADA, CODIGO_KMZ])
+        .delete()
       await usuario.delete()
     }
   })
@@ -243,5 +247,75 @@ test.group('Admin / planos (importación GeoJSON)', (group) => {
     assert.isNull(await Fraccion.findBy('codigo', CODIGO_CASCADA))
     assert.lengthOf(await Manzana.query().whereIn('id', manzanaIds), 0)
     assert.lengthOf(await Lote.query().where('fraccion_codigo', CODIGO_CASCADA), 0)
+  })
+
+  test('previsualiza un KML sin guardar y detalla errores', async ({ client, assert }) => {
+    const ok = await client
+      .post('/app/planos/previsualizar-kmz')
+      .loginAs(usuario)
+      .withCsrfToken()
+      .header('Accept', 'application/json')
+      .file('archivoKmz', Buffer.from(kmlSintetico({ extras: true })), { filename: 'plano.kml' })
+    ok.assertStatus(200)
+    const cuerpo = ok.body() as {
+      ok: boolean
+      avisos: string[]
+      resumen: { manzanas: number; lotes: number }
+      geojson: { features: unknown[] }
+    }
+    assert.isTrue(cuerpo.ok)
+    assert.deepEqual(cuerpo.resumen, { manzanas: 2, lotes: 3 })
+    assert.isNotEmpty(cuerpo.avisos)
+    assert.lengthOf(cuerpo.geojson.features, 6)
+
+    const conErrores = await client
+      .post('/app/planos/previsualizar-kmz')
+      .loginAs(usuario)
+      .withCsrfToken()
+      .header('Accept', 'application/json')
+      .file('archivoKmz', Buffer.from(kmlSintetico({ loteSinNumero: true })), {
+        filename: 'plano.kml',
+      })
+    conErrores.assertStatus(200)
+    assert.isFalse((conErrores.body() as { ok: boolean }).ok)
+
+    const otroFormato = await client
+      .post('/app/planos/previsualizar-kmz')
+      .loginAs(usuario)
+      .withCsrfToken()
+      .header('Accept', 'application/json')
+      .file('archivoKmz', Buffer.from('{}'), { filename: 'plano.json' })
+    otroFormato.assertStatus(422)
+  })
+
+  test('importa un plano desde KML y rechaza uno con errores', async ({ client, assert }) => {
+    const conErrores = await client
+      .post('/app/planos')
+      .loginAs(usuario)
+      .withCsrfToken()
+      .redirects(0)
+      .field('descripcion', 'KML con errores')
+      .field('codigo', String(CODIGO_KMZ))
+      .field('formato', 'kmz')
+      .file('archivoKmz', Buffer.from(kmlSintetico({ sinPoligono: true })), {
+        filename: 'plano.kml',
+      })
+    conErrores.assertStatus(302)
+    assert.isNull(await Fraccion.findBy('codigo', CODIGO_KMZ))
+
+    const respuesta = await client
+      .post('/app/planos')
+      .loginAs(usuario)
+      .withCsrfToken()
+      .redirects(0)
+      .field('descripcion', 'Desde KML')
+      .field('codigo', String(CODIGO_KMZ))
+      .field('formato', 'kmz')
+      .file('archivoKmz', Buffer.from(kmlSintetico()), { filename: 'plano.kml' })
+    respuesta.assertStatus(302)
+
+    const fraccion = await Fraccion.findByOrFail('codigo', CODIGO_KMZ)
+    assert.lengthOf(await Manzana.query().where('fraccion_id', fraccion.id), 2)
+    assert.lengthOf(await Lote.query().where('fraccion_codigo', CODIGO_KMZ), 3)
   })
 })

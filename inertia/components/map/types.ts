@@ -36,6 +36,7 @@ export type PropiedadesLote = {
   cuotas: number | null
   importeCuota: number | null
   precioCredito: number | null
+  precioContado: number | null
   centro: PuntoLatLng | null
 }
 

@@ -378,6 +378,12 @@ const routes = {
     tokens: [{"old":"/app/planos","type":0,"val":"app","end":""},{"old":"/app/planos","type":0,"val":"planos","end":""}],
     types: placeholder as Registry['app.planos.store']['types'],
   },
+  'app.planos.previsualizarKmz': {
+    methods: ["POST"],
+    pattern: '/app/planos/previsualizar-kmz',
+    tokens: [{"old":"/app/planos/previsualizar-kmz","type":0,"val":"app","end":""},{"old":"/app/planos/previsualizar-kmz","type":0,"val":"planos","end":""},{"old":"/app/planos/previsualizar-kmz","type":0,"val":"previsualizar-kmz","end":""}],
+    types: placeholder as Registry['app.planos.previsualizarKmz']['types'],
+  },
   'app.planos.update': {
     methods: ["PUT"],
     pattern: '/app/planos/:id',

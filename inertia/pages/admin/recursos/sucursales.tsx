@@ -9,6 +9,7 @@ interface Fila {
   titulo: string | null
   lat: number | null
   lng: number | null
+  direccion: string | null
   horarios: string | null
   telefonos: string | null
   activo: boolean
@@ -20,9 +21,10 @@ const config: RecursoConfig<Fila> = {
   tituloEditar: 'Editar sucursal',
   descripcion: 'Se muestran en /contacto y en el pie de página del sitio (solo las activas).',
   baseUrl: '/app/sucursales',
-  busquedaPlaceholder: 'Buscar por título, teléfono u horario',
+  busquedaPlaceholder: 'Buscar por título, dirección, teléfono u horario',
   columnas: [
     { clave: 'titulo', titulo: 'Título', sortable: true, esTituloCard: true },
+    { clave: 'direccion', titulo: 'Dirección', soloDesktop: true },
     { clave: 'telefonos', titulo: 'Teléfonos' },
     { clave: 'horarios', titulo: 'Horarios' },
     {
@@ -41,6 +43,13 @@ const config: RecursoConfig<Fila> = {
   ],
   campos: [
     { tipo: 'text', nombre: 'titulo', etiqueta: 'Título', requerido: true, maxLength: 120 },
+    {
+      tipo: 'text',
+      nombre: 'direccion',
+      etiqueta: 'Dirección',
+      hint: 'Ej.: Dr. Juan Eulogio Estigarribia 5238',
+      maxLength: 255,
+    },
     { tipo: 'latlng', nombre: 'coordenadas', etiqueta: 'Coordenadas', requerido: true },
     {
       tipo: 'text',
@@ -62,6 +71,7 @@ const config: RecursoConfig<Fila> = {
   valoresDe: (f) => ({
     titulo: f.titulo ?? '',
     coordenadas: { lat: f.lat ?? '', lng: f.lng ?? '' },
+    direccion: f.direccion ?? '',
     horarios: f.horarios ?? '',
     telefonos: f.telefonos ?? '',
     activo: f.activo,
@@ -69,6 +79,7 @@ const config: RecursoConfig<Fila> = {
   valoresNuevo: {
     titulo: '',
     coordenadas: { lat: '', lng: '' },
+    direccion: '',
     horarios: '',
     telefonos: '',
     activo: true,

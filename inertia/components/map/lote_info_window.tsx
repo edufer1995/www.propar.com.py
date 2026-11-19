@@ -8,14 +8,11 @@ import type { PropiedadesLote } from './types'
 import styles from './map.module.css'
 
 /**
- * Campos de precio opcionales del popup. Decisión del cliente (Fase 1):
- * ENTREGA y CONTADO quedan ocultos; se reactivan pasando visibleFields.
- * Nota: al reactivarlos hay que agregar entrega/precioContado a las
- * properties del GeoJSON en LoteamientosService.
+ * Campos de precio opcionales del popup. ENTREGA queda oculta: Odoo no
+ * la tiene (va en 0). El CONTADO se muestra siempre, como el sitio viejo.
  */
 export interface CamposVisiblesLote {
   entrega?: boolean
-  contado?: boolean
 }
 
 /**
@@ -94,16 +91,16 @@ export function LoteInfoWindow({
                 <td>{formatGs(lote.precioCredito)}</td>
               </tr>
             )}
-            {/* ENTREGA y CONTADO ocultos por decisión del cliente (Fase 1). */}
+            {!vendido && lote.precioContado !== null && (
+              <tr>
+                <th>Contado</th>
+                <td>{formatGs(lote.precioContado)}</td>
+              </tr>
+            )}
+            {/* ENTREGA oculta: Odoo no la tiene. */}
             {!vendido && visibleFields.entrega && (
               <tr>
                 <th>Entrega</th>
-                <td>—</td>
-              </tr>
-            )}
-            {!vendido && visibleFields.contado && (
-              <tr>
-                <th>Contado</th>
                 <td>—</td>
               </tr>
             )}

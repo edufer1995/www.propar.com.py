@@ -25,6 +25,7 @@ export interface SucursalDto {
   id: number
   titulo: string
   coordenadas: { lat: number; lng: number } | null
+  direccion: string | null
   horarios: string | null
   telefonos: string | null
 }
@@ -81,6 +82,7 @@ export default class PublicLayoutService {
       id: s.id,
       titulo: s.titulo ?? '',
       coordenadas: s.coordenadas ?? null,
+      direccion: s.direccion,
       horarios: s.horarios,
       telefonos: s.telefonos,
     }))

@@ -135,7 +135,7 @@ export function validarPdfCliente(archivo: File, spec: SpecCliente): string | nu
 }
 
 /** Token CSRF de la cookie XSRF-TOKEN (shield la expone para clientes JS) */
-function tokenXsrf(): string {
+export function tokenXsrf(): string {
   const crudo = document.cookie
     .split('; ')
     .find((c) => c.startsWith('XSRF-TOKEN='))

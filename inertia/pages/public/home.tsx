@@ -357,6 +357,11 @@ export default function Home({
                   </div>
                   <div className={styles.sucursalInfo}>
                     <h3>{sucursal.titulo}</h3>
+                    {sucursal.direccion && (
+                      <p>
+                        <MapPin size={16} /> {sucursal.direccion}
+                      </p>
+                    )}
                     {sucursal.horarios && (
                       <p>
                         <Clock size={16} /> {sucursal.horarios}

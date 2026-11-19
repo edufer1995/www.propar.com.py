@@ -32,6 +32,7 @@ export const sucursalValidator = vine.create({
   titulo: vine.string().trim().minLength(2).maxLength(120),
   lat: vine.number().min(-90).max(90),
   lng: vine.number().min(-180).max(180),
+  direccion: vine.string().trim().maxLength(255).nullable().optional(),
   horarios: vine.string().trim().maxLength(255).nullable(),
   telefonos: vine.string().trim().maxLength(255).nullable(),
   activo: vine.boolean(),

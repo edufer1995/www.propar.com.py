@@ -15,7 +15,7 @@ export default class SucursalesController extends RecursoController<Sucursal> {
     recurso: 'sucursales',
     nombre: 'Sucursal',
     genero: 'f',
-    busquedaEn: ['titulo', 'telefonos', 'horarios'],
+    busquedaEn: ['titulo', 'direccion', 'telefonos', 'horarios'],
     ordenables: { id: 'id', titulo: 'titulo', estado: 'estado' },
     ordenDefault: { sort: 'id', order: 'asc' },
   }
@@ -26,6 +26,7 @@ export default class SucursalesController extends RecursoController<Sucursal> {
       titulo: fila.titulo,
       lat: fila.coordenadas?.lat ?? null,
       lng: fila.coordenadas?.lng ?? null,
+      direccion: fila.direccion,
       horarios: fila.horarios,
       telefonos: fila.telefonos,
       activo: fila.estado === 'A',
@@ -37,6 +38,7 @@ export default class SucursalesController extends RecursoController<Sucursal> {
     return {
       titulo: datos.titulo,
       coordenadas: { lat: datos.lat, lng: datos.lng },
+      direccion: datos.direccion ?? null,
       horarios: datos.horarios ?? null,
       telefonos: datos.telefonos ?? null,
       estado: datos.activo ? 'A' : 'E',
@@ -45,10 +47,20 @@ export default class SucursalesController extends RecursoController<Sucursal> {
 
   protected csv() {
     return {
-      encabezados: ['ID', 'Título', 'Latitud', 'Longitud', 'Horarios', 'Teléfonos', 'Activa'],
+      encabezados: [
+        'ID',
+        'Título',
+        'Dirección',
+        'Latitud',
+        'Longitud',
+        'Horarios',
+        'Teléfonos',
+        'Activa',
+      ],
       fila: (fila: Sucursal) => [
         fila.id,
         fila.titulo,
+        fila.direccion,
         fila.coordenadas?.lat ?? null,
         fila.coordenadas?.lng ?? null,
         fila.horarios,

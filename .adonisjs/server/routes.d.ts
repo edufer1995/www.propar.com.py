@@ -66,6 +66,7 @@ export type ScannedRoutes = {
     'app.planos.index': { paramsTuple?: []; params?: {} }
     'app.planos.export': { paramsTuple?: []; params?: {} }
     'app.planos.store': { paramsTuple?: []; params?: {} }
+    'app.planos.previsualizarKmz': { paramsTuple?: []; params?: {} }
     'app.planos.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.planos.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'app.planos.destroyMasivo': { paramsTuple?: []; params?: {} }
@@ -216,6 +217,7 @@ export type ScannedRoutes = {
     'app.promociones.store': { paramsTuple?: []; params?: {} }
     'app.promociones.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.planos.store': { paramsTuple?: []; params?: {} }
+    'app.planos.previsualizarKmz': { paramsTuple?: []; params?: {} }
     'app.planos.destroyMasivo': { paramsTuple?: []; params?: {} }
     'app.colores.update': { paramsTuple?: []; params?: {} }
     'app.lotesDistritos.store': { paramsTuple?: []; params?: {} }

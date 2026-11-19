@@ -181,6 +181,20 @@ export interface DatosImportacion {
   lotesGeoJson: string
 }
 
+export interface DatosPlanoParseado {
+  codigo: number
+  descripcion: string
+  fraccion: FeaturePlano
+  manzanas: FeaturePlano[]
+  lotes: FeaturePlano[]
+}
+
+/** Campos del form donde se muestran los errores de consistencia */
+export interface CamposErrorPlano {
+  manzanas: string
+  lotes: string
+}
+
 export default class PlanosImportService {
   /**
    * Valida los 3 archivos y ejecuta la importación completa en una
@@ -188,25 +202,47 @@ export default class PlanosImportService {
    * Devuelve la cantidad importada.
    */
   async importar(datos: DatosImportacion): Promise<{ manzanas: number; lotes: number }> {
-    if (await Fraccion.findBy('codigo', datos.codigo)) {
-      throw errorDePlano(
-        'codigo',
-        `Ya existe una fracción con el código ${datos.codigo}. Eliminala antes de re-importar el plano.`
-      )
-    }
+    await this.verificarCodigoLibre(datos.codigo)
 
     const [fraccion] = parsearGeoJsonPlano(datos.fraccionGeoJson, 'fraccion')
     const manzanas = parsearGeoJsonPlano(datos.manzanasGeoJson, 'manzanas')
     const lotes = parsearGeoJsonPlano(datos.lotesGeoJson, 'lotes')
 
-    // Consistencia entre archivos ANTES de tocar la base
+    return this.guardar({
+      codigo: datos.codigo,
+      descripcion: datos.descripcion,
+      fraccion,
+      manzanas,
+      lotes,
+    })
+  }
+
+  async verificarCodigoLibre(codigo: number) {
+    if (await Fraccion.findBy('codigo', codigo)) {
+      throw errorDePlano(
+        'codigo',
+        `Ya existe una fracción con el código ${codigo}. Eliminala antes de re-importar el plano.`
+      )
+    }
+  }
+
+  /**
+   * Revisa la consistencia (manzanas repetidas, lotes huérfanos o
+   * repetidos) y guarda el plano ya parseado en una transacción. Lo usan
+   * el import de 3 GeoJSON y el de KMZ/KML.
+   */
+  async guardar(
+    datos: DatosPlanoParseado,
+    campos: CamposErrorPlano = { manzanas: 'archivoManzanas', lotes: 'archivoLotes' }
+  ): Promise<{ manzanas: number; lotes: number }> {
+    await this.verificarCodigoLibre(datos.codigo)
+    const { fraccion, manzanas, lotes } = datos
+
+    // Consistencia ANTES de tocar la base
     const codigosManzana = new Set<number>()
     for (const manzana of manzanas) {
       if (codigosManzana.has(manzana.mz!)) {
-        throw errorDePlano(
-          'archivoManzanas',
-          `La manzana ${manzana.mz} está repetida en el archivo`
-        )
+        throw errorDePlano(campos.manzanas, `La manzana ${manzana.mz} está repetida en el archivo`)
       }
       codigosManzana.add(manzana.mz!)
     }
@@ -215,14 +251,14 @@ export default class PlanosImportService {
     for (const lote of lotes) {
       if (!codigosManzana.has(lote.mz!)) {
         throw errorDePlano(
-          'archivoLotes',
+          campos.lotes,
           `El lote ${lote.mz}-${lote.lt} referencia la manzana ${lote.mz}, que no está en el archivo de manzanas`
         )
       }
       const clave = `${lote.mz}:${lote.lt}`
       if (clavesLote.has(clave)) {
         throw errorDePlano(
-          'archivoLotes',
+          campos.lotes,
           `El lote ${lote.lt} de la manzana ${lote.mz} está repetido en el archivo`
         )
       }

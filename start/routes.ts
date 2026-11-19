@@ -12,6 +12,7 @@ import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 import app from '@adonisjs/core/services/app'
 import { NIVEL_ADMINISTRADOR, NIVEL_VENDEDOR } from '#middleware/role_middleware'
+import { destinoSitioViejo } from '#services/sitio_viejo'
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,19 @@ router
 router.get('propiedades', ({ request, response }) => {
   return response.redirect().withQs(request.qs()).status(301).toPath('/loteamientos')
 })
+
+/*
+|--------------------------------------------------------------------------
+| Direcciones del sitio viejo (/web/..., /admin/...): 301 a su equivalente
+| nuevo (ver #services/sitio_viejo).
+|--------------------------------------------------------------------------
+*/
+router.get('web', ({ response }) => response.redirect().status(301).toPath('/'))
+router.get('web/:pagina/:id?', ({ params, response }) => {
+  return response.redirect().status(301).toPath(destinoSitioViejo(params.pagina, params.id))
+})
+router.get('admin/*', ({ response }) => response.redirect().status(301).toPath('/app'))
+router.get('admin', ({ response }) => response.redirect().status(301).toPath('/app'))
 
 // Referencia viva del sistema de diseño. Nota: el codegen de rutas (Tuyau)
 // analiza este archivo estáticamente — las rutas NO pueden definirse dentro
@@ -278,6 +292,9 @@ router
         router.get('planos', [controllers.admin.Planos, 'index']).as('app.planos.index')
         router.get('planos/export', [controllers.admin.Planos, 'export']).as('app.planos.export')
         router.post('planos', [controllers.admin.Planos, 'store']).as('app.planos.store')
+        router
+          .post('planos/previsualizar-kmz', [controllers.admin.Planos, 'previsualizarKmz'])
+          .as('app.planos.previsualizarKmz')
         router
           .put('planos/:id', [controllers.admin.Planos, 'update'])
           .where('id', router.matchers.number())

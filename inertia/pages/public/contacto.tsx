@@ -203,6 +203,7 @@ export default function Contacto({ asuntos, piePagina }: ContactoProps) {
                     <strong>
                       {String(i + 1).padStart(2, '0')}. {s.titulo}
                     </strong>
+                    {s.direccion && <span>{s.direccion}</span>}
                     {s.horarios && (
                       <span>
                         <Clock size={14} /> {s.horarios}
