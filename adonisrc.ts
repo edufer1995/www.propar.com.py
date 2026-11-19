@@ -129,6 +129,11 @@ export default defineConfig({
       pattern: 'public/**',
       reloadServer: false,
     },
+    {
+      // Datos que leen las migraciones (planos del sitio viejo)
+      pattern: 'database/data/**',
+      reloadServer: false,
+    },
   ],
 
   hooks: {
